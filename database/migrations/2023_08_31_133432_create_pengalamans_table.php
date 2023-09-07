@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pengalamans', function (Blueprint $table) {
             $table->id("id_pengalaman");
-            $table->foreignId("id_tukang")->constrained();
+            $table->unsignedBigInteger("id_tukang");
             $table->string("nama_proyek");
             $table->string("alamat");
             $table->string("posisi_keahlian");
@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string("deskripsi");
             $table->string("foto");
             $table->timestamps();
+
+            $table->foreign('id_tukang')->references('id_tukang')->on('tukangs');
         });
     }
 
