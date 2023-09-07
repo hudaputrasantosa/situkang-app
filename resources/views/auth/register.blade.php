@@ -16,6 +16,31 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
+          <!-- Email Address -->
+        <div class="mt-4">
+            <x-input-label for="kecamatan" :value="__('Kecamatan')" />
+            <select id="kecamatan" name="kecamatan" class="block mt-1 w-full" required>
+            <option>--Pilih Kecamatan--</option>
+                @foreach ($kecamatans as $kecamatan )
+            <option value={{ $kecamatan['name'] }}>{{ $kecamatan['name'] }}</option>
+            @endforeach
+        <!-- Tambahkan opsi-opsi lain sesuai kebutuhan -->
+    </select>
+    <x-input-error :messages="$errors->get('kecamatan')" class="mt-2" />
+        </div>
+
+          <div class="mt-4">
+            <x-input-label for="desa" :value="__('Desa')" />
+            <select id="desa" name="desa" class="block mt-1 w-full" required>
+            <option>--Pilih Desa--</option>
+                @foreach ($desas as $desa )
+            <option value={{ $desa['name'] }}>{{ $desa['name'] }}</option>
+            @endforeach
+        <!-- Tambahkan opsi-opsi lain sesuai kebutuhan -->
+    </select>
+    <x-input-error :messages="$errors->get('desa')" class="mt-2" />
+        </div>
+
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
