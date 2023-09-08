@@ -17,7 +17,11 @@ class Pelanggan extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'nama',
+        'kecamatan',
+        'desa',
+        'alamat',
+        'no_telepon',
         'email',
         'password',
     ];
