@@ -4,16 +4,24 @@ namespace App\Http\Controllers\Pelanggan;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PelangganController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('guest')->except([
+    //         'auth.logout', 'homepage'
+    //     ]);
+    // }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function homepage()
     {
-        return view('home');
+        return view('homepage');
     }
+
 
     /**
      * Show the form for creating a new resource.
