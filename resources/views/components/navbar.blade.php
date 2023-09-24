@@ -39,7 +39,12 @@
                                <a class="dropdown-item" href="{{ route('auth.logout') }}"
                                onclick="event.preventDefault();
                                                 document.getElementById('logout-form').submit();">
-                                   {{ __('Profil') }}
+                                   {{ __('Atur Profil') }}
+                               </a>
+                               <a class="dropdown-item" href="{{ route('auth.logout') }}"
+                               onclick="event.preventDefault();
+                                                document.getElementById('logout-form').submit();">
+                                   {{ __('Riwayat Sewa') }}
                                </a>
                                <a class="dropdown-item" href="{{ route('auth.logout') }}"
                                onclick="event.preventDefault();

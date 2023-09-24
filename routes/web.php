@@ -43,9 +43,8 @@ Route::controller(PelangganController::class)->middleware('auth')->group(functio
 Route::prefix('tukang')->controller(TukangController::class)->group(function () {
     Route::get('/login', 'index')->name('tukang.login');
     Route::get('/register', 'register')->name('tukang.register');
+    Route::get('/getDesa', 'getDesa')->name('tukang.getDesa');
+    Route::get('/desas/{kecamatan_id}', 'desas')->name('tukang.desas');
+
     Route::get('/dashboard', 'dashboard')->name('pelanggan.dashboard')->middleware('auth');
 });
-
-// Auth::routes();
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

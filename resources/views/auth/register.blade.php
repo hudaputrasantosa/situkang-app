@@ -25,10 +25,10 @@
                            <div class="row mb-3">
                             <label for="kecamatan" class="col-md-4 col-form-label text-md-end">{{ __('Kecamatan') }}</label>
                             <div class="col-md-6">
-                               <select class="form-select" name="kecamatan" aria-label="Default select example">
-  <option selected>--Pilih Kecamatan--</option>
+                               <select class="form-select" name="kecamatan" id="kecamatan" required>
+  <option>--Pilih Kecamatan--</option>
   @foreach ($kecamatans as $kecamatan ) 
-  <option value="{{ $kecamatan['name'] }}">{{ $kecamatan['name'] }}</option>
+   <option value="{{ $kecamatan->id ?? '' }}">{{ $kecamatan->name ?? '' }}</option>
   @endforeach
 </select>
                                 @error('kecamatan')
@@ -42,11 +42,8 @@
                                                    <div class="row mb-3">
                             <label for="desa" class="col-md-4 col-form-label text-md-end">{{ __('Desa') }}</label>
                             <div class="col-md-6">
-                               <select class="form-select" name="desa" aria-label="Default select example">
-  <option selected>--Pilih Desa--</option>
-  @foreach ($desas as $desa ) 
-  <option value="{{ $desa['name'] }}">{{ $desa['name'] }}</option>
-  @endforeach
+                               <select class="form-select" name="desa" id="desa" required">
+  <option>--Pilih Desa--</option>
 </select>
                                 @error('desa')
                                     <span class="invalid-feedback" role="alert">
@@ -128,4 +125,35 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('js')
+<script type="text/javascript">
+$(document).ready(function (){
+    $('#kecamatan').on('change', function () {
+        let id = $(this).val();
+
+  $.ajax({
+    url: '{{ route("tukang.getDesa") }}',
+    type: 'GET',
+    data: {
+      id: id
+    },
+    success: function (data) {
+      $('#desa').empty();
+      $('#desa').append('<option>--Pilih Desa--</option>');
+      $.each(data, function (name, id) {
+        $('#desa').append('<option value="' + id + '">' + name + '</option>');
+      });
+    },
+    error: function (request, status, error) {
+                alert(request.statusText + "[" + request.status + "]");
+                alert(request.responseText);
+                $('#desa').empty().append('<option value="">Pilih Desa</option>');
+            }
+  });
+    });
+
+})
+</script>
 @endsection

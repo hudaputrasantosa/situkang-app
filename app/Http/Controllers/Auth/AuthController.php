@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Illuminate\Validation\Rules\Password;
+use Laravolt\Indonesia\Models\District;
+use Laravolt\Indonesia\Models\Village;
 
 class AuthController extends Controller
 {
@@ -25,29 +27,11 @@ class AuthController extends Controller
 
      public function register(Request $request)
      {
-          $api_key = 'am7S8vBUeesVc2Eh9V6jQqsSs4xLHn';
-          $response_1 = Http::withHeaders([
-               'x-api-key' => $api_key
-          ])->get('https://api.goapi.id/v1/regional/kecamatan?kota_id=33.02');
-          $kecamatans['kecamatans'] = $response_1->json()['data'];
+          $kecamatans = \Indonesia::findCity('189', ['districts'])->districts;
 
-          usort($kecamatans['kecamatans'], function ($a, $b) {
-               return strcmp($a['name'], $b['name']);
-          });
-
-          $response_2 = Http::withHeaders([
-               'x-api-key' => $api_key
-          ])->get('https://api.goapi.id/v1/regional/kelurahan?kecamatan_id=33.02');
-          $desas['desas'] = $response_2->json()['data'];
-
-          $uniqueDesas = collect($desas['desas'])->unique('name')->values()->all();
-          $desas['desas'] = $uniqueDesas;
-
-          usort($desas['desas'], function ($a, $b) {
-               return strcmp($a['name'], $b['name']);
-          });
-
-          return ($request->session()->get('isLogin')) ? redirect()->back() : view('auth.register', $kecamatans, $desas);
+          return ($request->session()->get('isLogin')) ? redirect()->back() : view('auth.register', [
+               'kecamatans' => $kecamatans
+          ]);
      }
 
      public function store(Request $request)
@@ -55,19 +39,22 @@ class AuthController extends Controller
 
           $request->validate([
                'nama' => 'required|string|max:250',
-               'kecamatan' => 'required|string|max:250',
-               'desa' => 'required|string|max:250',
+               'kecamatan' => 'required',
+               'desa' => 'required',
                'alamat' => 'required|string|max:250',
                'no_telepon' => 'required|string|max:250',
                'email' => 'required|email|max:250|unique:pelanggans',
-               'password' => ['required', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()->symbols()->uncompromised()],
+               'password' => ['required', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
                'password_confirmation' => 'required|same:password'
           ]);
 
+          $kecamatan = District::where('id', $request->kecamatan)->pluck('name')->first();
+          $desa = Village::where('id', $request->desa)->pluck('name')->first();
+
           Pelanggan::create([
                'nama' => $request->nama,
-               'kecamatan' => $request->kecamatan,
-               'desa' => $request->desa,
+               'kecamatan' => $kecamatan,
+               'desa' => $desa,
                'alamat' =>
                $request->alamat,
                'no_telepon' =>
@@ -95,7 +82,8 @@ class AuthController extends Controller
           if (!Auth::attempt($credentials)) {
                return redirect()->back()->withErrors([
                     'email' => 'Terjadi kesalahan pada email',
-               ])->only('email');
+                    'password' => 'Terjadi kesalahan pada password',
+               ])->onlyInput('email');
           }
 
           $user = Pelanggan::where('email', $request->email)->first();

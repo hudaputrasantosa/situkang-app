@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tukang;
 
 use App\Http\Controllers\Controller;
+use App\Models\Keahlian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -21,29 +22,15 @@ class TukangController extends Controller
      */
     public function register(Request $request)
     {
-        $api_key = 'am7S8vBUeesVc2Eh9V6jQqsSs4xLHn';
-        $response_1 = Http::withHeaders([
-            'x-api-key' => $api_key
-        ])->get('https://api.goapi.id/v1/regional/kecamatan?kota_id=33.02');
-        $kecamatans['kecamatans'] = $response_1->json()['data'];
+        $kecamatans = \Indonesia::findCity('189', ['districts'])->districts;
 
-        usort($kecamatans['kecamatans'], function ($a, $b) {
-            return strcmp($a['name'], $b['name']);
-        });
+        $keahlians = Keahlian::all();
+        // @dd($keahlians);
 
-        $response_2 = Http::withHeaders([
-            'x-api-key' => $api_key
-        ])->get('https://api.goapi.id/v1/regional/kelurahan?kecamatan_id=33.02');
-        $desas['desas'] = $response_2->json()['data'];
-
-        $uniqueDesas = collect($desas['desas'])->unique('name')->values()->all();
-        $desas['desas'] = $uniqueDesas;
-
-        usort($desas['desas'], function ($a, $b) {
-            return strcmp($a['name'], $b['name']);
-        });
-
-        return ($request->session()->get('tukangIsLogin')) ? redirect()->back() : view('tukang.register', $kecamatans, $desas);
+        return ($request->session()->get('tukangIsLogin')) ? redirect()->back() : view('tukang.register', [
+            'kecamatans' => $kecamatans,
+            'keahlians' => $keahlians,
+        ]);
     }
 
     /**
@@ -54,6 +41,10 @@ class TukangController extends Controller
         //
     }
 
+    public function getDesa(Request $request)
+    {
+        return \Indonesia::findDistrict($request->id, ['villages'])->villages->pluck('id', 'name');
+    }
     /**
      * Display the specified resource.
      */
