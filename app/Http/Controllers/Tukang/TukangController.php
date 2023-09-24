@@ -25,7 +25,6 @@ class TukangController extends Controller
         $kecamatans = \Indonesia::findCity('189', ['districts'])->districts;
 
         $keahlians = Keahlian::all();
-        // @dd($keahlians);
 
         return ($request->session()->get('tukangIsLogin')) ? redirect()->back() : view('tukang.register', [
             'kecamatans' => $kecamatans,
