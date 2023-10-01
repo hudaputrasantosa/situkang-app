@@ -41,10 +41,17 @@ Route::controller(PelangganController::class)->middleware('auth')->group(functio
 });
 
 Route::prefix('tukang')->controller(TukangController::class)->group(function () {
+    Route::get('/portofolio/{nama}', 'portofolio')->name('tukang.portofolio');
     Route::get('/login', 'index')->name('tukang.login');
+    Route::post('/authentication', 'authenticate')->name('tukang.authenticate');
     Route::get('/register', 'register')->name('tukang.register');
     Route::get('/getDesa', 'getDesa')->name('tukang.getDesa');
-    Route::get('/desas/{kecamatan_id}', 'desas')->name('tukang.desas');
-
-    Route::get('/dashboard', 'dashboard')->name('pelanggan.dashboard')->middleware('auth');
+    Route::post('/registration-store', 'store')->name('tukang.store');
+    Route::get('/dashboard', 'dashboard')->name('tukang.dashboard')->middleware('tukang');
+    Route::get('/profile', 'profile')->name('tukang.profile')->middleware('tukang');
+    Route::get('/pengalaman', 'pengalaman')->name('tukang.pengalaman')->middleware('tukang');
+    Route::get('/pengalaman/tambah', 'tambahPengalaman')->name('tukang.pengalaman.tambah')->middleware('tukang');
+    Route::post('/pengalaman/store', 'storePengalaman')->name('tukang.pengalaman.store')->middleware('tukang');
+    Route::get('/logout', 'logout')->name('tukang.logout')->middleware('tukang');
+    // Route::get('/dashboard', 'dashboard')->name('pelanggan.dashboard')->middleware('auth');
 });

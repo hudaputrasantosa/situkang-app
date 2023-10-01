@@ -2,71 +2,53 @@
 
 @section('content')
 <main>
-  <section class="py-5 text-center container">
-    <div class="row py-lg-5">
-      <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">Album example</h1>
-        <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
-        <p>
-          <a href="#" class="btn btn-primary my-2">Main call to action</a>
-          <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-        </p>
+<div class="container col-xxl-8 px-4">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-4">
+      <div class="col-10 col-sm-8 col-lg-6">
+        <img src="https://img.freepik.com/free-photo/civil-engineer-construction-worker-architects-wearing-hardhats-safety-vests-are-working-together-construction-site-building-home-cooperation-teamwork-concept_640221-172.jpg?w=740&t=st=1695739276~exp=1695739876~hmac=ee72b6df4c1e90f9731015762bb1397a9420fde5c69f6ebafd8f04d95d1bf36f" class="d-block mx-lg-auto img-fluid rounded" width="600" height="400" loading="lazy">
+      </div>
+      <div class="col-lg-6">
+        <h2 class="display-6 fw-bold lh-1 mb-3">Temukan jenis tukang bangunan sesuai kebutuhan anda.</h2>
+        <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components.</p>
       </div>
     </div>
-  </section>
+  </div>
+
+  
 
   <div class="album py-5 bg-light">
-    <div class="container">
+    <div class="container col-md-12">
+      
+      <div class="py-2 col-5 mb-4 mx-auto text-center">
+  <input type="text" class="form-control" aria-label="Sizing example input" placeholder="Cari Tukang.." aria-describedby="inputGroup-sizing-default">
 
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+  <h4 class="mt-5">Tukang Terdekat</h4>
+</div>
 
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-muted">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-muted">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-muted">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-2 gap-2">
+@foreach ($tukangs as $tukang )
+<div class="card m-2" style="width: 16rem;">
+  <a href="{{ route('tukang.portofolio', $tukang->nama) }}" class="text-decoration-none text-body">
+    <div class="img-thumbnail aspect-ratio aspect-ratio-1x1 mt-1">
+      <img src="https://img.freepik.com/free-photo/medium-shot-man-looking-document_23-2148751962.jpg?w=740&t=st=1695805888~exp=1695806488~hmac=56a0a57fc10257a34b52637b9f08f849dfebd2b2f05a2a78b2d792ad61894202"  class="card-img-top aspect-ratio-object-cover" style="object-fit: cover; object-position: center;">
+  </div>
+<div class="card-body">
+  <h5 class="card-title">{{ $tukang->nama }}</h5>
+  <div class="row d-flex align-items-center">
+    
+    <p class="mb-0" style="font-size: 10pt;">
+      <i class="bi bi-geo-alt-fill">
+      </i> 
+      {{ $tukang->desa }}, {{ $tukang->kecamatan }}</p>
+  </div>
+  <div class="mb-0">
+    <p>{{ $tukang->nama_keahlian}}</p>
+    <p class="fs-5">Rp {{ $tukang->harga }} /Hari</p>
+  </div>  
+</div>
+</a>
+</div>
+@endforeach
 
         
       </div>

@@ -18,10 +18,14 @@ class Pelanggan extends Authenticatable
      */
     protected $fillable = [
         'nama',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'jenis_kelamin',
         'kecamatan',
         'desa',
         'alamat',
         'no_telepon',
+        'foto',
         'email',
         'password',
     ];

@@ -40,6 +40,10 @@ return [
                'driver' => 'session',
                'provider' => 'users',
           ],
+          'tukang' => [
+               'driver' => 'session',
+               'provider' => 'tukangs',
+          ],
      ],
 
      /*
@@ -63,6 +67,10 @@ return [
           'users' => [
                'driver' => 'eloquent',
                'model' => App\Models\Pelanggan::class,
+          ],
+          'tukangs' => [
+               'driver' => 'eloquent',
+               'model' => App\Models\Tukang::class,
           ],
 
           // 'users' => [

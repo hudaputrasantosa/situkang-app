@@ -28,8 +28,14 @@ class AuthController extends Controller
      public function register(Request $request)
      {
           $kecamatans = \Indonesia::findCity('189', ['districts'])->districts;
+          if ($request->session()->get('tukangIsLogin') || $request->session()->get('isLogin')) {
+               $request->session()->flush();
+               return view('auth.register', [
+                    'kecamatans' => $kecamatans
+               ]);
+          }
 
-          return ($request->session()->get('isLogin')) ? redirect()->back() : view('auth.register', [
+          return view('auth.register', [
                'kecamatans' => $kecamatans
           ]);
      }
@@ -39,6 +45,9 @@ class AuthController extends Controller
 
           $request->validate([
                'nama' => 'required|string|max:250',
+               'tempat_lahir' => 'required|string|max:100',
+               'tanggal_lahir' => 'required',
+               'jenis_kelamin' => 'required',
                'kecamatan' => 'required',
                'desa' => 'required',
                'alamat' => 'required|string|max:250',
@@ -50,11 +59,14 @@ class AuthController extends Controller
 
           $kecamatan = District::where('id', $request->kecamatan)->pluck('name')->first();
           $desa = Village::where('id', $request->desa)->pluck('name')->first();
-
+          // @dd($request);
           Pelanggan::create([
                'nama' => $request->nama,
-               'kecamatan' => $kecamatan,
-               'desa' => $desa,
+               'tempat_lahir' =>  $request->tempat_lahir,
+               'tanggal_lahir' =>  $request->tanggal_lahir,
+               'jenis_kelamin' => $request->jenis_kelamin,
+               'kecamatan' => ucwords(strtolower($kecamatan)),
+               'desa' => ucwords(strtolower($desa)),
                'alamat' =>
                $request->alamat,
                'no_telepon' =>
@@ -69,7 +81,12 @@ class AuthController extends Controller
 
      public function login(Request $request)
      {
-          return ($request->session()->get('isLogin')) ? redirect()->back() : view('auth.login');
+          if ($request->session()->get('tukangIsLogin') || $request->session()->get('isLogin')) {
+               $request->session()->flush();
+               return view('auth.login');
+          }
+
+          return view('auth.login');
      }
 
      public function authenticate(Request $request): RedirectResponse
@@ -79,6 +96,7 @@ class AuthController extends Controller
                'password' => ['required']
           ]);
 
+          // @dd(Auth::attempt($credentials));
           if (!Auth::attempt($credentials)) {
                return redirect()->back()->withErrors([
                     'email' => 'Terjadi kesalahan pada email',
@@ -91,6 +109,7 @@ class AuthController extends Controller
                throw new \Exception('Invalid Credentials');
           }
           $request->session()->regenerate();
+          // @dd(Auth::check());
           $request->session()->put(['isLogin' => auth()->check(), 'nama' => auth()->user()->nama]);
           return redirect()->route('homepage')->with('success', 'Berhasil Login!');
      }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Pelanggan;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tukang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,9 +18,13 @@ class PelangganController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function homepage()
+    public function homepage(Request $request)
     {
-        return view('homepage');
+        $tukangs = Tukang::join('keahlians', 'tukangs.id_keahlian', '=', 'keahlians.id_keahlian')->select('tukangs.*', 'keahlians.nama_keahlian')->get();
+        // $keahlian = $tukangs->keahlian();
+        // @dd($tukangs);
+        return ($request->session()->get('tukangIsLogin')) ? redirect()->back() : view('homepage', compact('tukangs'));
+        // return view('homepage');
     }
 
 
