@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
 
 class Tukang extends Authenticatable
 {
@@ -17,7 +18,9 @@ class Tukang extends Authenticatable
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
+     * 
      */
+    protected $primaryKey = 'id';
     protected $fillable = [
         'nama',
         'tempat_lahir',
@@ -25,7 +28,7 @@ class Tukang extends Authenticatable
         'kecamatan',
         'desa',
         'alamat',
-        'id_keahlian',
+        'keahlians_id',
         'email',
         'password',
         'no_telepon',
@@ -55,13 +58,28 @@ class Tukang extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function keahlian(): BelongsTo
+    protected static function boot()
     {
-        return $this->belongsTo(Keahlian::class);
+        parent::boot();
+        static::creating(function ($model) {
+            if (empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = Str::uuid()->toString();
+            }
+        });
     }
 
-    public function pengalaman()
+    public function getIncrementing()
     {
-        return $this->hasMany(Pengalaman::class);
+        return false;
+    }
+
+    public function getKeyType()
+    {
+        return 'string';
+    }
+
+    public function keahlian()
+    {
+        return $this->belongsTo(Keahlian::class);
     }
 }

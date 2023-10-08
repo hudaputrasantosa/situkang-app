@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Tukang;
 use App\Http\Controllers\Controller;
 use App\Models\Keahlian;
 use App\Models\Pengalaman;
+use App\Models\Sewa;
 use App\Models\Tukang;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -61,7 +62,7 @@ class TukangController extends Controller
             'tanggal_lahir' => 'required',
             'kecamatan' => 'required',
             'desa' => 'required',
-            'id_keahlian' => 'required',
+            'keahlians_id' => 'required',
             'harga' => 'required|numeric|between:0,9999999999.99',
             'email' => 'required|email|max:250|unique:tukangs',
             'password' => ['required', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
@@ -70,14 +71,14 @@ class TukangController extends Controller
 
         $kecamatan = District::where('id', $request->kecamatan)->pluck('name')->first();
         $desa = Village::where('id', $request->desa)->pluck('name')->first();
-
+        // @dd($request);
         Tukang::create([
             'nama' => $request->nama,
             'tempat_lahir' =>  $request->tempat_lahir,
             'tanggal_lahir' =>  $request->tanggal_lahir,
             'kecamatan' => ucwords(strtolower($kecamatan)),
             'desa' => ucwords(strtolower($desa)),
-            'id_keahlian' => $request->id_keahlian,
+            'keahlians_id' => $request->keahlians_id,
             'harga' => $request->harga,
             'email' => $request->email,
             'password' => Hash::make($request->password)
@@ -110,7 +111,7 @@ class TukangController extends Controller
                 $request->session()->regenerate();
                 $request->session()->put([
                     'tukangIsLogin' => Auth::guard('tukang')->check(),
-                    'idLogin' => Auth::guard('tukang')->user()->id_tukang,
+                    'idLogin' => Auth::guard('tukang')->user()->id,
                     'nama' => Auth::guard('tukang')->user()->nama,
                 ]);
                 return redirect()->route('tukang.profile')->with('success', 'Berhasil Login!');
@@ -126,7 +127,7 @@ class TukangController extends Controller
 
     public function dashboard()
     {
-        $tukang = Tukang::where('id_tukang', session()->get('idLogin'));
+        $tukang = Tukang::where('id', session()->get('idLogin'));
         return view('tukang.dashboard', ['tukang' => $tukang]);
     }
 
@@ -141,10 +142,11 @@ class TukangController extends Controller
         return redirect()->route('tukang.login')->with('success', 'Berhasil Logout!');
     }
 
-    public function portofolio($nama)
+    public function portofolio($id)
     {
-        $tukangs = Tukang::where('nama', $nama)->join('keahlians', 'tukangs.id_keahlian', '=', 'keahlians.id_keahlian')->select('tukangs.*', 'keahlians.nama_keahlian')->get();
-        return !$tukangs ? abort(404) : view('portofolio', compact('tukangs'));
+        $tukangs = Tukang::find($id)->join('keahlians', 'tukangs.keahlians_id', '=', 'keahlians.id')->select('tukangs.*', 'keahlians.nama_keahlian')->get();
+        $pengalamans = Pengalaman::where('tukangs_id', $id)->join('keahlians', 'pengalamans.keahlians_id', '=', 'keahlians.id')->select('pengalamans.*', 'keahlians.nama_keahlian')->get();
+        return !$tukangs ? abort(404) : view('portofolio', compact('tukangs', 'pengalamans'));
     }
 
     public function profile()
@@ -154,7 +156,7 @@ class TukangController extends Controller
 
     public function pengalaman()
     {
-        $pengalamans = Pengalaman::where('id_tukang', session('idLogin'))->join('keahlians', 'pengalamans.id_keahlian', '=', 'keahlians.id_keahlian')->select('pengalamans.*', 'keahlians.nama_keahlian')->get();
+        $pengalamans = Pengalaman::where('tukangs_id', session('idLogin'))->join('keahlians', 'pengalamans.keahlians_id', '=', 'keahlians.id')->select('pengalamans.*', 'keahlians.nama_keahlian')->get();
         // @dd($pengalamans);
         return view('tukang.pengalaman.pengalaman', ['pengalamans' => $pengalamans]);
     }
@@ -170,33 +172,35 @@ class TukangController extends Controller
         $request->validate([
             'nama_proyek' => 'required|string|max:250',
             'alamat' => 'required|string|max:250',
-            'id_keahlian' => 'required',
+            'keahlians_id' => 'required',
             'tanggal_mulai' => 'required',
             'tanggal_selesai' => 'required',
             'deskripsi' => 'required',
             'foto' => 'image|mimes:png,jpg,jpeg|max:2048',
         ]);
-        // @dd($request);
         $fotoName = time() . '.' . $request->foto->extension();
         $request->foto->move(public_path('assets/img/pengalaman'), $fotoName);
 
-        // @dd($request);
-        Pengalaman::create([
-            'id_tukang' => session('idLogin'),
-            'nama_proyek' => $request->nama_proyek,
-            'alamat' => $request->alamat,
-            'id_keahlian' => $request->id_keahlian,
-            'tanggal_mulai' => $request->tanggal_mulai,
-            'tanggal_selesai' => $request->tanggal_selesai,
-            'deskripsi' => $request->deskripsi,
-            'foto' => $fotoName,
-        ]);
+        $pengalamans = new Pengalaman();
+        $pengalamans->tukangs_id = session('idLogin');
+        $pengalamans->nama_proyek = $request->nama_proyek;
+        $pengalamans->alamat = $request->alamat;
+        $pengalamans->keahlians_id = $request->keahlians_id;
+        $pengalamans->tanggal_mulai = $request->tanggal_mulai;
+        $pengalamans->tanggal_selesai = $request->tanggal_selesai;
+        $pengalamans->deskripsi = $request->deskripsi;
+        $pengalamans->foto = $fotoName;
+        $pengalamans->save();
 
         return redirect()->route('tukang.pengalaman')->with('success', 'data pengalaman berhasil ditambahkan');
     }
-    public function show(string $id)
+
+    public function konfirmasi()
     {
-        //
+        $tukangs_id = session('idLogin');
+        $sewas = Sewa::where('tukangs_id', $tukangs_id)->where('status', 'diproses')->join('pelanggans', 'sewas.pelanggans_id', '=', 'pelanggans.id')->select('sewas.*', 'pelanggans.nama')->get();
+
+        return view('tukang.penyewaan.konfirmasi', compact('sewas'));
     }
 
     /**

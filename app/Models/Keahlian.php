@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Str;
 
 class Keahlian extends Model
 {
@@ -17,8 +18,28 @@ class Keahlian extends Model
         'nama_keahlian',
     ];
 
-    public function tukang(): HasOne
+    protected static function boot()
     {
-        return $this->hasOne(Tukang::class);
+        parent::boot();
+        static::creating(function ($model) {
+            if (empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = Str::uuid()->toString();
+            }
+        });
+    }
+
+    public function getIncrementing()
+    {
+        return false;
+    }
+
+    public function getKeyType()
+    {
+        return 'string';
+    }
+
+    public function tukang()
+    {
+        return $this->hasOne(Tukang::class, 'keahlians_id');
     }
 }

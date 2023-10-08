@@ -110,7 +110,11 @@ class AuthController extends Controller
           }
           $request->session()->regenerate();
           // @dd(Auth::check());
-          $request->session()->put(['isLogin' => auth()->check(), 'nama' => auth()->user()->nama]);
+          $request->session()->put([
+               'isLogin' => Auth::check(),
+               'idLogin' => Auth::user()->id,
+               'nama' => Auth::user()->nama
+          ]);
           return redirect()->route('homepage')->with('success', 'Berhasil Login!');
      }
 

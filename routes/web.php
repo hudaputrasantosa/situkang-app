@@ -21,12 +21,12 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::controller(AuthController::class)->middleware('guest')->group(function () {
+Route::controller(AuthController::class)->group(function () {
     Route::get('/register', 'register')->name('auth.register');
     Route::post('/store', 'store')->name('auth.register.store');
     Route::get('/login', 'login')->name('auth.login');
     Route::post('/authenticate', 'authenticate')->name('auth.login.process');
-    Route::post('/logout', 'logout')->name('auth.logout');
+    Route::post('/logout', 'logout')->name('auth.logout')->middleware('pelanggan');
 });
 
 
@@ -38,10 +38,11 @@ Route::get('/tentang', [PelangganController::class, 'tentang'])->name('tentang')
 Route::controller(PelangganController::class)->middleware('auth')->group(function () {
     Route::get('/dashboard', 'dashboard')->name('pelanggan.dashboard');
     Route::get('/profil', 'profil')->name('pelanggan.profil');
+    Route::post('/pengajuan-sewa', 'sewa')->name('pelanggan.sewa');
 });
 
 Route::prefix('tukang')->controller(TukangController::class)->group(function () {
-    Route::get('/portofolio/{nama}', 'portofolio')->name('tukang.portofolio');
+    Route::get('/portofolio/{id}', 'portofolio')->name('tukang.portofolio');
     Route::get('/login', 'index')->name('tukang.login');
     Route::post('/authentication', 'authenticate')->name('tukang.authenticate');
     Route::get('/register', 'register')->name('tukang.register');
@@ -52,6 +53,8 @@ Route::prefix('tukang')->controller(TukangController::class)->group(function () 
     Route::get('/pengalaman', 'pengalaman')->name('tukang.pengalaman')->middleware('tukang');
     Route::get('/pengalaman/tambah', 'tambahPengalaman')->name('tukang.pengalaman.tambah')->middleware('tukang');
     Route::post('/pengalaman/store', 'storePengalaman')->name('tukang.pengalaman.store')->middleware('tukang');
+    Route::get('/penyewaan/konfirmasi', 'konfirmasi')->name('tukang.konfirmasi')->middleware('tukang');
+    Route::get('/penyewaan/riwayat', 'riwayat')->name('tukang.riwayat')->middleware('tukang');
     Route::get('/logout', 'logout')->name('tukang.logout')->middleware('tukang');
     // Route::get('/dashboard', 'dashboard')->name('pelanggan.dashboard')->middleware('auth');
 });

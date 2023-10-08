@@ -12,18 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pengalamans', function (Blueprint $table) {
-            $table->id("id_pengalaman");
-            $table->unsignedBigInteger("id_tukang");
+            $table->uuid("id")->primary();
+            $table->foreignUlid('tukangs_id', 36)->references('id')->on('tukangs');
             $table->string("nama_proyek");
             $table->string("alamat");
-            $table->string("posisi_keahlian");
-            $table->date("bulan_mulai");
-            $table->date("bulan_selesai");
+            $table->foreignUlid("keahlians_id", 36)->references('id')->on('keahlians');
+            $table->string("tanggal_mulai");
+            $table->string("tanggal_selesai");
             $table->string("deskripsi");
             $table->string("foto");
             $table->timestamps();
-
-            $table->foreign('id_tukang')->references('id_tukang')->on('tukangs');
         });
     }
 

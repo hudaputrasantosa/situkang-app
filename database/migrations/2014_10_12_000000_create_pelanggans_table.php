@@ -12,8 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pelanggans', function (Blueprint $table) {
-            $table->id('id_pelanggan');
+            $table->uuid('id')->primary();
             $table->string('nama');
+            $table->string('tempat_lahir');
+            $table->string('tanggal_lahir');
+            $table->string('jenis_kelamin');
             $table->string('kecamatan');
             $table->string('desa');
             $table->string('alamat');
@@ -21,7 +24,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('no_telepon');
-            $table->string('foto')->default(null);
+            $table->text('foto')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

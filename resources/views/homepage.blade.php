@@ -28,7 +28,7 @@
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-2 gap-2">
 @foreach ($tukangs as $tukang )
 <div class="card m-2" style="width: 16rem;">
-  <a href="{{ route('tukang.portofolio', $tukang->nama) }}" class="text-decoration-none text-body">
+  <a href="{{ route('tukang.portofolio', $tukang->id) }}" class="text-decoration-none text-body">
     <div class="img-thumbnail aspect-ratio aspect-ratio-1x1 mt-1">
       <img src="https://img.freepik.com/free-photo/medium-shot-man-looking-document_23-2148751962.jpg?w=740&t=st=1695805888~exp=1695806488~hmac=56a0a57fc10257a34b52637b9f08f849dfebd2b2f05a2a78b2d792ad61894202"  class="card-img-top aspect-ratio-object-cover" style="object-fit: cover; object-position: center;">
   </div>
@@ -56,4 +56,8 @@
   </div>
 
 </main>
+@endsection
+
+@section('js')
+<script src="{{ asset('js/app.js') }}"></script>
 @endsection

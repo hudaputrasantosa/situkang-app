@@ -17,11 +17,11 @@ return new class extends Migration
         //     $table->string('deskripsi')->after('harga')->nullable();
         // });
 
-        Schema::table('pelanggans', function (Blueprint $table) {
-            $table->string('tempat_lahir')->after('nama');
-            $table->string('tanggal_lahir')->after('tempat_lahir');
-            $table->string('jenis_kelamin')->after('tanggal_lahir');
-        });
+        // Schema::table('pelanggans', function (Blueprint $table) {
+        //     $table->string('tempat_lahir')->after('nama');
+        //     $table->string('tanggal_lahir')->after('tempat_lahir');
+        //     $table->string('jenis_kelamin')->after('tanggal_lahir');
+        // });
     }
 
     /**

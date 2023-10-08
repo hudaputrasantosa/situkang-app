@@ -218,10 +218,10 @@
          <div class="row g-2 mx-auto gap-2 mb-3">
 
               <div class="col-md-12">
-                  <select class="form-select" name="id_keahlian" id="id_keahlian" required>
+                  <select class="form-select" name="keahlians_id" id="keahlians_id" required>
                     <option>Pilih Bidang Keahlian ...</option>
                     @foreach($keahlians as $keahlian)
-                    <option value="{{ $keahlian->id_keahlian }}">{{ $keahlian->nama_keahlian}}</option>
+                    <option value="{{ $keahlian->id }}">{{ $keahlian->nama_keahlian}}</option>
                     @endforeach
 </select>
                                 @error('id_keahlian')

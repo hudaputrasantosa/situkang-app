@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class KeahlianSeeder extends Seeder
 {
@@ -14,15 +15,15 @@ class KeahlianSeeder extends Seeder
     public function run(): void
     {
         DB::table('keahlians')->insert([
-            ['nama_keahlian' => 'Tukang Cat'],
-            ['nama_keahlian' => 'Pemasang Keramik'],
-            ['nama_keahlian' => 'Tukang Kayu/Mebel'],
-            ['nama_keahlian' => 'Pemasang Listrik'],
-            ['nama_keahlian' => 'Tukang Plafon'],
-            ['nama_keahlian' => 'Tukang Las'],
-            ['nama_keahlian' => 'Tukang Batu'],
-            ['nama_keahlian' => 'Tukang Desain Interior'],
-            ['nama_keahlian' => 'Tenaga Bantu Bangunan'],
+            ['id' => Str::uuid(), 'nama_keahlian' => 'Tukang Cat'],
+            ['id' => Str::uuid(), 'nama_keahlian' => 'Pemasang Keramik'],
+            ['id' => Str::uuid(), 'nama_keahlian' => 'Tukang Kayu/Mebel'],
+            ['id' => Str::uuid(), 'nama_keahlian' => 'Pemasang Listrik'],
+            ['id' => Str::uuid(), 'nama_keahlian' => 'Tukang Plafon'],
+            ['id' => Str::uuid(), 'nama_keahlian' => 'Tukang Las'],
+            ['id' => Str::uuid(), 'nama_keahlian' => 'Tukang Batu'],
+            ['id' => Str::uuid(), 'nama_keahlian' => 'Tukang Desain Interior'],
+            ['id' => Str::uuid(), 'nama_keahlian' => 'Tenaga Bantu Bangunan'],
         ]);
     }
 }

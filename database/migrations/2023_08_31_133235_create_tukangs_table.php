@@ -12,22 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tukangs', function (Blueprint $table) {
-            $table->id('id_tukang');
+            $table->uuid('id')->primary();
             $table->string('nama');
+            $table->string('tempat_lahir');
+            $table->string('tanggal_lahir');
             $table->string('kecamatan');
             $table->string('desa');
-            $table->string('alamat');
-            $table->unsignedBigInteger('id_keahlian');
+            $table->string('alamat')->nullable();
+            $table->foreignUlid('keahlians_id', 36)->references('id')->on('keahlians');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('no_telepon');
+            $table->string('no_telepon')->nullable();
             $table->string('harga');
-            $table->string('foto')->default(null);
+            $table->text('deskripsi')->nullable();
+            $table->text('foto')->nullable();
             $table->rememberToken();
             $table->timestamps();
-
-            $table->foreign('id_keahlian')->references('id_keahlian')->on('keahlians');
         });
     }
 

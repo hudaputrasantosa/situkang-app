@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Pelanggan;
 
+use App\Events\MessageCreated;
 use App\Http\Controllers\Controller;
+use App\Models\Sewa;
 use App\Models\Tukang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +22,9 @@ class PelangganController extends Controller
      */
     public function homepage(Request $request)
     {
-        $tukangs = Tukang::join('keahlians', 'tukangs.id_keahlian', '=', 'keahlians.id_keahlian')->select('tukangs.*', 'keahlians.nama_keahlian')->get();
+        MessageCreated::dispatch('Testing Broadcast');
+
+        $tukangs = Tukang::join('keahlians', 'tukangs.keahlians_id', '=', 'keahlians.id')->select('tukangs.*', 'keahlians.nama_keahlian')->get();
         // $keahlian = $tukangs->keahlian();
         // @dd($tukangs);
         return ($request->session()->get('tukangIsLogin')) ? redirect()->back() : view('homepage', compact('tukangs'));
@@ -31,9 +35,25 @@ class PelangganController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function sewa(Request $request)
     {
-        //
+        $request->validate([
+            'tukangs_id' => 'required',
+            'tanggal_sewa' => 'required',
+            'durasi' => 'required|numeric',
+            'metode_pembayaran' => 'required',
+        ]);
+        // @dd([$request, session('idLogin')]);
+        $sewa = new Sewa();
+        $sewa->tukangs_id = $request->tukangs_id;
+        $sewa->pelanggans_id = session('idLogin');
+        $sewa->tanggal_sewa = $request->tanggal_sewa;
+        $sewa->durasi = $request->durasi;
+        $sewa->metode_pembayaran = $request->metode_pembayaran;
+        $sewa->status = "diproses";
+        $sewa->save();
+
+        return redirect()->back()->with('success', 'Berhasil melakukan pengajuan sewa');
     }
 
     /**
