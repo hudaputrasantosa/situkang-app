@@ -5,9 +5,10 @@
                         <h1 class="h3 mb-0 text-gray-800">Konfirmasi Sewa</h1>
                     </div>
 
-                       <div class="card shadow mb-4">                      
-                        @foreach($sewas as $sewa)
-                        <div class="col-md-10 mb-4 my-4 mx-auto">
+                       <div class="card shadow"> 
+                        <div class="my-4">
+                            @foreach($sewas as $sewa)
+                            <div class="col-md-10 mb-2 mx-auto">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -37,6 +38,7 @@
                             </div>
                         </div>
                         @endforeach
+                    </div>                     
 
                     </div>
                 </div>
