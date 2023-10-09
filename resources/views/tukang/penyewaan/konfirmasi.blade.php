@@ -7,7 +7,7 @@
 
                        <div class="card shadow mb-4">                      
                         @foreach($sewas as $sewa)
-                        <div class="col-md-12 mb-4 my-2">
+                        <div class="col-md-10 mb-4 my-4 mx-auto">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -19,14 +19,19 @@
                                              <div class="text-xs font-weight-bold text-gray mb-1">
                                               Tanggal Sewa : {{ $sewa->tanggal_sewa }}  |  Pembayaran : {{ $sewa->metode_pembayaran }}
                                             </div>
-                                             <div class="badge bg-warning text-wrap mb-1 text-capitalize">
+                                             <div class="badge @if($sewa->status == "diterima") bg-success @elseif($sewa->status == "ditolak") bg-danger @else bg-warning @endif text-wrap mb-1 text-capitalize">
                                                {{ $sewa->status }}
                                             </div>
                                         </div>
-                                        <div class="col-auto mt-1">
-                                            <button class="btn btn-primary">Terima</button>
-                                            <button class="btn btn-danger">Tolak</button>
+                                        @if ($sewa->status == "diproses")
+                                        <div class="col-auto mr-3">
+                                            <form action="{{ route('tukang.updateStatus', $sewa->id) }}" method="post">
+                                                @csrf
+                                            <button type="submit" class="btn btn-success" value="diterima" name="terima">Terima</button>
+                                            <button type="submit" class="btn btn-danger" value="ditolak" name="tolak">Tolak</button>
+                                            </form>
                                         </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

@@ -76,7 +76,7 @@
            <p class="mb-4">{{ $tukang->deskripsi }}</p>
            @endif
           </div>
-          <div class="col-md-12 text-start mb-4 px-5">
+          <div class="col-md-12 text-start mb-5 px-5">
       <h5>Pengalaman</h5>
       @if (count($pengalamans) === 0)
         <p>Belum mempunyai pengalaman</p>
@@ -107,7 +107,7 @@
                           @endif
                         </div>
       <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-        <a type="button" class="btn btn-primary btn-lg px-4 gap-3"  @if(session('isLogin') == true) data-bs-toggle="modal" data-bs-target="#sewa" @else href="{{ route('auth.login') }}" @endif>Ajukan Sewa</a>
+        <a type="button" class="btn btn-primary col-4 btn-lg mx-auto"  @if(session('isLogin') == true) data-bs-toggle="modal" data-bs-target="#sewa" @else href="{{ route('auth.login') }}" @endif>Ajukan Sewa</a>
       </div>
 
       <div class="modal fade" id="sewa" tabindex="-1" aria-labelledby="sewaLabel" aria-hidden="true">

@@ -62,19 +62,10 @@
                     <i class="fas fa-fw fa-briefcase"></i>
                     <span>Pengalaman</span></a>
             </li>
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item @if(Request::is('tukang/penyewaan/konfirmasi')) active @elseif(Request::is('tukang/penyewaan/riwayat')) active @endif">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
+             <li class="nav-item @if(Request::is('tukang/penyewaan/konfirmasi')) active @endif">
+                <a class="nav-link" href="{{ route('tukang.konfirmasi') }}">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Penyewaan</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ route('tukang.konfirmasi') }}">Konfirmasi Penyewaan</a>
-                        <a class="collapse-item" href="{{ route('tukang.riwayat') }}">Riwayat Penyewaan</a>
-                    </div>
-                </div>
+                    <span>Penyewaan</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal">

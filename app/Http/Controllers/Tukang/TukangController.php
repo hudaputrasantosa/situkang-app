@@ -198,7 +198,7 @@ class TukangController extends Controller
     public function konfirmasi()
     {
         $tukangs_id = session('idLogin');
-        $sewas = Sewa::where('tukangs_id', $tukangs_id)->where('status', 'diproses')->join('pelanggans', 'sewas.pelanggans_id', '=', 'pelanggans.id')->select('sewas.*', 'pelanggans.nama')->get();
+        $sewas = Sewa::where('tukangs_id', $tukangs_id)->join('pelanggans', 'sewas.pelanggans_id', '=', 'pelanggans.id')->select('sewas.*', 'pelanggans.nama')->latest()->paginate(10);
 
         return view('tukang.penyewaan.konfirmasi', compact('sewas'));
     }
@@ -206,9 +206,18 @@ class TukangController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function updateStatus($id, Request $request)
     {
-        //
+        $diterima = $request->terima;
+        $ditolak = $request->tolak;
+
+        if ($diterima === null) {
+            Sewa::find($id)->update(['status' => $ditolak]);
+            return redirect()->back()->with('success', 'berhasil melakukan konfirmasi');
+        } else {
+            Sewa::find($id)->update(['status' => $diterima]);
+            return redirect()->back()->with('success', 'berhasil melakukan konfirmasi');
+        }
     }
 
     /**
