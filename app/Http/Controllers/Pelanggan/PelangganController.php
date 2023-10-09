@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Pelanggan;
 
 use App\Events\MessageCreated;
 use App\Http\Controllers\Controller;
+use App\Models\Notification;
 use App\Models\Sewa;
 use App\Models\Tukang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Pusher\Pusher;
 
 class PelangganController extends Controller
 {
@@ -22,13 +24,8 @@ class PelangganController extends Controller
      */
     public function homepage(Request $request)
     {
-        MessageCreated::dispatch('Testing Broadcast');
-
         $tukangs = Tukang::join('keahlians', 'tukangs.keahlians_id', '=', 'keahlians.id')->select('tukangs.*', 'keahlians.nama_keahlian')->get();
-        // $keahlian = $tukangs->keahlian();
-        // @dd($tukangs);
         return ($request->session()->get('tukangIsLogin')) ? redirect()->back() : view('homepage', compact('tukangs'));
-        // return view('homepage');
     }
 
 
@@ -43,7 +40,7 @@ class PelangganController extends Controller
             'durasi' => 'required|numeric',
             'metode_pembayaran' => 'required',
         ]);
-        // @dd([$request, session('idLogin')]);
+
         $sewa = new Sewa();
         $sewa->tukangs_id = $request->tukangs_id;
         $sewa->pelanggans_id = session('idLogin');
@@ -52,6 +49,30 @@ class PelangganController extends Controller
         $sewa->metode_pembayaran = $request->metode_pembayaran;
         $sewa->status = "diproses";
         $sewa->save();
+
+        $notif = new Notification();
+        $notif->pelanggans_id = session('idLogin');
+        $pelanggans_id = $notif->pelanggans_id;
+        $notif->tukangs_id = $request->tukangs_id;
+        $tukangs_id = $notif->tukangs_id;
+        $notif->save();
+
+        $options = array(
+            'cluster' => 'ap1',
+            'useTLS' => true,
+        );
+
+        $pusher = new Pusher(
+            env('PUSHER_APP_KEY'),
+            env('PUSHER_APP_SECRET'),
+            env('PUSHER_APP_ID'),
+            $options,
+        );
+        $data = [
+            'pelanggans_id' => $pelanggans_id,
+            'tukangs_id' => $tukangs_id,
+        ];
+        $pusher->trigger('my-channel', 'my-event', $data);
 
         return redirect()->back()->with('success', 'Berhasil melakukan pengajuan sewa');
     }

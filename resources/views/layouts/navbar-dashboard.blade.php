@@ -19,7 +19,7 @@
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-
+        <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <!-- Custom styles for this template-->
     <link href="{{ asset('assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
     <style>
@@ -63,7 +63,7 @@
                     <span>Pengalaman</span></a>
             </li>
              <li class="nav-item @if(Request::is('tukang/penyewaan/konfirmasi')) active @endif">
-                <a class="nav-link" href="{{ route('tukang.konfirmasi') }}">
+                <a class="nav-link" href="{{ route('tukang.penyewaan') }}">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Penyewaan</span></a>
             </li>
@@ -101,30 +101,26 @@
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-
+                        
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
+                                <span class="badge badge-danger badge-counter">0</span>
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="alertsDropdown">
                                 <h6 class="dropdown-header">
-                                    Alerts Center
+                                    Pemberitahuan
                                 </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
+
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('tukang.penyewaan') }}">
                                     <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                                        <div class="small text-gray-500">10-10-2023 | 14.00 WIB</div>
+                                        <span>A new monthly report is ready to download!</span>
                                     </div>
                                 </a>
                             </div>
@@ -140,27 +136,6 @@
                                 <img class="img-profile rounded-circle"
                                     src="{{ asset('assets/img/undraw_profile.svg') }}">
                             </a>
-                            <!-- Dropdown - User Information -->
-                            {{-- <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('tukang.logout') }}" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div> --}}
                         </li>
 
                     </ul>
@@ -217,12 +192,25 @@
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('assets/jquery-3.7.1.js') }}"></script>
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
-    <!-- Core plugin JavaScript-->
     <script src="{{ asset('assets/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
-
-    <!-- Custom scripts for all pages-->
     <script src="{{ asset('assets/js/sb-admin-2.min.js') }}"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+       Pusher.logToConsole = true;
+
+    var pusher = new Pusher('3176919d7b7f92b439a3', {
+      cluster: 'ap1'
+    });
+
+    // alert('{{ session("idLogin") }}');
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+      alert(JSON.stringify(data));
+    });
+
+    });
+    </script>
     @yield('js')
 
     <!-- Page level plugins -->
