@@ -111,16 +111,15 @@
                                 @php
                                     $notification = App\Models\Notification::where('tukangs_id', session('idLogin'))->join('pelanggans', 'notification.pelanggans_id', '=', 'pelanggans.id')->select('pelanggans.nama', 'notification.created_at')->get();
                                 @endphp
-                                <span class="badge badge-danger badge-counter pending">{{ $notification->count() }}</span>
+                                <span class="@if($notification->count()!=0)badge badge-danger badge-counter @endif" id="notif">{{ $notification->count() }}</span>
                             </a>
                             <!-- Dropdown - Alerts -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown">
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown" style="max-height: 350px; overflow-y: auto;">
                                 <h6 class="dropdown-header">
                                     Pemberitahuan
                                 </h6>
                                 @foreach ($notification as $itemNotif )                                   
-                                <a class="dropdown-item d-flex align-items-center" id="key" href="{{ route('tukang.penyewaan') }}">
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('tukang.penyewaan') }}">
                                     <div>
                                         <div class="small text-gray-500">{{ $itemNotif->created_at }}</div>
                                         <span><strong>{{ $itemNotif->nama }}</strong> mengajukan sewa kepada anda, tanggapi pengajuan sewa tersebut!</span>
@@ -209,10 +208,14 @@
     channel.bind('my-event', function(data) {
     JSON.stringify(data);
     if(data.tukangs_id === "{{ session("idLogin") }}"){
-            //  alert(`Halo Tukang ${data.tukangs_id}`);
-             let pending = parseInt($('.pending')).html();
-             alert(pending);
-             $('#notif').val();   
+             const notifElement = document.getElementById('notif');
+             let notifCount = parseInt(notifElement.innerHTML);
+            if(notifCount){
+                notifCount++;
+                notifElement.innerHTML = notifCount; 
+            } else{
+                notifElement.innerHTML = notifCount; 
+            }
     }
     });
 
