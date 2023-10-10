@@ -108,7 +108,10 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">0</span>
+                                @php
+                                    $notification = App\Models\Notification::where('tukangs_id', session('idLogin'))->join('pelanggans', 'notification.pelanggans_id', '=', 'pelanggans.id')->select('pelanggans.nama', 'notification.created_at')->get();
+                                @endphp
+                                <span class="badge badge-danger badge-counter pending">{{ $notification->count() }}</span>
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -116,13 +119,14 @@
                                 <h6 class="dropdown-header">
                                     Pemberitahuan
                                 </h6>
-
-                                <a class="dropdown-item d-flex align-items-center" href="{{ route('tukang.penyewaan') }}">
+                                @foreach ($notification as $itemNotif )                                   
+                                <a class="dropdown-item d-flex align-items-center" id="key" href="{{ route('tukang.penyewaan') }}">
                                     <div>
-                                        <div class="small text-gray-500">10-10-2023 | 14.00 WIB</div>
-                                        <span>A new monthly report is ready to download!</span>
+                                        <div class="small text-gray-500">{{ $itemNotif->created_at }}</div>
+                                        <span><strong>{{ $itemNotif->nama }}</strong> mengajukan sewa kepada anda, tanggapi pengajuan sewa tersebut!</span>
                                     </div>
                                 </a>
+                                @endforeach
                             </div>
                         </li>
 
@@ -198,15 +202,18 @@
     $(document).ready(function(){
        Pusher.logToConsole = true;
 
-    var pusher = new Pusher('3176919d7b7f92b439a3', {
+    const pusher = new Pusher('3176919d7b7f92b439a3', {
       cluster: 'ap1'
     });
-
-    // alert('{{ session("idLogin") }}');
-
-    var channel = pusher.subscribe('my-channel');
+    const channel = pusher.subscribe('my-channel');
     channel.bind('my-event', function(data) {
-      alert(JSON.stringify(data));
+    JSON.stringify(data);
+    if(data.tukangs_id === "{{ session("idLogin") }}"){
+            //  alert(`Halo Tukang ${data.tukangs_id}`);
+             let pending = parseInt($('.pending')).html();
+             alert(pending);
+             $('#notif').val();   
+    }
     });
 
     });
