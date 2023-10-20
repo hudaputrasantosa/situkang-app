@@ -7,23 +7,14 @@
 
                          <div class="card shadow mb-4">
                              <div class="card-body mx-auto col-md-8">
-                                 <div class="py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Atur Profil</h6>
-                        </div>
-                               <form class="user" method="POST" action="{{ route('tukang.pengalaman.store') }}" enctype="multipart/form-data">
+                              
+                               <form action="{{ route('tukang.profile.update', $tukangs[0]->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
-                               
-            {{-- <div class="mx-auto align-items-center text-center ">
-                <img class="rounded-circle mb-0 imagePreview" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
-            
-                <div class="mx-auto align-items-center text-center">
-                    <input type="file" class="form-control d-none btn btn-primary btn-sm" style="margin-top: -40px;">Ganti Foto</input>
-                </div>
-        </div> --}}
 
 <div class="mx-auto align-items-center text-center ">
   <div class="imgUp">
-    <div class="imagePreview"></div>
+    {{-- <div class="imagePreview"></div> --}}
+    <img class="imagePreview" src="{{ url('storage/foto-profil/'.$tukangs[0]->foto) }}" alt="">
     <div class="mx-auto align-items-center text-center">
       <label class="btn btn-primary btn-sm">
       Ganti foto<input type="file" class="uploadFile d-none" id="foto" name="foto">
@@ -31,30 +22,33 @@
   </div>
 </div>
 </div>
+                                       <div class="py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Atur Data Pribadi</h6>
+                        </div>
 
                                         <div class="form-group">
                                             <label for="nama" class="form-label">Nama</label>
                                             <input type="text" class="form-control"
-                                                id="nama" name="nama" required autofocus>
+                                                id="nama" name="nama" value="{{ $tukangs[0]->nama }}" required autofocus>
                                         </div>
 
                                         <div class="row g-2 mb-2">
                                             <div class="form-group col-md-6">
                                               <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
                                               <input type="text" class="form-control"
-                                              id="tempat_lahir" name="tempat_lahir" required autofocus>
+                                              id="tempat_lahir" name="tempat_lahir" value="{{ $tukangs[0]->tempat_lahir }}" required autofocus>
                                           </div>
                                              <div class="form-group col-md-6">
                                               <label for="tempat_lahir" class="form-label">Tanggal Lahir</label>
                                               <input type="text" class="form-control"
-                                              id="tempat_lahir" name="tempat_lahir" required autofocus>
+                                              id="tempat_lahir" name="tanggal_lahir" value="{{ $tukangs[0]->tanggal_lahir }}" required autofocus>
                                           </div>
                 
                                         </div>
                                           <div class="row g-2 mb-4">
                                             <div class="col-md-6">
                                                 <select class="form-select" name="kecamatan" id="kecamatan" required>
-                                            <option>Pilih Kecamatan ...</option>
+                                            <option value="{{ $tukangs[0]->kecamatan }}">{{ $tukangs[0]->kecamatan }}</option>
                                             </select>
                                                                 @error('kecamatan')
                                                                     <span class="invalid-feedback" role="alert">
@@ -65,7 +59,7 @@
 
                                             <div class="col-md-6">
                                             <select class="form-select" name="desa" id="desa" required>
-                                            <option>Pilih Desa ...</option>
+                                            <option value="{{ $tukangs[0]->desa }}">{{ $tukangs[0]->desa }}</option>
                                             </select>
                                                                 @error('desa')
                                                                     <span class="invalid-feedback" role="alert">
@@ -77,16 +71,23 @@
 
                                         <div class="form-group mb-4">
                                             <textarea rows="2" class="form-control" id="alamat" name="alamat" required autofocus
-                                                placeholder="Alamat lengkap"></textarea>
+                                                 placeholder="Alamat harus di isi..">{{ $tukangs[0]->alamat }}</textarea>
                                         </div>
+                                        
+                                        <hr>
 
+                                                    <div class="py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Atur Data Pekerjaan</h6>
+                        </div>      
+                                     <label for="keahlians_id" class="form-label">Nama Keahlian</label>
                                     <select class="form-select form-select-md mb-4" name="keahlians_id" aria-label="Default select example">
-                                    <option>Pilih Bidang Keahlian ...</option>                                 
+                                    <option value="{{ $tukangs[0]->keahlians_id }}">{{ $tukangs[0]->nama_keahlian }}</option>                                 
                                     </select>
 
+                                    <label for="no_telepon" class="form-label">No Telepon</label>
                                       <div class="input-group mb-4">
                                             <span class="input-group-text">+62</span>
-                                            <input type="number" class="form-control @error('no_telepon') is-invalid @enderror" name="no_telepon" value="{{ old('no_telepon') }}" required autocomplete="no_telepon" autofocus id="no_telepon" name="no_telepon" placeholder="No Telepon : 85xxxxx..">
+                                            <input type="number" class="form-control @error('no_telepon') is-invalid @enderror" name="no_telepon"  required autocomplete="no_telepon" autofocus id="no_telepon" name="no_telepon" placeholder="No Telepon : 85xxxxx.." value="{{ $tukangs[0]->no_telepon }}" maxlength="16">
                                             @error('no_telepon')
                                             <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -94,9 +95,10 @@
                                             @enderror
                                         </div>
 
+                                         <label for="harga" class="form-label">Harga sewa</label>
                                 <div class="input-group mb-4">
                                     <span class="input-group-text">Rp.</span>
-                                <input id="harga" type="text" class="form-control @error('harga') is-invalid @enderror" name="harga" placeholder="Pasang harga sewa" value="{{ old('harga') }}" required autocomplete="harga" autofocus>
+                                <input id="harga" type="text" class="form-control @error('harga') is-invalid @enderror" name="harga" placeholder="Pasang harga sewa" value="{{ $tukangs[0]->harga }}" required autocomplete="harga" autofocus>
                                 <span class="input-group-text">/Hari</span>
                                                     @error('harga')
                                                         <span class="invalid-feedback" role="alert">
@@ -105,6 +107,11 @@
                                                     @enderror
                                     </div>
 
+                                     <label for="deskripsi" class="form-label">Deskripsi Portofolio</label>
+                                    <div class="form-group mb-4">
+                                            <textarea class="form-control" id="editor" name="deskripsi"
+                                                 placeholder="Deskripsi portofolio harus di isi..">{{ $tukangs[0]->deskripsi }}</textarea>
+                                        </div>
      
                                         <button type="submit" class="btn btn-primary btn-user btn-block my-5" style="font-size: 11pt;">
                                             <strong>Simpan Perubahan</strong>
@@ -118,7 +125,26 @@
 @endsection
 
 @section('js')
+<script src="{{ asset('/ckeditor/ckeditor.js') }}"></script>
 <script type="text/javascript">
+ ClassicEditor
+        .create( document.querySelector( '#editor' ), {
+        toolbar: {
+            items: [
+                'heading',
+                'bold',
+                'italic',
+                'link',
+                'bulletedList',
+                'numberedList',
+                'insertTable',
+            ]
+        },
+    })
+        .catch( error => {
+            console.error( error );
+        } );
+
 $(document).on("click", "i.del" , function() {
 	$(this).parent().remove();
 });

@@ -16,6 +16,7 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 use Laravolt\Indonesia\Models\District;
 use Laravolt\Indonesia\Models\Village;
+use Illuminate\Support\Facades\Storage;
 
 class TukangController extends Controller
 {
@@ -151,8 +152,50 @@ class TukangController extends Controller
 
     public function profile()
     {
-        return view('tukang.profile');
+        $tukangs = Tukang::find(session('idLogin'))->join('keahlians', 'tukangs.keahlians_id', '=', 'keahlians.id')->select('tukangs.*', 'keahlians.nama_keahlian')->get();
+        // @dd($tukang);
+        return view('tukang.profile', compact('tukangs'));
     }
+
+    public function profileUpdate($id, Request $request)
+    {
+        $kecamatan = District::where('id', $request->kecamatan)->pluck('name')->first();
+        $desa = Village::where('id', $request->desa)->pluck('name')->first();
+
+        $tukangs = Tukang::find($id);
+        $tukangs->nama = $request->nama;
+        $tukangs->tempat_lahir = $request->tempat_lahir;
+        $tukangs->tanggal_lahir = $request->tanggal_lahir;
+        $tukangs->kecamatan = $request->kecamatan;
+        $tukangs->desa = $request->desa;
+        $tukangs->alamat = $request->alamat;
+        $tukangs->keahlians_id = $request->keahlians_id;
+        $tukangs->no_telepon = $request->no_telepon;
+        $tukangs->harga = $request->harga;
+        $tukangs->deskripsi = $request->deskripsi;
+        // $tukangs->foto = $fotoName;
+        $fotoName = $tukangs->foto;
+
+        if ($request->hasFile('foto')) {
+            if ($tukangs->foto != null) Storage::delete('/public/foto/' . $tukangs->foto);
+            $fotoName = time() . '.' . $request->foto->extension();
+            $request->foto->storeAs('foto-profil', $fotoName, 'public');
+            $tukangs->foto = $fotoName;
+        }
+        // @dd($tukangs);
+
+        $tukangs->update();
+
+        return redirect()->route('tukang.profile')->with('success', 'Berhasil melakukan update akun');
+    }
+
+    protected function deleteOldImage()
+    {
+        if (auth()->user()->image) {
+            Storage::delete('/public/images/' . Auth::guard('tukang')->user()->image);
+        }
+    }
+
 
     public function pengalaman()
     {

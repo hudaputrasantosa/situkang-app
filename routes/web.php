@@ -50,6 +50,7 @@ Route::prefix('tukang')->controller(TukangController::class)->group(function () 
     Route::post('/registration-store', 'store')->name('tukang.store');
     Route::get('/dashboard', 'dashboard')->name('tukang.dashboard')->middleware('tukang');
     Route::get('/profile', 'profile')->name('tukang.profile')->middleware('tukang');
+    Route::post('/profile/update/{id}', 'profileUpdate')->name('tukang.profile.update')->middleware('tukang');
     Route::get('/pengalaman', 'pengalaman')->name('tukang.pengalaman')->middleware('tukang');
     Route::get('/pengalaman/tambah', 'tambahPengalaman')->name('tukang.pengalaman.tambah')->middleware('tukang');
     Route::post('/pengalaman/store', 'storePengalaman')->name('tukang.pengalaman.store')->middleware('tukang');
