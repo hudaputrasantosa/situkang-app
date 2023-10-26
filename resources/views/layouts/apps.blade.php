@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    
     <style>
         label{margin-left: 20px;}
         #datepicker{width:45%;}
@@ -34,7 +35,8 @@
             @yield('content')
         </main>
     </div>
-     @yield('js')
-   
+    @include('sweetalert::alert');
+       <script src="{{ asset('assets/jquery-3.7.1.js') }}"></script>
+    @yield('js') 
 </body>
 </html>

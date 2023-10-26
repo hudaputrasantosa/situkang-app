@@ -110,7 +110,7 @@
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
                                 @php
-                                    $notification = App\Models\Notification::where('tukangs_id', session('idLogin'))->join('pelanggans', 'notification.pelanggans_id', '=', 'pelanggans.id')->select('pelanggans.nama', 'notification.created_at')->get();
+                                    $notification = App\Models\Notification::where('tukangs_id', Auth::user()->id)->join('pelanggans', 'notification.pelanggans_id', '=', 'pelanggans.id')->select('pelanggans.nama', 'notification.created_at')->get();
                                 @endphp
                                 <span class="@if($notification->count()!=0)badge badge-danger badge-counter @endif" id="notif">{{ $notification->count() }}</span>
                             </a>
@@ -136,9 +136,9 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-3 d-none d-lg-inline text-gray-600 small">{{ session()->get('nama') }}</span>
+                                <span class="mr-3 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->nama }}</span>
                                 <img class="img-profile rounded-circle"
-                                    src="{{ asset('assets/img/undraw_profile.svg') }}">
+                                    src="{{ url('storage/foto-profil/'.Auth::user()->foto) }}">
                             </a>
                         </li>
 
@@ -187,12 +187,13 @@
                 <div class="modal-body">Pilih "Keluar" untuk menghapus sesi masuk pada saat ini, dan keluar sistem</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                    <a class="btn btn-primary" href="{{ route('tukang.logout') }}">Keluar</a>
+                    <a class="btn btn-danger" href="{{ route('tukang.logout') }}">Keluar</a>
                 </div>
             </div>
         </div>
     </div>
 
+     @include('sweetalert::alert');
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('assets/jquery-3.7.1.js') }}"></script>
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

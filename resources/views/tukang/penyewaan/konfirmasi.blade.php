@@ -38,6 +38,7 @@
                             </div>
                         </div>
                         @endforeach
+                        {{ $sewas->links() }}
                     </div>                     
 
                     </div>

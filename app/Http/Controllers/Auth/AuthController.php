@@ -15,6 +15,7 @@ use Illuminate\View\View;
 use Illuminate\Validation\Rules\Password;
 use Laravolt\Indonesia\Models\District;
 use Laravolt\Indonesia\Models\Village;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class AuthController extends Controller
 {
@@ -27,17 +28,13 @@ class AuthController extends Controller
 
      public function register(Request $request)
      {
-          $kecamatans = \Indonesia::findCity('189', ['districts'])->districts;
-          if ($request->session()->get('tukangIsLogin') || $request->session()->get('isLogin')) {
-               $request->session()->flush();
-               return view('auth.register', [
-                    'kecamatans' => $kecamatans
-               ]);
+          if (Auth::check()) {
+               Auth::logout();
+               $request->session()->invalidate();
           }
+          $kecamatans = \Indonesia::findCity('189', ['districts'])->districts;
 
-          return view('auth.register', [
-               'kecamatans' => $kecamatans
-          ]);
+          return view('auth.register', compact('kecamatans'));
      }
 
      public function store(Request $request)
@@ -59,7 +56,6 @@ class AuthController extends Controller
 
           $kecamatan = District::where('id', $request->kecamatan)->pluck('name')->first();
           $desa = Village::where('id', $request->desa)->pluck('name')->first();
-          // @dd($request);
           Pelanggan::create([
                'nama' => $request->nama,
                'tempat_lahir' =>  $request->tempat_lahir,
@@ -81,9 +77,9 @@ class AuthController extends Controller
 
      public function login(Request $request)
      {
-          if ($request->session()->get('tukangIsLogin') || $request->session()->get('isLogin')) {
-               $request->session()->flush();
-               return view('auth.login');
+          if (Auth::check()) {
+               Auth::logout();
+               $request->session()->invalidate();
           }
 
           return view('auth.login');
@@ -96,7 +92,6 @@ class AuthController extends Controller
                'password' => ['required']
           ]);
 
-          // @dd(Auth::attempt($credentials));
           if (!Auth::attempt($credentials)) {
                return redirect()->back()->withErrors([
                     'email' => 'Terjadi kesalahan pada email',
@@ -109,12 +104,7 @@ class AuthController extends Controller
                throw new \Exception('Invalid Credentials');
           }
           $request->session()->regenerate();
-          // @dd(Auth::check());
-          $request->session()->put([
-               'isLogin' => Auth::check(),
-               'idLogin' => Auth::user()->id,
-               'nama' => Auth::user()->nama
-          ]);
+          Alert::toast('Sukses Login! Selamat datang ' . Auth::user()->nama);
           return redirect()->route('homepage')->with('success', 'Berhasil Login!');
      }
 
@@ -124,7 +114,6 @@ class AuthController extends Controller
           Auth::logout();
           $request->session()->invalidate();
           $request->session()->regenerateToken();
-          $request->session()->flush();
           return redirect()->back()->with('success', 'Berhasil Logout!');
      }
 }
