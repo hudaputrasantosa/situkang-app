@@ -20,6 +20,7 @@ class Tukang extends Authenticatable
      * @var array<int, string>
      * 
      */
+    protected $table = "tukangs";
     protected $primaryKey = 'id';
     protected $fillable = [
         'nama',

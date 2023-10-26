@@ -13,6 +13,7 @@ class Keahlian extends Model
     use HasFactory;
 
     protected $table = "keahlians";
+    protected $primaryKey = "id";
 
     protected $fillable = [
         'nama_keahlian',
@@ -40,6 +41,6 @@ class Keahlian extends Model
 
     public function tukang()
     {
-        return $this->hasOne(Tukang::class, 'keahlians_id');
+        return $this->hasOne(Tukang::class);
     }
 }

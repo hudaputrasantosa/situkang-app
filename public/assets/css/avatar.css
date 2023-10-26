@@ -8,11 +8,11 @@ body
     background-position: center;
     border: #acacac 0.5pt solid;
     border-radius: 100%;
-  background:url(https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg);
-  background-color:#fff;
-  background-position-y: 45%;
+    background:url(https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg);
+    background-color:#fff;
+    background-position-y: 45%;
     background-size: cover;
-  background-repeat:no-repeat;
+    background-repeat:no-repeat;
     display: inline-block;
 }
 
