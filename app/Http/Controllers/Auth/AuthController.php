@@ -72,7 +72,8 @@ class AuthController extends Controller
                'password' => Hash::make($request->password)
           ]);
 
-          return redirect()->route('auth.login')->with('success', 'Berhasil membuat akun');
+          Alert::toast('Berhasil mendaftarkan akun');
+          return redirect()->route('auth.login');
      }
 
      public function login(Request $request)
@@ -114,6 +115,6 @@ class AuthController extends Controller
           Auth::logout();
           $request->session()->invalidate();
           $request->session()->regenerateToken();
-          return redirect()->back()->with('success', 'Berhasil Logout!');
+          return redirect()->back();
      }
 }

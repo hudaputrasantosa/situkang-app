@@ -138,7 +138,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-3 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->nama }}</span>
                                 <img class="img-profile rounded-circle"
-                                    src="{{ url('storage/foto-profil/'.Auth::user()->foto) }}">
+                                    src="{{ url('storage/tukang/foto-profil/'.Auth::user()->foto) }}">
                             </a>
                         </li>
 

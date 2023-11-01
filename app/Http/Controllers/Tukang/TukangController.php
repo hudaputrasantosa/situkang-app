@@ -142,8 +142,9 @@ class TukangController extends Controller
 
     public function portofolio($id)
     {
+        // $id = Tukang::find($id);
         $tukang = Tukang::join('keahlians', 'tukangs.keahlians_id', '=', 'keahlians.id')->where('tukangs.id', $id)->select('tukangs.*', 'keahlians.nama_keahlian')->get();
-        // @dd($tukang->count());
+        if ($tukang->count() === 0) abort(404);
         $pengalaman = Pengalaman::where('tukangs_id', $id)->join('keahlians', 'pengalamans.keahlians_id', '=', 'keahlians.id')->select('pengalamans.*', 'keahlians.nama_keahlian')->get();
         return view('portofolio', compact('tukang', 'pengalaman'));
     }
@@ -178,9 +179,9 @@ class TukangController extends Controller
         $fotoName = $tukangs->foto;
 
         if ($request->hasFile('foto')) {
-            if ($tukangs->foto != null) Storage::delete('/public/foto/' . $tukangs->foto);
+            if ($tukangs->foto != null) Storage::delete('tukang/foto-profil' . $tukangs->foto);
             $fotoName = time() . '.' . $request->foto->extension();
-            $request->foto->storeAs('foto-profil', $fotoName, 'public');
+            $request->foto->storeAs('tukang/foto-profil', $fotoName, 'public');
             $tukangs->foto = $fotoName;
         }
         // @dd($tukangs);
@@ -238,6 +239,43 @@ class TukangController extends Controller
 
         Alert::success('Sukses Ditambahkan!', 'Data Pengalaman berhasil ditambahkan');
         return redirect()->route('tukang.pengalaman');
+    }
+
+    public function tampilPengalaman($id): View
+    {
+        $keahlians = Keahlian::all();
+        $pengalaman = Pengalaman::findOrFail($id);
+        return view('tukang.pengalaman.tampil-pengalaman', compact('pengalaman', 'keahlians'));
+    }
+
+    public function updatePengalaman($id, Request $request)
+    {
+
+        $tukangs = Tukang::find($id);
+        $tukangs->nama = $request->nama;
+        $tukangs->tempat_lahir = $request->tempat_lahir;
+        $tukangs->tanggal_lahir = $request->tanggal_lahir;
+        $tukangs->kecamatan = $request->kecamatan;
+        $tukangs->desa = $request->desa;
+        $tukangs->alamat = $request->alamat;
+        $tukangs->keahlians_id = $request->keahlians_id;
+        $tukangs->no_telepon = $request->no_telepon;
+        $tukangs->harga = $request->harga;
+        $tukangs->deskripsi = $request->deskripsi;
+        // $tukangs->foto = $fotoName;
+        $fotoName = $tukangs->foto;
+
+        if ($request->hasFile('foto')) {
+            if ($tukangs->foto != null) Storage::delete('/public/foto/' . $tukangs->foto);
+            $fotoName = time() . '.' . $request->foto->extension();
+            $request->foto->storeAs('foto-profil', $fotoName, 'public');
+            $tukangs->foto = $fotoName;
+        }
+        // @dd($tukangs);
+
+        $tukangs->update();
+        Alert::toast('Success update data!');
+        return redirect()->route('tukang.profile');
     }
 
     public function konfirmasi()

@@ -30,7 +30,7 @@
 <div class="card m-2" style="width: 16rem;">
   <a href="{{ route('tukang.portofolio', $tukang->id) }}" class="text-decoration-none text-body">
     <div class="img-thumbnail aspect-ratio aspect-ratio-1x1 mt-1">
-      <img src="@if($tukang->foto){{ url('storage/foto-profil/'.$tukang->foto) }} @else https://t3.ftcdn.net/jpg/05/00/54/28/360_F_500542898_LpYSy4RGAi95aDim3TLtSgCNUxNlOlcM.jpg @endif"  class="card-img-top aspect-ratio-object-cover" style="object-fit: cover; object-position: center;">
+      <img src="@if($tukang->foto){{ url('storage/tukang/foto-profil/'.$tukang->foto) }} @else https://t3.ftcdn.net/jpg/05/00/54/28/360_F_500542898_LpYSy4RGAi95aDim3TLtSgCNUxNlOlcM.jpg @endif"  class="card-img-top aspect-ratio-object-cover" style="object-fit: cover; object-position: center;">
   </div>
 <div class="card-body">
   <h5 class="card-title">{{ $tukang->nama }}</h5>

@@ -36,7 +36,7 @@
                                             </div>
                                         </div>
                                         <div class="col-auto mt-1">
-                                            <button class="btn btn-primary">Ubah</button>
+                                            <a href="{{ route('tukang.pengalaman.tampil', $pengalaman->id) }}" class="btn btn-primary">Ubah</a>
                                             <button class="btn btn-danger">Hapus</button>
                                         </div>
                                     </div>

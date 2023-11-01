@@ -14,7 +14,7 @@
 
 <div class="mx-auto align-items-center text-center ">
   <div class="imgUp">
-    <img class="imagePreview" src="{{ url('storage/foto-profil/'.$tukangs->foto) }}" alt="">
+    <img class="imagePreview" src="{{ url('storage/tukang/foto-profil/'.$tukangs->foto) }}" alt="">
     <div class="mx-auto align-items-center text-center">
       <label class="btn btn-primary btn-sm">
       Ganti foto<input type="file" class="uploadFile d-none" id="foto" name="foto">

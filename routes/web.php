@@ -54,6 +54,8 @@ Route::prefix('tukang')->controller(TukangController::class)->group(function () 
     Route::get('/pengalaman', 'pengalaman')->name('tukang.pengalaman')->middleware('auth:tukang');
     Route::get('/pengalaman/tambah', 'tambahPengalaman')->name('tukang.pengalaman.tambah')->middleware('auth:tukang');
     Route::post('/pengalaman/store', 'storePengalaman')->name('tukang.pengalaman.store')->middleware('auth:tukang');
+    Route::get('/pengalaman/{id}', 'tampilPengalaman')->name('tukang.pengalaman.tampil')->middleware('auth:tukang');
+    Route::post('/pengalaman/update/{id}', 'updatePengalaman')->name('tukang.pengalaman.update')->middleware('auth:tukang');
     Route::get('/penyewaan/konfirmasi', 'konfirmasi')->name('tukang.penyewaan')->middleware('auth:tukang');
     Route::post('/penyewaan/update-status/{id}', 'updateStatus')->name('tukang.updateStatus')->middleware('auth:tukang');
     // Route::get('/penyewaan/riwayat', 'riwayat')->name('tukang.riwayat')->middleware('tukang');

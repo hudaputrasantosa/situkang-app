@@ -58,7 +58,7 @@
 <h1 class="visually-hidden">Heroes examples</h1>
 
   <div class="px-4 py-2 my-4 text-center">
-    <img class="aspect-ratio-object-cover rounded mb-3 border" src="@if($tukang[0]->foto){{ url('storage/foto-profil/'.$tukang[0]->foto) }} @else https://t3.ftcdn.net/jpg/05/00/54/28/360_F_500542898_LpYSy4RGAi95aDim3TLtSgCNUxNlOlcM.jpg @endif" alt="" width="200">
+    <img class="aspect-ratio-object-cover rounded mb-3 border" src="@if($tukang[0]->foto){{ url('storage/tukang/foto-profil/'.$tukang[0]->foto) }} @else https://t3.ftcdn.net/jpg/05/00/54/28/360_F_500542898_LpYSy4RGAi95aDim3TLtSgCNUxNlOlcM.jpg @endif" alt="" width="200">
     <h2 class="display-6 fw-bold">{{ $tukang[0]->nama }}</h2>
     <p class="mb-1 fs-5 fw-bolder">{{ $tukang[0]->nama_keahlian }}</p>
     <p class="mb-3 mt-0 fs-6" style="font-size: 10pt;">
