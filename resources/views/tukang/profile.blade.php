@@ -48,7 +48,10 @@
                                           <div class="row g-2 mb-4">
                                             <div class="col-md-6">
                                                 <select class="form-select" name="kecamatan" id="kecamatan" required>
-                                            <option value="{{ $tukangs->kecamatan }}">{{ $tukangs->kecamatan }}</option>
+                                            <option value="{{ $tukangs->kecamatan }}" selected>{{ $tukangs->kecamatan }}</option>
+                                            @foreach ($kecamatans as $kecamatan )
+                                             <option value="{{ $kecamatan->id }}">{{ ucwords(strtolower($kecamatan->name)) ?? ''  }}</option>   
+                                            @endforeach
                                             </select>
                                                                 @error('kecamatan')
                                                                     <span class="invalid-feedback" role="alert">
@@ -59,7 +62,7 @@
 
                                             <div class="col-md-6">
                                             <select class="form-select" name="desa" id="desa" required>
-                                            <option value="{{ $tukangs->desa }}">{{ $tukangs->desa }}</option>
+                                            <option value="{{ $tukangs->desa }}" selected>{{ $tukangs->desa }}</option>
                                             </select>
                                                                 @error('desa')
                                                                     <span class="invalid-feedback" role="alert">
@@ -81,7 +84,11 @@
                         </div>      
                                      <label for="keahlians_id" class="form-label">Nama Keahlian</label>
                                     <select class="form-select form-select-md mb-4" name="keahlians_id" aria-label="Default select example">
-                                    <option value="{{ $tukangs->keahlians_id }}">{{ $tukangs->nama_keahlian }}</option>                                 
+                                    <option value="{{ $tukangs->keahlians_id }}" selected>{{ $tukangs->nama_keahlian }}</option>  
+                                    @foreach ( $keahlians as $keahlian )
+                                    <option value="{{ $keahlian->id }}">{{ $keahlian->nama_keahlian }}</option>  
+                                                                  
+                                    @endforeach
                                     </select>
 
                                     <label for="no_telepon" class="form-label">No Telepon</label>
@@ -127,6 +134,32 @@
 @section('js')
 <script src="{{ asset('/ckeditor/ckeditor.js') }}"></script>
 <script type="text/javascript">
+$(document).ready(function (){
+    $('#kecamatan').on('change', function () {
+        let id = $(this).val();
+
+  $.ajax({
+    url: '{{ route("tukang.getDesa") }}',
+    type: 'GET',
+    data: {
+      id: id
+    },
+    success: function (data) {
+    //   $('#desa').empty();
+    //   $('#desa').append('<option>Pilih Desa ...</option>');
+      $.each(data, function (name, id) {
+        $('#desa').append(`<option value="${id}">${name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()}</option>`);
+      });
+    },
+    error: function (request, status, error) {
+                alert(request.statusText + "[" + request.status + "]");
+                alert(request.responseText);
+                $('#desa').empty().append('<option value="">Pilih Desa ...</option>');
+            }
+  });
+    });
+});
+
  ClassicEditor
         .create( document.querySelector( '#editor' ), {
         toolbar: {

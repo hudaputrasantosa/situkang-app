@@ -84,7 +84,7 @@
                               <div class="card-body">
                                   <div class="row text-start no-gutters align-items-center">
                                       <div class="col-auto">
-                                          <img src="{{ asset('assets/img/pengalaman/'.$pengalaman[0]->foto)}}" class="rounded" width="120px" alt="">
+                                          <img src="{{ url('storage/tukang/pengalaman/'.$pengalaman[0]->foto)}}" class="rounded" width="120px" alt="">
                                       </div>
                                       <div class="col mx-1">
                                           <div class="h6 mb-0 fw-bold text-gray-800">{{ $pengalaman[0]->nama_proyek }}</div>

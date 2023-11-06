@@ -45,9 +45,9 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <span class="sidebar-brand d-flex align-items-center justify-content-center">
                 <div class="sidebar-brand-text mx-3">SiTukang</div>
-            </a>
+            </span>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
@@ -193,7 +193,7 @@
         </div>
     </div>
 
-     @include('sweetalert::alert');
+     @include('sweetalert::alert')
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('assets/jquery-3.7.1.js') }}"></script>
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
