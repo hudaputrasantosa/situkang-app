@@ -155,8 +155,9 @@ class TukangController extends Controller
             ->where('tukangs.id', Auth::user()->id)
             ->select('tukangs.*', 'keahlians.nama_keahlian')
             ->first();
-        // $tukangs = Tukang::find(Auth::user()->id);
-        return view('tukang.profile', compact('tukangs'));
+        $kecamatans = \Indonesia::findCity('189', ['districts'])->districts;
+        $keahlians = Keahlian::all()->except($tukangs->keahlians_id);
+        return view('tukang.profile', compact('tukangs', 'keahlians', 'kecamatans'));
     }
 
     public function profileUpdate($id, Request $request)
@@ -168,8 +169,8 @@ class TukangController extends Controller
         $tukangs->nama = $request->nama;
         $tukangs->tempat_lahir = $request->tempat_lahir;
         $tukangs->tanggal_lahir = $request->tanggal_lahir;
-        $tukangs->kecamatan = $request->kecamatan;
-        $tukangs->desa = $request->desa;
+        $tukangs->kecamatan = ucwords(strtolower($kecamatan));
+        $tukangs->desa = ucwords(strtolower($desa));
         $tukangs->alamat = $request->alamat;
         $tukangs->keahlians_id = $request->keahlians_id;
         $tukangs->no_telepon = $request->no_telepon;
@@ -179,30 +180,21 @@ class TukangController extends Controller
         $fotoName = $tukangs->foto;
 
         if ($request->hasFile('foto')) {
-            if ($tukangs->foto != null) Storage::delete('tukang/foto-profil' . $tukangs->foto);
+            if ($tukangs->foto != null && Storage::disk('public')->exists('tukang/foto-profil/' . $tukangs->foto)) Storage::disk('public')->delete('tukang/foto-profil/' . $tukangs->foto);
             $fotoName = time() . '.' . $request->foto->extension();
             $request->foto->storeAs('tukang/foto-profil', $fotoName, 'public');
             $tukangs->foto = $fotoName;
         }
-        // @dd($tukangs);
 
         $tukangs->update();
         Alert::toast('Success update data!');
         return redirect()->route('tukang.profile');
     }
 
-    // protected function deleteOldImage()
-    // {
-    //     if (auth()->user()->image) {
-    //         Storage::delete('/public/images/' . Auth::guard('tukang')->user()->image);
-    //     }
-    // }
-
 
     public function pengalaman()
     {
         $pengalamans = Pengalaman::where('tukangs_id', Auth::user()->id)->join('keahlians', 'pengalamans.keahlians_id', '=', 'keahlians.id')->select('pengalamans.*', 'keahlians.nama_keahlian')->get();
-        // @dd($pengalamans);
         return view('tukang.pengalaman.pengalaman', compact('pengalamans'));
     }
 
@@ -223,18 +215,20 @@ class TukangController extends Controller
             'deskripsi' => 'required',
             'foto' => 'image|mimes:png,jpg,jpeg|max:2048',
         ]);
-        $fotoName = time() . '.' . $request->foto->extension();
-        $request->foto->move(public_path('assets/img/pengalaman'), $fotoName);
 
         $pengalamans = new Pengalaman();
-        $pengalamans->tukangs_id = session('idLogin');
+        $pengalamans->tukangs_id = Auth::user()->id;
         $pengalamans->nama_proyek = $request->nama_proyek;
         $pengalamans->alamat = $request->alamat;
         $pengalamans->keahlians_id = $request->keahlians_id;
         $pengalamans->tanggal_mulai = $request->tanggal_mulai;
         $pengalamans->tanggal_selesai = $request->tanggal_selesai;
         $pengalamans->deskripsi = $request->deskripsi;
+
+        $fotoName = time() . '.' . $request->foto->extension();
+        $request->foto->storeAs('tukang/pengalaman/', $fotoName, 'public');
         $pengalamans->foto = $fotoName;
+
         $pengalamans->save();
 
         Alert::success('Sukses Ditambahkan!', 'Data Pengalaman berhasil ditambahkan');
@@ -250,38 +244,50 @@ class TukangController extends Controller
 
     public function updatePengalaman($id, Request $request)
     {
+        $request->validate([
+            'nama_proyek' => 'required|string|max:250',
+            'alamat' => 'required|string|max:250',
+            'keahlians_id' => 'required',
+            'tanggal_mulai' => 'required',
+            'tanggal_selesai' => 'required',
+            'deskripsi' => 'required',
+            'foto' => 'image|mimes:png,jpg,jpeg|max:2048',
+        ]);
 
-        $tukangs = Tukang::find($id);
-        $tukangs->nama = $request->nama;
-        $tukangs->tempat_lahir = $request->tempat_lahir;
-        $tukangs->tanggal_lahir = $request->tanggal_lahir;
-        $tukangs->kecamatan = $request->kecamatan;
-        $tukangs->desa = $request->desa;
-        $tukangs->alamat = $request->alamat;
-        $tukangs->keahlians_id = $request->keahlians_id;
-        $tukangs->no_telepon = $request->no_telepon;
-        $tukangs->harga = $request->harga;
-        $tukangs->deskripsi = $request->deskripsi;
-        // $tukangs->foto = $fotoName;
-        $fotoName = $tukangs->foto;
+        $pengalaman = Pengalaman::find($id);
+        $pengalaman->nama_proyek = $request->nama_proyek;
+        $pengalaman->alamat = $request->alamat;
+        $pengalaman->keahlians_id = $request->keahlians_id;
+        $pengalaman->tanggal_mulai = $request->tanggal_mulai;
+        $pengalaman->tanggal_selesai = $request->tanggal_selesai;
+        $pengalaman->deskripsi = $request->deskripsi;
+        $fotoName = $request->foto;
 
         if ($request->hasFile('foto')) {
-            if ($tukangs->foto != null) Storage::delete('/public/foto/' . $tukangs->foto);
+            if ($pengalaman->foto != null && Storage::disk('public')->exists('tukang/pengalaman/' . $pengalaman->foto)) Storage::disk('public')->delete('tukang/pengalaman/' . $pengalaman->foto);
             $fotoName = time() . '.' . $request->foto->extension();
-            $request->foto->storeAs('foto-profil', $fotoName, 'public');
-            $tukangs->foto = $fotoName;
+            $request->foto->storeAs('tukang/pengalaman/', $fotoName, 'public');
+            $pengalaman->foto = $fotoName;
         }
-        // @dd($tukangs);
+        // @dd($pengalaman);
+        $pengalaman->update();
+        Alert::toast('Success update data pengalaman!');
+        return redirect()->route('tukang.pengalaman');
+    }
 
-        $tukangs->update();
-        Alert::toast('Success update data!');
-        return redirect()->route('tukang.profile');
+    public function hapusPengalaman($id)
+    {
+        $pengalaman = Pengalaman::findOrFail($id);
+        if ($pengalaman) {
+            Storage::disk('public')->delete('tukang/pengalaman/' . $pengalaman->foto);
+            $pengalaman->delete();
+        }
+        return redirect()->back();
     }
 
     public function konfirmasi()
     {
         $sewas = Sewa::where('tukangs_id', Auth::user()->id)->join('pelanggans', 'sewas.pelanggans_id', '=', 'pelanggans.id')->select('sewas.*', 'pelanggans.nama')->latest()->paginate(10);
-
         return view('tukang.penyewaan.konfirmasi', compact('sewas'));
     }
 

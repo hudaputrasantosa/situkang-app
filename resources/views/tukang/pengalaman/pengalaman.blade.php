@@ -21,7 +21,7 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col-auto">
-                                            <img src="{{ asset('assets/img/pengalaman/'.$pengalaman->foto)}}" class="rounded" width="120px" alt="">
+                                            <img src="{{ url('storage/tukang/pengalaman/'.$pengalaman->foto)}}" class="rounded" width="120px" alt="">
                                         </div>
                                         <div class="col mx-3">
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">{{ $pengalaman->nama_proyek }}</div>
@@ -37,14 +37,36 @@
                                         </div>
                                         <div class="col-auto mt-1">
                                             <a href="{{ route('tukang.pengalaman.tampil', $pengalaman->id) }}" class="btn btn-primary">Ubah</a>
-                                            <button class="btn btn-danger">Hapus</button>
+                                            <a href="" class="btn btn-danger" data-toggle="modal" data-target="#hapusPengalamanModal" >Hapus</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                                            <!-- Logout Modal-->
+    <div class="modal fade" id="hapusPengalamanModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Apakah yakin untuk hapus pengalaman ?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Pilih "Ya, hapus" jika ingin menghapus data pengalaman yang kamu pilih</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+                    <a class="btn btn-danger" href="{{ route('tukang.pengalaman.hapus', $pengalaman->id ) }}">Ya, hapus</a>
+                </div>
+            </div>
+        </div>
+    </div>
                         @endforeach
 
                     </div>
                 </div>
+
+
 @endsection

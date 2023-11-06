@@ -27,7 +27,7 @@
                                     <select class="form-select form-select-md mb-4" name="keahlians_id" style="height: 50px; border-radius: 30px; font-size: 11pt;" aria-label="Default select example">
                                     <option>Pilih Posisi Keahlian ...</option>
                                     @foreach ($keahlians as $keahlian )
-                                    <option value="{{ $keahlian->id }}">{{ $keahlian->nama_keahlian }}</option>    
+                                    <option value="{{ $keahlian->id }}" selected>{{ $keahlian->nama_keahlian }}</option>    
                                     @endforeach
                                     </select>
 
