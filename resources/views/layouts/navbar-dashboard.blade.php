@@ -209,7 +209,7 @@
     const channel = pusher.subscribe('my-channel');
     channel.bind('my-event', function(data) {
     JSON.stringify(data);
-    if(data.tukangs_id === "{{ session("idLogin") }}"){
+    if(data.tukangs_id === "{{ Auth::user()->id }}"){
              const notifElement = document.getElementById('notif');
              let notifCount = parseInt(notifElement.innerHTML);
             if(notifCount){

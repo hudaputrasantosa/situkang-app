@@ -38,9 +38,11 @@
                             </div>
                         </div>
                         @endforeach
+                    </div>  
+                    <div class="mx-auto">
                         {{ $sewas->links() }}
-                    </div>                     
-
-                    </div>
+                        </div>                   
+                    
+                </div>
                 </div>
 @endsection
