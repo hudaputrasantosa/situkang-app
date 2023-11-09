@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pelanggan;
 use App\Events\MessageCreated;
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
+use App\Models\Pelanggan;
 use App\Models\Sewa;
 use App\Models\Tukang;
 use Illuminate\Http\Request;
@@ -27,6 +28,17 @@ class PelangganController extends Controller
     {
         $tukangs = Tukang::join('keahlians', 'tukangs.keahlians_id', '=', 'keahlians.id')->select('tukangs.*', 'keahlians.nama_keahlian')->get();
         return view('homepage', compact('tukangs'));
+    }
+
+    public function profile($id)
+    {
+        $pelanggan = Pelanggan::findOrFail($id);
+        return view('pelanggan.profile', compact('pelanggan'));
+    }
+
+    public function riwayatSewa()
+    {
+        return view('pelanggan.sewa');
     }
 
 

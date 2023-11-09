@@ -16,7 +16,7 @@
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav my-auto">
                         <!-- Authentication Links -->
                         <li class="nav-item">
                                 <a class="nav-link" href="{{ route('homepage') }}">Beranda</a>
@@ -29,23 +29,20 @@
                             </li>
                          
                         @if (Auth::check())
-                          {{-- {{ Auth::user()->nama}}  --}}
                               
                         <li class="nav-item dropdown">
                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                               <img class="img-profile rounded-circle px-2" width="50px" src="https://t3.ftcdn.net/jpg/05/00/54/28/360_F_500542898_LpYSy4RGAi95aDim3TLtSgCNUxNlOlcM.jpg">
                                {{ Auth::user()->nama }}
                            </a>
+
                            
                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                               <a class="dropdown-item" href="{{ route('auth.logout') }}"
-                               onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">
-                                   {{ __('Atur Profil') }}
+                               <a class="dropdown-item" href="{{ route('pelanggan.profil',  Auth::user()->id) }}">
+                                   Atur Profil
                                </a>
-                               <a class="dropdown-item" href="{{ route('auth.logout') }}"
-                               onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">
-                                   {{ __('Riwayat Sewa') }}
+                               <a class="dropdown-item" href="{{ route('pelanggan.riwayat') }}">
+                                   Riwayat Sewa
                                </a>
                                <a class="dropdown-item" href="{{ route('auth.logout') }}"
                                onclick="event.preventDefault();

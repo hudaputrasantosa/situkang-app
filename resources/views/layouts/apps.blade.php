@@ -35,7 +35,7 @@
             @yield('content')
         </main>
     </div>
-    @include('sweetalert::alert');
+    @include('sweetalert::alert')
        <script src="{{ asset('assets/jquery-3.7.1.js') }}"></script>
     @yield('js') 
 </body>

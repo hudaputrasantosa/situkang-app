@@ -26,7 +26,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/store', 'store')->name('auth.register.store');
     Route::get('/login', 'login')->name('auth.login');
     Route::post('/authenticate', 'authenticate')->name('auth.login.process');
-    Route::post('/logout', 'logout')->name('auth.logout')->middleware('pelanggan');
+    Route::post('/logout', 'logout')->name('auth.logout')->middleware('auth');
 });
 
 
@@ -35,10 +35,11 @@ Route::get('/', [PelangganController::class, 'homepage'])->name('homepage');
 Route::get('/jenis', [PelangganController::class, 'jenis'])->name('jenis');
 Route::get('/tentang', [PelangganController::class, 'tentang'])->name('tentang');
 
-Route::controller(PelangganController::class)->middleware('auth')->group(function () {
+Route::prefix('user')->controller(PelangganController::class)->group(function () {
     Route::get('/dashboard', 'dashboard')->name('pelanggan.dashboard');
-    Route::get('/profil', 'profil')->name('pelanggan.profil');
-    Route::post('/pengajuan-sewa', 'sewa')->name('pelanggan.sewa');
+    Route::get('/profil/{id}', 'profile')->name('pelanggan.profil');
+    Route::get('/sewa/riwayat', 'riwayatSewa')->name('pelanggan.riwayat');
+    Route::post('/sewa/pengajuan', 'sewa')->name('pelanggan.sewa');
 });
 
 Route::prefix('tukang')->controller(TukangController::class)->group(function () {
