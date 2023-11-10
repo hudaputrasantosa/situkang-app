@@ -4,7 +4,7 @@
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Update Pengalaman</h1>
                     </div>
-
+{{ Breadcrumbs::render('ubah-pengalaman'); }}
                        <div class="card shadow mb-4">
                         <div class="card-body mx-auto col-md-8">
                             <div class="py-3">

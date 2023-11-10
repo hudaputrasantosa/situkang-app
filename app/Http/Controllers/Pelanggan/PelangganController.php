@@ -33,7 +33,7 @@ class PelangganController extends Controller
     public function profile($id)
     {
         $pelanggan = Pelanggan::findOrFail($id);
-        return view('pelanggan.profile', compact('pelanggan'));
+        return view('pelanggan.layout', compact('pelanggan'));
     }
 
     public function riwayatSewa()
