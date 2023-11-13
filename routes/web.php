@@ -37,9 +37,10 @@ Route::get('/tentang', [PelangganController::class, 'tentang'])->name('tentang')
 
 Route::prefix('user')->controller(PelangganController::class)->group(function () {
     Route::get('/dashboard', 'dashboard')->name('pelanggan.dashboard');
-    Route::get('/profil/{id}', 'profile')->name('pelanggan.profil');
-    Route::get('/sewa/riwayat', 'riwayatSewa')->name('pelanggan.riwayat');
-    Route::post('/sewa/pengajuan', 'sewa')->name('pelanggan.sewa');
+    Route::get('/profile', 'profile')->name('pelanggan.profil')->middleware('auth');
+    Route::get('/profile/update', 'updateProfile')->name('pelanggan.profil.update')->middleware('auth');
+    Route::get('/sewa/riwayat', 'riwayatSewa')->name('pelanggan.riwayat')->middleware('auth');
+    Route::post('/sewa/pengajuan', 'sewa')->name('pelanggan.sewa')->middleware('auth');
 });
 
 Route::prefix('tukang')->controller(TukangController::class)->group(function () {

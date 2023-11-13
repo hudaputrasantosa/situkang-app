@@ -30,10 +30,14 @@ class PelangganController extends Controller
         return view('homepage', compact('tukangs'));
     }
 
-    public function profile($id)
+    public function profile()
     {
-        $pelanggan = Pelanggan::findOrFail($id);
-        return view('pelanggan.layout', compact('pelanggan'));
+        $pelanggan = Pelanggan::findOrFail(Auth::user()->id);
+        return view('pelanggan.profile', compact('pelanggan'));
+    }
+
+    public function updateProfile()
+    {
     }
 
     public function riwayatSewa()

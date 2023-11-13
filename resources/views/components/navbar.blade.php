@@ -38,7 +38,7 @@
 
                            
                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                               <a class="dropdown-item" href="{{ route('pelanggan.profil',  Auth::user()->id) }}">
+                               <a class="dropdown-item" href="{{ route('pelanggan.profil') }}">
                                    Atur Profil
                                </a>
                                <a class="dropdown-item" href="{{ route('pelanggan.riwayat') }}">
