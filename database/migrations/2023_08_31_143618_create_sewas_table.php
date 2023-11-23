@@ -16,8 +16,11 @@ return new class extends Migration
             $table->foreignUlid('tukangs_id', 36)->references('id')->on('tukangs');
             $table->foreignUlid('pelanggans_id', 36)->references('id')->on('pelanggans');
             $table->string("tanggal_sewa");
-            $table->integer("durasi");
-            $table->string("metode_pembayaran");
+            $table->string("tipe_sewa");
+            $table->string("tipe_bangunan");
+            $table->string("tipe_pengerjaan");
+            $table->string("tipe_pembayaran");
+            $table->string("deskripsi");
             $table->string("status");
             $table->timestamps();
         });

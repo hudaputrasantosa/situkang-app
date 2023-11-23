@@ -14,8 +14,11 @@ class Sewa extends Model
         'tukangs_id',
         'pelanggans_id',
         'tanggal_sewa',
-        'durasi',
-        'metode_pembayaran',
+        'tipe_sewa',
+        'tipe_bangunan',
+        'tipe_pengerjaan',
+        'tipe_pembayaran',
+        'deskripsi',
         'status',
     ];
 

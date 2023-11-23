@@ -39,8 +39,8 @@ class Keahlian extends Model
         return 'string';
     }
 
-    public function tukang()
+    public function tukang(): BelongsTo
     {
-        return $this->hasOne(Tukang::class);
+        return $this->belongsTo(Tukang::class);
     }
 }

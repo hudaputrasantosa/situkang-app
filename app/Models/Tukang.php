@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -79,8 +78,8 @@ class Tukang extends Authenticatable
         return 'string';
     }
 
-    public function keahlian()
+    public function keahlian(): HasOne
     {
-        return $this->belongsTo(Keahlian::class);
+        return $this->hasOne(Keahlian::class);
     }
 }
