@@ -21,10 +21,10 @@
                 <div class="navbar-header" data-logobg="skin6">
                     <a class="navbar-brand" href="dashboard.html">
                         <b class="logo-icon">
-                            {{-- <img src="plugins/images/logo-icon.png" alt="homepage" /> --}}
+                            <img src="plugins/images/logo-icon.png" alt="homepage" />
                         </b>
                         <span class="logo-text">
-                            {{-- <img src="plugins/images/logo-text.png" alt="homepage" /> --}}
+                            <img src="plugins/images/logo-text.png" alt="homepage" />
                         </span>
                     </a>
                     <a class="nav-toggler waves-effect waves-light text-dark d-block d-md-none"
