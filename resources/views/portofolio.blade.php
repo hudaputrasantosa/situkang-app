@@ -115,6 +115,7 @@
         <h1 class="modal-title fs-5" id="sewaLabel">Form pengajuan sewa</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      <p>Wajib di isi semua</p>
       <form action="{{ route('pelanggan.sewa') }}" method="POST" class="modal-body text-start">
         @csrf
         <input type="hidden" name="tukangs_id" value="{{ $tukang[0]->id }}">
@@ -128,18 +129,41 @@
                                           </div>
       </div>
       <div class="mb-3">
-        <label for="durasi" class="form-label">Durasi</label>
-        <div class="input-group">
-          <input type="number" class="form-control" name="durasi" id="durasi" aria-describedby="basic-addon3 basic-addon4">
-          <span class="input-group-text" id="basic-addon3">Hari</span>
-        </div>
-        <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+      <select class="form-select" name="tipe_sewa" aria-label="Default select example">
+      <option selected>Pilih Tipe Sewa ...</option>
+      <option value="Harian">Harian</option>
+      <option value="Borongan Tenaga">Borongan Tenaga</option>
+      <option value="Borongan Penuh">Borongan Penuh</option>
+      </select>
       </div>
-      <select class="form-select" name="metode_pembayaran" aria-label="Default select example">
-      <option selected>Pilih metode pembayaran ...</option>
-      <option value="cod">Bayar di tempat</option>
-      <option value="bank">Bank</option>
-    </select>
+      <div class="mb-3">
+        <select class="form-select" name="tipe_bangunan" aria-label="Default select example">
+        <option selected>Pilih Tipe Bangunan ...</option>
+        <option value="Rumah">Rumah</option>
+        <option value="Kos">Kos</option>
+        <option value="Ruko/Kios">Ruko/Kios</option>
+        <option value="Restorant/Cafe">Restorant/Cafe</option>
+        <option value="Lainnya">Lainnya</option>
+        </select>
+      </div>
+      <div class="mb-3">
+      <select class="form-select" name="tipe_pengerjaan" aria-label="Default select example">
+      <option selected>Pilih Tipe Pengerjaan ...</option>
+      <option value="Pembangunan">Pembangunan</option>
+      <option value="Perbaikan">Perbaikan</option>
+      <option value="Renovasi">Renovasi</option>
+      <option value="Lainnya">Lainnya</option>
+      </select>
+      </div>
+      <div class="mb-3">
+        <select class="form-select" name="tipe_pembayaran" aria-label="Default select example">
+        <option selected>Pilih tipe pembayaran ...</option>
+        <option value="Bayar di tempat">Bayar di tempat</option>
+        <option value="Bank">Bank</option>
+      </select>
+      </div>
+    <textarea class="form-control" rows="3" name="deskripsi" placeholder="Deskripsikan kebutuahn sewa terhadap tukang.."></textarea>
+     
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
       <button type="submit" class="btn btn-primary">Ajukan sewa sekarang</button>

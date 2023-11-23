@@ -33,7 +33,8 @@ class PelangganController extends Controller
     public function profile()
     {
         $pelanggan = Pelanggan::findOrFail(Auth::user()->id);
-        return view('pelanggan.profile', compact('pelanggan'));
+        $kecamatans = \Indonesia::findCity('189', ['districts'])->districts;
+        return view('pelanggan.profile', compact('pelanggan', 'kecamatans'));
     }
 
     public function updateProfile()
@@ -54,16 +55,22 @@ class PelangganController extends Controller
         $request->validate([
             'tukangs_id' => 'required',
             'tanggal_sewa' => 'required',
-            'durasi' => 'required|numeric',
-            'metode_pembayaran' => 'required',
+            'tipe_sewa' => 'required',
+            'tipe_bangunan' => 'required',
+            'tipe_pengerjaan' => 'required',
+            'tipe_pembayaran' => 'required',
+            'deskripsi' => 'required',
         ]);
 
         $sewa = new Sewa();
         $sewa->tukangs_id = $request->tukangs_id;
         $sewa->pelanggans_id = Auth::user()->id;
         $sewa->tanggal_sewa = $request->tanggal_sewa;
-        $sewa->durasi = $request->durasi;
-        $sewa->metode_pembayaran = $request->metode_pembayaran;
+        $sewa->tipe_sewa = $request->tipe_sewa;
+        $sewa->tipe_bangunan = $request->tipe_bangunan;
+        $sewa->tipe_pengerjaan = $request->tipe_pengerjaan;
+        $sewa->tipe_pembayaran = $request->tipe_pembayaran;
+        $sewa->deskripsi = $request->deskripsi;
         $sewa->status = "diproses";
         $sewa->save();
 
