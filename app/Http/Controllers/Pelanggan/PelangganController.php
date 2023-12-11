@@ -4,12 +4,18 @@ namespace App\Http\Controllers\Pelanggan;
 
 use App\Events\MessageCreated;
 use App\Http\Controllers\Controller;
+use App\Models\Keahlian;
 use App\Models\Notification;
 use App\Models\Pelanggan;
+use App\Models\Pembayaran;
 use App\Models\Sewa;
 use App\Models\Tukang;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Laravolt\Indonesia\Models\District;
+use Laravolt\Indonesia\Models\Village;
 use Pusher\Pusher;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -30,20 +36,52 @@ class PelangganController extends Controller
         return view('homepage', compact('tukangs'));
     }
 
-    public function profile()
+    public function jenisTukang(): View
     {
-        $pelanggan = Pelanggan::findOrFail(Auth::user()->id);
-        $kecamatans = \Indonesia::findCity('189', ['districts'])->districts;
-        return view('pelanggan.profile', compact('pelanggan', 'kecamatans'));
+        $keahlians = Keahlian::all();
+        return view('jenis', compact('keahlians'));
     }
 
-    public function updateProfile()
+    public function profile()
     {
+        $pelanggan = Pelanggan::find(Auth::user()->id);
+        $kecamatans = \Indonesia::findCity('189', ['districts'])->districts;
+        $kecamatan = District::where('id', Auth::user()->kecamatan)->first();
+        $desa = Village::where('id', Auth::user()->desa)->first();
+
+        return view('pelanggan.profile', compact('pelanggan', 'kecamatans', 'kecamatan', 'desa'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $pelanggan = Pelanggan::find(Auth::user()->id);
+        $pelanggan->nama = $request->nama;
+        $pelanggan->tempat_lahir = $request->tempat_lahir;
+        $pelanggan->tanggal_lahir = $request->tanggal_lahir;
+        $pelanggan->kecamatan = $request->kecamatan;
+        $pelanggan->desa = $request->desa;
+        $pelanggan->alamat = $request->alamat;
+        $pelanggan->no_telepon = $request->no_telepon;
+
+        // $tukangs->foto = $fotoName;
+        $fotoName = $pelanggan->foto;
+        if ($request->hasFile('foto')) {
+            if ($pelanggan->foto != null && Storage::disk('public')->exists('pelanggan/foto-profil/' . $pelanggan->foto)) Storage::disk('public')->delete('pelanggan/foto-profil/' . $pelanggan->foto);
+            $fotoName = time() . '.' . $request->foto->extension();
+            $request->foto->storeAs('pelanggan/foto-profil', $fotoName, 'public');
+            $pelanggan->foto = $fotoName;
+        }
+
+        $pelanggan->update();
+        Alert::toast('Berhasil update data');
+        return redirect()->route('pelanggan.profil');
     }
 
     public function riwayatSewa()
     {
-        return view('pelanggan.sewa');
+        $sewas = Sewa::join('tukangs', 'sewas.tukangs_id', '=', 'tukangs.id')->select('sewas.*', 'tukangs.nama AS nama_tukang')->orderBy('tanggal_sewa', 'DESC')->get();
+        // @dd($sewa);
+        return view('pelanggan.sewa', compact('sewas'));
     }
 
 
@@ -100,6 +138,12 @@ class PelangganController extends Controller
 
         Alert::Success('Sukses!', 'Sukses mengajukan sewa kepada tukang');
         return redirect()->back();
+    }
+
+    public function checkout($id)
+    {
+        $pembayaran = Pembayaran::where('sewas_id', $id)->first();
+        return redirect()->away($pembayaran->checkout_link);
     }
 
     /**

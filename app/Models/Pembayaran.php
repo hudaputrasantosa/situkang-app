@@ -9,6 +9,16 @@ use Illuminate\Support\Str;
 class Pembayaran extends Model
 {
     use HasFactory;
+    protected $table = 'pembayarans';
+    // protected $guarded = ['id'];
+
+    protected $fillable = [
+        'sewas_id',
+        'checkout_link',
+        'external_link',
+        'total_harga',
+        'status'
+    ];
 
     protected static function boot()
     {

@@ -19,7 +19,10 @@ use Laravolt\Indonesia\Models\District;
 use Laravolt\Indonesia\Models\Village;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
-// use Alert;
+use App\Models\Pembayaran;
+use Xendit\Configuration;
+use Xendit\Invoice\InvoiceApi;
+use Illuminate\Support\Str;
 
 
 class TukangController extends Controller
@@ -27,6 +30,15 @@ class TukangController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    var $apiInstance = null;
+
+    public function __construct()
+    {
+        Configuration::setXenditKey("xnd_development_g9ua3xhUAWwlMZ1NuCrRYhyvQpBPJEnvtp4wuWe5HfX4MHt4u8ZpQ8t8IWhc");
+        $this->apiInstance = new InvoiceApi();
+    }
+
     public function index(Request $request)
     {
         if (Auth::check()) {
@@ -69,14 +81,14 @@ class TukangController extends Controller
             'password_confirmation' => 'required|same:password'
         ]);
 
-        $kecamatan = District::where('id', $request->kecamatan)->pluck('name')->first();
-        $desa = Village::where('id', $request->desa)->pluck('name')->first();
+        // $kecamatan = District::where('id', $request->kecamatan)->pluck('name')->first();
+        // $desa = Village::where('id', $request->desa)->pluck('name')->first();
         Tukang::create([
             'nama' => $request->nama,
             'tempat_lahir' =>  $request->tempat_lahir,
             'tanggal_lahir' =>  $request->tanggal_lahir,
-            'kecamatan' => ucwords(strtolower($kecamatan)),
-            'desa' => ucwords(strtolower($desa)),
+            'kecamatan' => $request->kecamatan,
+            'desa' => $request->desa,
             'keahlians_id' => $request->keahlians_id,
             'harga' => $request->harga,
             'email' => $request->email,
@@ -143,10 +155,12 @@ class TukangController extends Controller
     public function portofolio($id)
     {
         // $id = Tukang::find($id);
-        $tukang = Tukang::join('keahlians', 'tukangs.keahlians_id', '=', 'keahlians.id')->where('tukangs.id', $id)->select('tukangs.*', 'keahlians.nama_keahlian')->get();
+        $tukang = Tukang::join('keahlians', 'tukangs.keahlians_id', '=', 'keahlians.id')->where('tukangs.id', $id)->select('tukangs.*', 'keahlians.nama_keahlian')->first();
+        $kecamatan = District::where('id', $tukang->kecamatan)->first();
+        $desa = Village::where('id', $tukang->desa)->first();
         if ($tukang->count() === 0) abort(404);
         $pengalaman = Pengalaman::where('tukangs_id', $id)->join('keahlians', 'pengalamans.keahlians_id', '=', 'keahlians.id')->select('pengalamans.*', 'keahlians.nama_keahlian')->get();
-        return view('portofolio', compact('tukang', 'pengalaman'));
+        return view('portofolio', compact('tukang', 'kecamatan', 'desa', 'pengalaman'));
     }
 
     public function profile()
@@ -157,26 +171,24 @@ class TukangController extends Controller
             ->first();
         $kecamatans = \Indonesia::findCity('189', ['districts'])->districts;
         $keahlians = Keahlian::all()->except($tukangs->keahlians_id);
-        return view('tukang.profile', compact('tukangs', 'keahlians', 'kecamatans'));
+        $kecamatan = District::where('id', Auth::user()->kecamatan)->first();
+        $desa = Village::where('id', Auth::user()->desa)->first();
+        return view('tukang.profile', compact('tukangs', 'keahlians', 'kecamatans', 'kecamatan', 'desa'));
     }
 
     public function profileUpdate($id, Request $request)
     {
-        $kecamatan = District::where('id', $request->kecamatan)->pluck('name')->first();
-        $desa = Village::where('id', $request->desa)->pluck('name')->first();
-
         $tukangs = Tukang::find($id);
         $tukangs->nama = $request->nama;
         $tukangs->tempat_lahir = $request->tempat_lahir;
         $tukangs->tanggal_lahir = $request->tanggal_lahir;
-        $tukangs->kecamatan = ucwords(strtolower($kecamatan));
-        $tukangs->desa = ucwords(strtolower($desa));
+        $tukangs->kecamatan = $request->kecamatan;
+        $tukangs->desa = $request->desa;
         $tukangs->alamat = $request->alamat;
         $tukangs->keahlians_id = $request->keahlians_id;
         $tukangs->no_telepon = $request->no_telepon;
         $tukangs->harga = $request->harga;
         $tukangs->deskripsi = $request->deskripsi;
-        // $tukangs->foto = $fotoName;
         $fotoName = $tukangs->foto;
 
         if ($request->hasFile('foto')) {
@@ -187,7 +199,7 @@ class TukangController extends Controller
         }
 
         $tukangs->update();
-        Alert::toast('Success update data!');
+        Alert::toast('Berhasil update data!');
         return redirect()->route('tukang.profile');
     }
 
@@ -304,7 +316,27 @@ class TukangController extends Controller
             Alert::error('Sukses Ditolak', 'Status penyewaan sukses ditolak');
             return redirect()->back()->with('success', 'berhasil melakukan konfirmasi');
         } else {
-            Sewa::find($id)->update(['status' => $diterima]);
+
+            $sewa = Sewa::find($id)->join('tukangs', 'sewas.tukangs_id', '=', 'tukangs.id')->select('sewas.*', 'tukangs.nama', 'tukangs.harga')->first();
+            if ($sewa->tipe_pembayaran == 'Bank') {
+                $create_invoice_request = new \Xendit\Invoice\CreateInvoiceRequest([
+                    'external_id' => (string) Str::uuid(),
+                    // 'description' => $request->description,
+                    'amount' => (int) $sewa->harga,
+                    // 'payer_email' => $request->payer_email,
+                ]);
+                $result = $this->apiInstance->createInvoice($create_invoice_request);
+
+                $payment = new Pembayaran();
+                $payment->sewas_id = $sewa->id;
+                $payment->status = "pending";
+                $payment->checkout_link = $result['invoice_url'];
+                $payment->external_id = $create_invoice_request['external_id'];
+                $payment->total_harga = $sewa->harga;
+                $payment->save();
+            }
+
+            $sewa->update(['status' => $diterima]);
             Alert::Success('Sukses Menerima', 'Status penyewaan sukses diterima');
             return redirect()->back()->with('success', 'berhasil melakukan konfirmasi');
         }
