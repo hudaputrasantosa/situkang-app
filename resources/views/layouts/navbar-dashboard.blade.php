@@ -98,7 +98,7 @@
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-                        
+
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
@@ -115,7 +115,7 @@
                                 <h6 class="dropdown-header">
                                     Pemberitahuan
                                 </h6>
-                                @foreach ($notification as $itemNotif )                                   
+                                @foreach ($notification as $itemNotif )
                                 <a class="dropdown-item d-flex align-items-center" href="{{ route('tukang.penyewaan') }}">
                                     <div>
                                         <div class="small text-gray-500">{{ $itemNotif->created_at }}</div>
@@ -210,9 +210,9 @@
              let notifCount = parseInt(notifElement.innerHTML);
             if(notifCount){
                 notifCount++;
-                notifElement.innerHTML = notifCount; 
+                notifElement.innerHTML = notifCount;
             } else{
-                notifElement.innerHTML = notifCount; 
+                notifElement.innerHTML = notifCount;
             }
     }
     });

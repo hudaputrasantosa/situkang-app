@@ -19,6 +19,17 @@
                                 <form action="{{ route('pelanggan.profil.update') }}" method="post" enctype="multipart/form-data">
                                 @csrf
 
+                                <div class="mx-auto align-items-center text-center ">
+                                    <div class="imgUp">
+                                        <img class="imagePreview" src="{{ url('storage/pelanggan/foto-profil/'.$pelanggan->foto) }}" alt="">
+                                        <div class="mx-auto align-items-center text-center">
+                                        <label class="btn btn-primary btn-sm">
+                                        Ganti foto<input type="file" class="uploadFile d-none" id="foto" name="foto">
+                                        </label>
+                                    </div>
+                                    </div>
+                                    </div>
+
                                 <div class="mb-3">
                                 <label class="form-label">Nama Lengkap</label>
                                 <input type="text" class="form-control" name="nama" value="{{ $pelanggan->nama }}">
@@ -40,7 +51,7 @@
                                        <div class="col-md-6">
                                                 <label class="form-label">Kecamatan</label>
                                                 <select class="form-select" name="kecamatan" id="kecamatan" required>
-                                            <option value="{{ $pelanggan->kecamatan }}" selected>{{ $pelanggan->kecamatan }}</option>
+                                            <option value="{{ $kecamatan->id }}" selected>{{  ucwords(strtolower($kecamatan->name)) }}</option>
                                             @foreach ($kecamatans as $kecamatan )
                                              <option value="{{ $kecamatan->id }}">{{ ucwords(strtolower($kecamatan->name)) ?? ''  }}</option>   
                                             @endforeach
@@ -55,7 +66,7 @@
                                             <div class="col-md-6">
                                                 <label class="form-label">Desa</label>
                                             <select class="form-select" name="desa" id="desa" required>
-                                            <option value="{{ $pelanggan->desa }}" selected>{{ $pelanggan->desa }}</option>
+                                            <option value="{{ $desa->id }}" selected>{{  ucwords(strtolower($desa->name)) }}</option>
                                             </select>
                                                                 @error('desa')
                                                                     <span class="invalid-feedback" role="alert">
@@ -109,5 +120,24 @@ $(document).ready(function (){
   });
     });
 });
+
+$(document).on("click", "i.del" , function() {
+	$(this).parent().remove();
+});
+$(function() {
+    $(document).on("change",".uploadFile", function(){
+    	var uploadFile = $(this);
+        var files = !!this.files ? this.files : [];
+        if (!files.length || !window.FileReader) return;
+        if (/^image/.test( files[0].type)){
+            var reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+            reader.onloadend = function(){ 
+            uploadFile.closest(".imgUp").find('.imagePreview').attr("src", reader.result);
+            }
+        }
+      
+    });
+}); 
 </script>
 @endsection
