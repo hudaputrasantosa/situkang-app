@@ -48,7 +48,7 @@
                                           <div class="row g-2 mb-4">
                                             <div class="col-md-6">
                                                 <select class="form-select" name="kecamatan" id="kecamatan" required>
-                                            <option value="{{ $tukangs->kecamatan }}" selected>{{ $tukangs->kecamatan }}</option>
+                                            <option value="{{ $kecamatan->id }}" selected>{{  ucwords(strtolower($kecamatan->name)) }}</option>
                                             @foreach ($kecamatans as $kecamatan )
                                              <option value="{{ $kecamatan->id }}">{{ ucwords(strtolower($kecamatan->name)) ?? ''  }}</option>   
                                             @endforeach
@@ -62,7 +62,7 @@
 
                                             <div class="col-md-6">
                                             <select class="form-select" name="desa" id="desa" required>
-                                            <option value="{{ $tukangs->desa }}" selected>{{ $tukangs->desa }}</option>
+                                            <option value="{{ $desa->id }}" selected>{{  ucwords(strtolower($desa->name)) }}</option>
                                             </select>
                                                                 @error('desa')
                                                                     <span class="invalid-feedback" role="alert">
