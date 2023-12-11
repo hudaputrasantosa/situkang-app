@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Pelanggan\PelangganController;
 use App\Http\Controllers\Tukang\TukangController;
 use Illuminate\Support\Facades\Auth;
@@ -26,21 +27,23 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/store', 'store')->name('auth.register.store');
     Route::get('/login', 'login')->name('auth.login');
     Route::post('/authenticate', 'authenticate')->name('auth.login.process');
-    Route::post('/logout', 'logout')->name('auth.logout')->middleware('auth');
+    Route::get('/logout', 'logout')->name('auth.logout')->middleware('auth');
 });
 
 
 
 Route::get('/', [PelangganController::class, 'homepage'])->name('homepage');
-Route::get('/jenis', [PelangganController::class, 'jenis'])->name('jenis');
+Route::get('/jenis-tukang', [PelangganController::class, 'jenisTukang'])->name('jenis-tukang');
 Route::get('/tentang', [PelangganController::class, 'tentang'])->name('tentang');
+Route::post('/payments', [PaymentController::class, 'store'])->name('payments');
 
 Route::prefix('user')->controller(PelangganController::class)->group(function () {
     Route::get('/dashboard', 'dashboard')->name('pelanggan.dashboard');
     Route::get('/profile', 'profile')->name('pelanggan.profil')->middleware('auth');
-    Route::get('/profile/update', 'updateProfile')->name('pelanggan.profil.update')->middleware('auth');
+    Route::post('/profile/update', 'updateProfile')->name('pelanggan.profil.update')->middleware('auth');
     Route::get('/sewa/riwayat', 'riwayatSewa')->name('pelanggan.riwayat')->middleware('auth');
     Route::post('/sewa/pengajuan', 'sewa')->name('pelanggan.sewa')->middleware('auth');
+    Route::get('/checkout/{id}', 'checkout')->name('pembayaran.checkout')->middleware('auth');
 });
 
 Route::prefix('tukang')->controller(TukangController::class)->group(function () {
