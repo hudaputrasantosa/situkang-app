@@ -1,7 +1,7 @@
 @extends('layouts.app')
-
+@section('title', 'Situkang | Jenis Tukang')
 @section('content')
-    <div class="px-4 mx-auto my-5 mb-4 text-center">
+    {{-- <div class="px-4 mx-auto my-5 mb-4 text-center">
         <h2 class="display-5 mx-5 px-5 fw-bold">Temukan jenis tukang bangunan sesuai kebutuhan anda.</h1>
             <div class="col-lg-6 mx-auto">
                 <p class="lead mb-4">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s
@@ -23,7 +23,8 @@
                                 6,000 species.
                             </p>
                             <div>
-                                <button class="btn btn-primary w-100" type="button">Cari Tukang</button>
+                                <a href="{{ route('jenis-tukang.keahlian', $keahlian->id) }}" class="btn btn-primary w-100"
+                                    type="button">Cari Tukang</a>
                             </div>
                         </div>
                     </div>
@@ -31,5 +32,50 @@
             @endforeach
 
         </div>
+    </div> --}}
+
+    <section class="py-8 lg:py-24 px-2 flex items-center justify-center bg-white">
+        <div class="mx-auto max-w-[43rem]">
+            <div class="text-center">
+                <h1 class="mt-3 text-2xl lg:text-5xl font-bold  text-blue-600">Tentukan Spesialis Tukang sesuai dengan
+                    kebutuhan.</h1>
+                <p class="mt-3 text-lg leading-relaxed text-slate-400">Specify helps you unify your brand identity by
+                    collecting, storing and distributing design tokens and assets — automatically.</p>
+            </div>
+        </div>
+
+    </section>
+    <div class="container flex flex-col px-2 py-4 mb-10 lg:px-10 mx-auto">
+        <h3 class="text-lg font-bold tracking-wide text-gray-800 lg:text-3xl mb-7 lg:mb-10 text-center">Pilih Jenis Tukang
+        </h3>
+        <div class="grid grid-cols-2 gap-x-[6px] gap-y-2 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-4">
+            @foreach ($keahlians as $keahlian)
+                <div class="max-w-xs cursor-pointer rounded-lg bg-white p-1 lg:p-2 shadow border hover:shadow-md">
+                    <img class="w-full rounded-lg object-cover object-center" src="{{ asset('assets/img/user.jpg') }}"
+                        alt="tukang" />
+                    <div class="w-full mx-auto text-center gap-2">
+                        <div class="my-3 items-center justify-between">
+                            <p class="text-sm lg:text-lg font-bold text-gray-600">{{ $keahlian->nama_keahlian }}</p>
+                            <div class="flex text-center items-center justify-center">
+
+                                <p class="text-xs lg:text-sm text-gray-500">
+                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates aliquid nemo
+                                    ipsum cupiditate modi.
+                            </div>
+
+                        </div>
+                        <div class="w-full mb-2 px-2 bottom-0">
+                            <a href="{{ route('jenis-tukang.keahlian', $keahlian->id) }}">
+                                <button
+                                    class="w-full mx-auto px-3 py-2 bg-blue-500 rounded-md text-sm font-semibold text-white">Lihat
+                                    Detail</button>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            @endforeach
+        </div>
     </div>
+
 @endsection

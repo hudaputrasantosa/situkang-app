@@ -2,6 +2,8 @@
 
 // Note: Laravel will automatically resolve `Breadcrumbs::` without
 // this import. This is nice for IDE syntax and refactoring.
+
+use App\Models\Keahlian;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 
 // This import is also not required, and you could replace `BreadcrumbTrail $trail`
@@ -9,20 +11,30 @@ use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 use Illuminate\Support\Facades\Auth;
 
+//Jenis Tukang
+Breadcrumbs::for('jenis-tukang', function (BreadcrumbTrail $trail) {
+    $trail->push('Jenis Tukang', route('jenis-tukang'));
+});
+// Jenis Tukang > Tukang
+Breadcrumbs::for('keahlian', function (BreadcrumbTrail $trail) {
+    $trail->parent('jenis-tukang');
+    $trail->push('', route('jenis-tukang'));
+});
+
 // Home
 Breadcrumbs::for('pengalaman', function (BreadcrumbTrail $trail) {
-     $trail->push('Pengalaman', route('tukang.pengalaman'));
+    $trail->push('Pengalaman', route('tukang.pengalaman'));
 });
 
 // Home > Blog
 Breadcrumbs::for('tambah-pengalaman', function (BreadcrumbTrail $trail) {
-     $trail->parent('pengalaman');
-     $trail->push('Tambah Pengalaman', route('tukang.pengalaman.tambah'));
+    $trail->parent('pengalaman');
+    $trail->push('Tambah Pengalaman', route('tukang.pengalaman.tambah'));
 });
 
 Breadcrumbs::for('ubah-pengalaman', function (BreadcrumbTrail $trail) {
-     $trail->parent('pengalaman');
-     $trail->push('Ubah Pengalaman', route('tukang.pengalaman.tampil', Auth::user()->id));
+    $trail->parent('pengalaman');
+    $trail->push('Ubah Pengalaman', route('tukang.pengalaman.tampil', Auth::user()->id));
 });
 
 // Home > Blog > [Category]

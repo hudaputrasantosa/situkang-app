@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'key_auth' => base64_encode(env('xnd_public_development_wtmMUgqNRtvwNSIUhXkzihgLAS38Ic3KvFbaswmEI3aSR43VbYMsAazikNItXC') . ':')
+    'key_auth' => base64_encode(env('SECRET_KEY_XENDIT') . ':'),
+    'key_webhook' => env('XENDIT_CALLBACK_TOKEN')
 ];

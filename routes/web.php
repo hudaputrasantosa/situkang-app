@@ -34,8 +34,9 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::get('/', [PelangganController::class, 'homepage'])->name('homepage');
 Route::get('/jenis-tukang', [PelangganController::class, 'jenisTukang'])->name('jenis-tukang');
+Route::get('/jenis-tukang/{idKeahlian}', [PelangganController::class, 'hasilPencarian'])->name('jenis-tukang.keahlian');
 Route::get('/tentang', [PelangganController::class, 'tentang'])->name('tentang');
-Route::post('/payments', [PaymentController::class, 'store'])->name('payments');
+// Route::post('/payments', [PaymentController::class, 'store'])->name('payments');
 
 Route::prefix('user')->controller(PelangganController::class)->group(function () {
     Route::get('/dashboard', 'dashboard')->name('pelanggan.dashboard');
@@ -44,6 +45,7 @@ Route::prefix('user')->controller(PelangganController::class)->group(function ()
     Route::get('/sewa/riwayat', 'riwayatSewa')->name('pelanggan.riwayat')->middleware('auth');
     Route::post('/sewa/pengajuan', 'sewa')->name('pelanggan.sewa')->middleware('auth');
     Route::get('/checkout/{id}', 'checkout')->name('pembayaran.checkout')->middleware('auth');
+    Route::post('/payment/webhook', 'webhook')->name('webhook');
 });
 
 Route::prefix('tukang')->controller(TukangController::class)->group(function () {

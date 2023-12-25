@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    <title>{{ config('app.name', 'Pendaftaran') }}</title>
+    <title>@yield('title')</title>
 
     <script type="text/javascript" src="{{ asset('assets/jquery-3.7.1.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/jquery.mask.min.js') }}"></script>

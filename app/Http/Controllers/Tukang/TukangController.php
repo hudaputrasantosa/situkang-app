@@ -35,7 +35,7 @@ class TukangController extends Controller
 
     public function __construct()
     {
-        Configuration::setXenditKey("xnd_development_g9ua3xhUAWwlMZ1NuCrRYhyvQpBPJEnvtp4wuWe5HfX4MHt4u8ZpQ8t8IWhc");
+        Configuration::setXenditKey(config('xendit.key_auth'));
         $this->apiInstance = new InvoiceApi();
     }
 
@@ -300,6 +300,7 @@ class TukangController extends Controller
     public function konfirmasi()
     {
         $sewas = Sewa::where('tukangs_id', Auth::user()->id)->join('pelanggans', 'sewas.pelanggans_id', '=', 'pelanggans.id')->select('sewas.*', 'pelanggans.nama')->latest()->paginate(5);
+        // $pembayaran = Pembayaran::
         return view('tukang.penyewaan.konfirmasi', compact('sewas'));
     }
 
@@ -316,8 +317,10 @@ class TukangController extends Controller
             Alert::error('Sukses Ditolak', 'Status penyewaan sukses ditolak');
             return redirect()->back()->with('success', 'berhasil melakukan konfirmasi');
         } else {
+            $sewa = Sewa::find($id)->join('tukangs', 'sewas.tukangs_id', '=', 'tukangs.id')->select('sewas.*', 'tukangs.nama', 'tukangs.harga')->orderBy('created_at', 'DESC')->first();
+            // @dd([$id, $sewa]);
+            $sewa->update(['status' => $diterima]);
 
-            $sewa = Sewa::find($id)->join('tukangs', 'sewas.tukangs_id', '=', 'tukangs.id')->select('sewas.*', 'tukangs.nama', 'tukangs.harga')->first();
             if ($sewa->tipe_pembayaran == 'Bank') {
                 $create_invoice_request = new \Xendit\Invoice\CreateInvoiceRequest([
                     'external_id' => (string) Str::uuid(),
@@ -336,7 +339,6 @@ class TukangController extends Controller
                 $payment->save();
             }
 
-            $sewa->update(['status' => $diterima]);
             Alert::Success('Sukses Menerima', 'Status penyewaan sukses diterima');
             return redirect()->back()->with('success', 'berhasil melakukan konfirmasi');
         }

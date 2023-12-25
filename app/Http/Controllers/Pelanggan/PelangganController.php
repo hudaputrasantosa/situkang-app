@@ -14,10 +14,15 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View as ViewView;
 use Laravolt\Indonesia\Models\District;
 use Laravolt\Indonesia\Models\Village;
 use Pusher\Pusher;
 use RealRashid\SweetAlert\Facades\Alert;
+use Xendit\Invoice;
+use Xendit\Configuration;
+use Xendit\Invoice\InvoiceApi;
+use Xendit\Xendit;
 
 class PelangganController extends Controller
 {
@@ -40,6 +45,15 @@ class PelangganController extends Controller
     {
         $keahlians = Keahlian::all();
         return view('jenis', compact('keahlians'));
+    }
+
+    public function hasilPencarian($idKeahlian): View
+    {
+        $tukangs = Tukang::join('keahlians', 'tukangs.keahlians_id', '=', 'keahlians.id')->where('keahlians_id', $idKeahlian)->select('tukangs.*', 'keahlians.nama_keahlian')->get();
+        $nama_keahlian = Keahlian::find($idKeahlian)['nama_keahlian'];
+        $kecamatans = \Indonesia::findCity('189', ['districts'])->districts;
+        // @dd($idKeahlian, $nama_keahlian);
+        return view('hasil-jenis', compact('tukangs', 'kecamatans', 'nama_keahlian'));
     }
 
     public function profile()
@@ -79,7 +93,7 @@ class PelangganController extends Controller
 
     public function riwayatSewa()
     {
-        $sewas = Sewa::join('tukangs', 'sewas.tukangs_id', '=', 'tukangs.id')->select('sewas.*', 'tukangs.nama AS nama_tukang')->orderBy('tanggal_sewa', 'DESC')->get();
+        $sewas = Sewa::join('tukangs', 'sewas.tukangs_id', '=', 'tukangs.id')->select('sewas.*', 'tukangs.nama AS nama_tukang', 'tukangs.harga')->orderBy('created_at', 'DESC')->get();
         // @dd($sewa);
         return view('pelanggan.sewa', compact('sewas'));
     }
@@ -143,15 +157,45 @@ class PelangganController extends Controller
     public function checkout($id)
     {
         $pembayaran = Pembayaran::where('sewas_id', $id)->first();
+        if ($pembayaran->status == 'PAID') {
+        }
         return redirect()->away($pembayaran->checkout_link);
+    }
+
+    public function webhook(Request $request)
+    {
+        try {
+            $payment = Pembayaran::where('external_id', $request->external_id)->first();
+            $callback_token = env('5Uqto7nEk10KPQgqif188bf4BI2bDjUbqqmhUn5WJkMZ4Ty7');
+
+            if ($request->header('x-callback-token') == $callback_token) {
+                if ($payment->status == 'paid') return response()->json(['data' => 'Payment has already']);
+                $payment->update([
+                    'status' => strtolower($request->status),
+                ]);
+
+                return response()->json([
+                    'data' => 'success',
+                ]);
+            }
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid callback token'
+            ], 400);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function tentang()
     {
-        //
+        return view('tentang');
     }
 
     /**

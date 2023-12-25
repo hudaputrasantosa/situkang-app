@@ -120,19 +120,54 @@
                                                         <input type="text" class="form-control"
                                                             value="{{ $sewa->deskripsi }}" readonly>
                                                     </div>
+                                                    <div class="row g-3 align-items-center mb-3">
+                                                        <div class="col-auto">
+                                                            <label for="disabledTextInput" class="form-label">Status
+                                                                Sewa
+                                                            </label>
+                                                            {{-- <input type="text" class="form-control"
+                                                                value="{{ $sewa->status }}" readonly> --}}
+                                                            <div>
+                                                                <h4
+                                                                    class="text-capitalize badge @if ($sewa->status == 'diproses') bg-warning @else bg-success @endif">
+                                                                    {{ $sewa->status }}</h4>
+                                                            </div>
+                                                        </div>
+                                                        @php
+                                                            $payment = App\Models\Pembayaran::where('sewas_id', $sewa->id)->first();
+                                                        @endphp
+                                                        <div class="col-auto">
+                                                            <label for="disabledTextInput" class="form-label">Status
+                                                                Pembayaran</label>
+                                                            @if ($sewa->tipe_pembayaran !== 'bank')
+                                                                <input type="text" class="form-control"
+                                                                    value="Bayar Ditempat" readonly>
+                                                            @else
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ $payment->status == 'paid' ? 'Telah Dibayar' : 'Belum Dibayar' }}"
+                                                                    readonly>
+                                                            @endif
+                                                        </div>
+                                                    </div>
                                                     <div class="mb-3">
+                                                        <label for="disabledTextInput" class="form-label">Harga
+                                                        </label>
+                                                        <h5><span class="">Rp. {{ $sewa->harga }}</span>
+                                                        </h5>
+                                                    </div>
+                                                    {{-- <div class="mb-3">
                                                         <label for="disabledTextInput" class="form-label">Status
                                                             Pengajuan</label>
                                                         <h5><span
                                                                 class="badge @if ($sewa->status == 'diproses') bg-warning @else bg-success @endif">{{ $sewa->status }}</span>
                                                         </h5>
-                                                    </div>
-
+                                                    </div> --}}
                                                     <div class="mb-3 w-100">
                                                         <a href="{{ route('pembayaran.checkout', $sewa->id) }}"
-                                                            class="btn btn-primary w-100 @if ($sewa->status == 'diproses') disabled @endif">Lanjut
+                                                            class="btn btn-primary w-100 @if ($sewa->status == 'diproses' || $payment ? $payment->status == 'paid' : $sewa->tipe_pembayaran == 'bayar di tempat') disabled @endif">Lanjut
                                                             Pembayaran</a>
                                                     </div>
+
                                                 </div>
 
                                             </div>

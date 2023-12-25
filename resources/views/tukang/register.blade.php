@@ -1,5 +1,5 @@
 @extends('layouts.apps')
-
+@section('title', 'Situkang | Daftar Tukang')
 @section('content')
     <div class="container col-xl-10 col-xxl-8 px-4 py-3">
         <div class="row align-items-center g-lg-5 py-5">
@@ -179,7 +179,7 @@
                         $.each(data, function(name, id) {
                             $('#desa').append(
                                 `<option value="${id}">${name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()}</option>`
-                                );
+                            );
                         });
                     },
                     error: function(request, status, error) {
