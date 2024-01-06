@@ -13,6 +13,9 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         // "/payments",
-        "/user/payment/webhook"
+        "/user/payment/webhook",
+        "/authenticate",
+        "tukang/authentication",
+        "/user/sewa/pengajuan"
     ];
 }
