@@ -2,164 +2,180 @@
 @section('title', 'Situkang | Daftar Pelanggan')
 
 @section('content')
-    <div class="container col-xl-10 col-xxl-8 px-4 py-5">
-        <div class="row align-items-center g-lg-5 py-5">
-
-            <div class="col-lg-5 text-center text-lg-start">
-                <h1 class="display-5 fw-bold lh-1 mb-3">Registrasi Akun</h1>
-                <p class="col-lg-10 fs-5">Below is an example form built entirely with Bootstrap’s form controls. Each
-                    required form group has a validation state that can be triggered by attempting to submit the form
-                    without completing it.</p>
-                <a href="{{ route('homepage') }}" class="w-50 btn btn-md border border-primary border-2"><i
-                        class="bi bi-arrow-left"></i> Kembali ke beranda</a>
+    <div class="bg-white flex flex-row justify-center h-full">
+        <!-- Left: Image -->
+        <div class="w-1/2 h-full hidden lg:block sticky top-0">
+            <div class="object-cover w-full h-screen"
+                style="background: linear-gradient(0deg, rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://img.freepik.com/free-photo/happiness-site-inspection-engineer-asian-female-client-casual-meeting-together-home-renovation-site-structure-location-background_609648-858.jpg?w=740&t=st=1703932663~exp=1703933263~hmac=30bd735e7779c7f7448aba26b74526c05eb965f49094649073dc4a837a2d25ed'), no-repeat; background-size: cover; background-position: center center;">
             </div>
-            <div class="col-md-12 mx-auto col-lg-6">
-                <form method="POST" action="{{ route('auth.register.store') }}"
-                    class="p-4 p-md-5 border rounded-3 bg-light">
-                    @csrf
+        </div>
+        <!-- Right: Register Form -->
+        <div class="lg:px-32 p-10 lg:my-6 w-full lg:w-1/2 overflow-y-scroll">
+            <h1 class="text-2xl font-semibold mb-4 text-center">Daftar Pelanggan</h1>
+            <form method="POST" action="{{ route('auth.register.store') }}">
+                @csrf
 
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama"
-                            value="{{ old('nama') }}" required autocomplete="nama" autofocus id="nama" name="nama"
-                            placeholder="Nama Lengkap">
-                        @error('nama')
-                            <span class="invalid-feedback" role="alert">
+                <div class="mb-4">
+                    <label for="nama" class="block text-gray-600">Nama Lengkap</label>
+                    <input type="text" id="nama" name="nama"
+                        class="w-full border border-gray-300 bg-gray-50 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500 @error('nama') invalid:border-red-500 @enderror"
+                        autocomplete="off" required>
+                    @error('nama')
+                        <span class="text-red-500 text-sm" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
+                <div class="grid grid-cols-2 gap-x-4">
+                    <div class="mb-4">
+                        <label for="tempat_lahir" class="block text-gray-600">Tempat Lahir</label>
+                        <input type="text" id="tempat_lahir" name="tempat_lahir"
+                            class="w-full border border-gray-300 bg-gray-50 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500 @error('tempat_lahir') invalid:border-red-500 @enderror"
+                            autocomplete="off" required>
+                        @error('tempat_lahir')
+                            <span class="text-red-500 text-sm" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                        <label for="nama">Nama Lengkap</label>
                     </div>
 
-                    <div class="row g-3 gap-2 mb-2">
-
-                        <div class="form-floating col-md-6">
-                            <input type="text" class="form-control @error('tempat_lahir') is-invalid @enderror"
-                                name="tempat_lahir" value="{{ old('tempat_lahir') }}" required autocomplete="tempat_lahir"
-                                autofocus id="tempat_lahir" placeholder="tempat_lahir">
-                            @error('tempat_lahir')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                            <label for="nama">Tempat Lahir</label>
+                    <div class="mb-4">
+                        <label for="tanggal_lahir" class="block text-gray-600">Tanggal Lahir</label>
+                        <div class="relative max-w-sm">
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                </svg>
+                            </div>
+                            <input datepicker datepicker-autohide datepicker-format="dd/mm/yyyy" type="text"
+                                name="tanggal_lahir"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-50 dark:border-gray-300 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Pilih tanggal" required>
                         </div>
-
-                        <div id="datepicker" class="input-group date" data-date-format="mm-dd-yyyy">
-                            <input class="form-control" name="tanggal_lahir" autofocus required type="text" readonly />
-                            <span class="input-group-addon input-group-text">
-                                <i class="bi bi-calendar-date"></i>
-                            </span>
-                        </div>
-
-                    </div>
-
-                    <div class="row mb-3">
-                        <span class="mb-1"> Jenis Kelamin :</span>
-                        <div class="col-md-4">
-                            <input class="form-check-input" type="radio" name="jenis_kelamin" id="jenis_kelamin"
-                                value="Laki-laki">
-                            <label for="jenis_kelamin">Laki-laki</label>
-                        </div>
-                        <div class="col-md-4">
-                            <input class="form-check-input" type="radio" name="jenis_kelamin" id="jenis_kelamin"
-                                value="Perempuan">
-                            <label for="jenis_kelamin">Perempuan</label>
-                        </div>
-                    </div>
-
-                    <div class="row g-2 mx-auto gap-2 mb-3">
-
-                        <div class="col-md-6">
-                            <select class="form-select" name="kecamatan" id="kecamatan" required>
-                                <option>Pilih Kecamatan ...</option>
-                                @foreach ($kecamatans as $kecamatan)
-                                    <option value="{{ $kecamatan->id ?? '' }}">
-                                        {{ ucwords(strtolower($kecamatan->name)) ?? '' }}</option>
-                                @endforeach
-                            </select>
-                            @error('kecamatan')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-
-                        <div class="col-md-5">
-                            <select class="form-select" name="desa" id="desa" required>
-                                <option>Pilih Desa ...</option>
-                            </select>
-                            @error('desa')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <textarea class="form-control" name="alamat" style="height: 80px;" placeholder="Jalan, RT/RW dan desa" id="alamat"></textarea>
-                        @error('alamat')
-                            <span class="invalid-feedback" role="alert">
+                        @error('tanggal_lahir')
+                            <span class="text-red-500 text-sm" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                        <label for="nama">Alamat</label>
                     </div>
 
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">+62</span>
-                        <input type="number" class="form-control @error('no_telepon') is-invalid @enderror"
-                            name="no_telepon" value="{{ old('no_telepon') }}" required autocomplete="no_telepon" autofocus
-                            id="no_telepon" name="no_telepon" placeholder="No Telepon : 85xxxxx..">
-                        @error('no_telepon')
-                            <span class="invalid-feedback" role="alert">
+                    <div class="mb-4">
+                        <label for="jenis_kelamin" class="block text-gray-600">Jenis
+                            Kelamin</label>
+                        <select id="jenis_kelamin" name="jenis_kelamin"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                            <option selected>Pilih Jenis Kelamin ...</option>
+                            <option value="laki-laki">Laki-laki</option>
+                            <option value="perempuan">Perempuan</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="no_telepon" class="block text-gray-600">No Telepon</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 19 18">
+                                    <path
+                                        d="M18 13.446a3.02 3.02 0 0 0-.946-1.985l-1.4-1.4a3.054 3.054 0 0 0-4.218 0l-.7.7a.983.983 0 0 1-1.39 0l-2.1-2.1a.983.983 0 0 1 0-1.389l.7-.7a2.98 2.98 0 0 0 0-4.217l-1.4-1.4a2.824 2.824 0 0 0-4.218 0c-3.619 3.619-3 8.229 1.752 12.979C6.785 16.639 9.45 18 11.912 18a7.175 7.175 0 0 0 5.139-2.325A2.9 2.9 0 0 0 18 13.446Z" />
+                                </svg>
+                            </div>
+                            <input type="text" id="no_telepon" name="no_telepon"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 "
+                               placeholder="6285-156-xxx-xxx" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="kecamatan" class="block text-gray-600">Kecamatan</label>
+                        <select id="kecamatan" name="kecamatan"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                            <option>Pilih Kecamatan ...</option>
+                            @foreach ($kecamatans as $kecamatan)
+                                <option value="{{ $kecamatan->id ?? '' }}">
+                                    {{ ucwords(strtolower($kecamatan->name)) ?? '' }}</option>
+                            @endforeach
+                        </select>
+                        @error('kecamatan')
+                            <span class="text-red-500 text-sm" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                        {{-- <label for="nama">Nomor telepon</label> --}}
                     </div>
 
-                    <div class="form-floating mb-3">
-                        <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
-                            value="{{ old('email') }}" required autocomplete="email" autofocus id="email"
-                            name="email" placeholder="name@example.com">
-                        @error('email')
-                            <span class="invalid-feedback" role="alert">
+                    <div class="mb-4">
+                        <label for="desa" class="block text-gray-600">Desa</label>
+                        <select id="desa" name="desa"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                            <option>Pilih Desa ...</option>
+                        </select>
+                        @error('desa')
+                            <span class="text-red-500 text-sm" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                        <label for="email">Alamat email</label>
                     </div>
+                </div>
 
-                    <div class="form-floating mb-3">
-                        <input id="password" type="password"
-                            class="form-control @error('password') is-invalid @enderror" name="password" required
-                            autocomplete="current-password" placeholder="Password">
+                <div class="mb-4">
+                   <label for="alamat" class="block text-gray-600">Alamat Lengkap</label>
+<textarea id="alamat" name="alamat" rows="2" class="block p-2.5 w-full text-gray-900 bg-gray-50 rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Jl. Desa, RT/RW ..." required></textarea>
+                </div>
 
-                        @error('password')
-                            <span class="invalid-feedback" role="alert">
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-600">Email</label>
+                            <input type="email" id="email" name="email"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full  py-2 px-3 @error('email') invalid:border-red-500 @enderror"
+                                placeholder="pelanggan@gmail.com" autocomplete="off" required>
+                                     @error('email')
+                            <span class="text-red-500 text-sm" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                        <label for="password">Kata sandi</label>
-                    </div>
+                </div>
 
-                    <div class="form-floating mb-3">
-                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation"
-                            required autocomplete="new-password" placeholder="Ulangi kata sandi">
 
-                        <label for="password">Ulangi kata sandi</label>
-                    </div>
+                <div class="mb-4">
+                    <label for="password" class="block text-gray-600">Password</label>
+                    <input type="password" id="password" name="password"
+                        class="w-full border border-gray-300 bg-gray-50 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500 @error('password') border-red-500 @enderror"
+                        autocomplete="off" placeholder="Masukkan password.." required>
+                             @error('password')
+                            <span class="text-red-500 text-sm" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                </div>
 
-                    <button class="w-100 btn btn-lg btn-primary" type="submit">Daftar akun</button>
-                    <div class="my-2">
-                        <small class="text-muted">Jika sudah punya akun, <a href="{{ route('auth.login') }}"
-                                class="text-decoration-none fw-semibold"> Masuk disini</a></small>
-                    </div>
-                    <hr class="my-4">
-                    <small class="text-muted">Sebagai <b>tukang bangunan</b>? <a href="{{ route('tukang.login') }}"
-                            class="text-decoration-none fw-semibold"> Masuk disini</a></small>
-                </form>
+                <!-- Forgot Password Link -->
+                {{-- <div class="mb-6 text-blue-500">
+                    <a href="#" class="hover:underline">Forgot Password?</a>
+                </div> --}}
+                <!-- Login Button -->
+
+
+                <button type="submit" id="submit"
+                    class="flex gap-2 items-center justify-center text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full"
+                    >Daftar
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                    </svg>
+
+                </button>
+
+            </form>
+            <!-- Sign up  Link -->
+            <div class="w-full my-5">
+                <a href="{{ route('auth.login') }}">
+                    <button
+                        class=" w-full rounded-md bg-none py-2 px-4 w-full border-[1px] hover:cursor-pointer border-blue-500 text-blue-500 text-center lg:text-base text-sm font-medium">
+                        Jika sudah punya akun, Masuk disini</a>
+                </button>
             </div>
         </div>
     </div>
@@ -167,16 +183,8 @@
 
 @section('js')
     <script type="text/javascript">
-        $(function() {
-            $("#datepicker").datepicker({
-                autoclose: true,
-                // todayHighlight: true,
-                title: "Tanggal Lahir",
-                // todayBtn : "linked",
-            }).datepicker('update', new Date());
-        });
-
         $(document).ready(function() {
+
             $('#kecamatan').on('change', function() {
                 let id = $(this).val();
 
@@ -192,7 +200,7 @@
                         $.each(data, function(name, id) {
                             $('#desa').append(
                                 `<option value="${id}">${name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()}</option>`
-                                );
+                            );
                         });
                     },
                     error: function(request, status, error) {
@@ -205,5 +213,4 @@
 
         })
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 @endsection
