@@ -110,14 +110,13 @@
             </div>
         </div>
 
-        <div class="container flex flex-col px-2 py-4 mb-10 lg:px-10 mx-auto">
+        <div class="container flex flex-col px-0 py-4 mb-10 lg:px-10 mx-auto">
             <h3 class="text-lg font-bold tracking-wide text-gray-800 lg:text-3xl mb-7 lg:mb-10 text-center">Temukan Tukang
             </h3>
-            <div class="grid grid-cols-2 gap-x-[6px] gap-y-2 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-4">
+            <div class="grid grid-cols-2 gap-x-2 gap-y-3 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-4">
                 @foreach ($tukangs as $tukang)
-                    <div
-                        class="max-w-xs cursor-pointer rounded-lg bg-white p-1 lg:p-2 shadow border duration-150 lg:hover:scale-105 hover:shadow-md">
-                        <img class="w-full rounded-lg object-cover object-center"
+                    <div class="max-w-xs cursor-pointer rounded-lg bg-white p-1 lg:p-2 shadow border">
+                        <img class="w-full rounded-lg object-cover object-center w-full lg:h-64 h-40" loading="lazy"
                             src="@if ($tukang->foto) {{ url('storage/tukang/foto-profil/' . $tukang->foto) }} @else {{ asset('assets/img/user.jpg') }} @endif"
                             alt="tukang" />
                         <div class="w-full mx-auto text-center gap-2">
