@@ -52,7 +52,6 @@ class PelangganController extends Controller
         $tukangs = Tukang::join('keahlians', 'tukangs.keahlians_id', '=', 'keahlians.id')->where('keahlians_id', $idKeahlian)->select('tukangs.*', 'keahlians.nama_keahlian')->get();
         $nama_keahlian = Keahlian::find($idKeahlian)['nama_keahlian'];
         $kecamatans = \Indonesia::findCity('189', ['districts'])->districts;
-        // @dd($idKeahlian, $nama_keahlian);
         return view('hasil-jenis', compact('tukangs', 'kecamatans', 'nama_keahlian'));
     }
 
@@ -157,37 +156,45 @@ class PelangganController extends Controller
     public function checkout($id)
     {
         $pembayaran = Pembayaran::where('sewas_id', $id)->first();
-        if ($pembayaran->status == 'PAID') {
+        if ($pembayaran) {
+            if ($pembayaran->status != 'paid') return redirect()->away($pembayaran->checkout_link);
         }
-        return redirect()->away($pembayaran->checkout_link);
+        return redirect()->back();
     }
 
     public function webhook(Request $request)
     {
-        try {
-            $payment = Pembayaran::where('external_id', $request->external_id)->first();
-            $callback_token = env('5Uqto7nEk10KPQgqif188bf4BI2bDjUbqqmhUn5WJkMZ4Ty7');
+        $data = $request->all();
+        Pembayaran::where('external_id', $data['external_id'])->update([
+            'status' => strtolower($request->status)
+        ]);
 
-            if ($request->header('x-callback-token') == $callback_token) {
-                if ($payment->status == 'paid') return response()->json(['data' => 'Payment has already']);
-                $payment->update([
-                    'status' => strtolower($request->status),
-                ]);
+        return response()->json($data);
 
-                return response()->json([
-                    'data' => 'success',
-                ]);
-            }
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Invalid callback token'
-            ], 400);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        // try {
+        //     $payment = Pembayaran::where('external_id', $data['external_id']);
+        //     $callback_token = config('xendit.key_webhook');
+
+        //     if ($request->header('x-callback-token') == $callback_token) {
+        //         if ($payment->status == 'paid') return response()->json(['data' => 'Payment has already']);
+        //         $payment->update([
+        //             'status' => strtolower($request->status),
+        //         ]);
+
+        //         return response()->json([
+        //             'data' => 'success',
+        //         ]);
+        //     }
+        //     return response()->json([
+        //         'status' => 'error',
+        //         'message' => 'Invalid callback token'
+        //     ], 400);
+        // } catch (\Exception $e) {
+        //     return response()->json([
+        //         'status' => 'error',
+        //         'message' => $e->getMessage()
+        //     ], 500);
+        // }
     }
 
     /**
