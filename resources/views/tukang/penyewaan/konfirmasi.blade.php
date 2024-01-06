@@ -92,7 +92,7 @@
                                             class="btn @if ($sewa->status == 'diterima') btn-success @elseif($sewa->status == 'ditolak') btn-danger @else btn-warning @endif btn-sm text-wrap mb-1 text-capitalize">
                                             {{ $sewa->status }}
                                         </div>
-                                        @if ($sewa->status = 'diterima' && ($sewa->tipe_pembayaran = 'bank'))
+                                        {{-- @if ($sewa->status = 'diterima' && ($sewa->tipe_pembayaran = 'bank'))
                                             @php
                                                 $pembayaran = \App\Models\Pembayaran::where('sewas_id', $sewa->id)->first();
                                             @endphp
@@ -102,7 +102,7 @@
                                                     {{ $pembayaran->status }}
                                                 </div>
                                             @endif
-                                        @endif
+                                        @endif --}}
                                     </div>
                                     @if ($sewa->status == 'diproses')
                                         <div class="col-auto mr-3">
