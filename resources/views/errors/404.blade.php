@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <div class="min-h-screen flex items-center justify-center w-10/12 m-auto">
+    <div class="flex items-center justify-center w-10/12 m-auto">
         <!-- Left Layout (Desktop) -->
         <div class="hidden md:flex md:w-1/2 p-8">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
