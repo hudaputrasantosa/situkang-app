@@ -49,14 +49,14 @@
                                         <td>{{ $sewa->tipe_pengerjaan }}</td>
                                         <td>
                                             <span
-                                                class="text-capitalize badge @if ($sewa->status == 'diproses') bg-warning @else bg-success @endif">
+                                                class="text-capitalize badge @if ($sewa->status == 'diproses') bg-warning @elseif($sewa->status == 'ditolak') bg-danger @else bg-success @endif">
                                                 {{ $sewa->status }}
                                         </td>
                                         </span>
                                         <td>
                                             <button type="button" class="btn btn-primary btn-sm" id="lihatDetail"
                                                 data-bs-toggle="modal" data-bs-target="#detail-{{ $sewa->id }}">Lihat
-                                                Deatil</button>
+                                                Detail</button>
                                         </td>
                                     </tr>
 
@@ -135,6 +135,9 @@
                                                         </div>
                                                         @php
                                                             $payment = App\Models\Pembayaran::where('sewas_id', $sewa->id)->first();
+
+                                                            // @dd([$sewa->id, $payment->status]);
+
                                                         @endphp
                                                         <div class="col-auto">
                                                             <label for="disabledTextInput" class="form-label">Status
@@ -144,7 +147,7 @@
                                                                     value="Bayar Ditempat" readonly>
                                                             @else
                                                                 <input type="text" class="form-control"
-                                                                    value="{{ $payment->status == 'paid' ? 'Telah Dibayar' : 'Belum Dibayar' }}"
+                                                                    value="{{ $payment ? ($payment->status == 'paid' ? 'Telah Dibayar' : 'Belum Dibayar') : $sewa->status }}"
                                                                     readonly>
                                                             @endif
                                                         </div>
@@ -164,7 +167,7 @@
                                                     </div> --}}
                                                     <div class="mb-3 w-100">
                                                         <a href="{{ route('pembayaran.checkout', $sewa->id) }}"
-                                                            class="btn btn-primary w-100 @if ($sewa->status == 'diproses' || $payment ? $payment->status == 'paid' : $sewa->tipe_pembayaran == 'bayar di tempat') disabled @endif">Lanjut
+                                                            class="btn btn-primary w-100 @if ($sewa->status == 'diproses' || $sewa->tipe_pembayaran == 'bayar di tempat') disabled @endif">Lanjut
                                                             Pembayaran</a>
                                                     </div>
 
