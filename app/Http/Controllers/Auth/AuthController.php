@@ -40,7 +40,7 @@ class AuthController extends Controller
     public function store(Request $request)
     {
 
-        $request->validate([
+        $validated =  $request->validate([
             'nama' => 'required|string|max:250',
             'tempat_lahir' => 'required|string|max:100',
             'tanggal_lahir' => 'required',
@@ -50,26 +50,11 @@ class AuthController extends Controller
             'alamat' => 'required|string|max:250',
             'no_telepon' => 'required|string|max:250',
             'email' => 'required|email|max:250|unique:pelanggans',
-            'password' => ['required', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
-            'password_confirmation' => 'required|same:password'
+            'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()],
         ]);
-
-        //   $kecamatan = District::where('id', $request->kecamatan)->pluck('name')->first();
-        //   $desa = Village::where('id', $request->desa)->pluck('name')->first();
-        Pelanggan::create([
-            'nama' => $request->nama,
-            'tempat_lahir' =>  $request->tempat_lahir,
-            'tanggal_lahir' =>  $request->tanggal_lahir,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'kecamatan' => $request->kecamatan,
-            'desa' => $request->desa,
-            'alamat' => $request->alamat,
-            'no_telepon' =>
-            $request->no_telepon,
-            'email' =>
-            $request->email,
-            'password' => Hash::make($request->password)
-        ]);
+        $pelanggan = new Pelanggan();
+        $pelanggan->fill($validated);
+        $pelanggan->save();
 
         Alert::toast('Berhasil mendaftarkan akun');
         return redirect()->route('auth.login');
