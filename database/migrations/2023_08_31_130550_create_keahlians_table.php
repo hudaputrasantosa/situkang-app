@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('keahlians', function (Blueprint $table) {
             $table->uuid("id")->primary();
             $table->string("nama_keahlian");
+            $table->string("deskripsi");
+            $table->string("foto");
             $table->timestamps();
         });
     }

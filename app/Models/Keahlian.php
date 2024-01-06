@@ -17,6 +17,8 @@ class Keahlian extends Model
 
     protected $fillable = [
         'nama_keahlian',
+        'deskripsi',
+        'foto',
     ];
 
     protected static function boot()
