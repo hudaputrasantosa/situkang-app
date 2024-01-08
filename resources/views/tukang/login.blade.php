@@ -11,6 +11,7 @@
         </div>
         <!-- Right: Login Form -->
         <div class="lg:px-32 p-6 w-full lg:w-1/2">
+            <a href="{{ route('homepage') }}" class="mb-6 text-blue-500 font-semibold">< Kembali</a>
             <h1 class="text-2xl font-semibold mb-4 text-center">Masuk sebagai Tukang</h1>
             <form method="POST" action="{{ route('tukang.authenticate') }}">
                 @csrf
