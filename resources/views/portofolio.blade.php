@@ -67,7 +67,7 @@
         <img src="{{ asset('assets/img/profile-background.jpg') }}" loading="lazy"
             class="lg:object-none object-cover w-full h-24 lg:object-cover lg:h-60">
     </div>
-    <div class="bg-gray-100 px-2 lg:px-24">
+    <div class="bg-gray-50 px-2 lg:px-24">
 
         <div class="bg-none pb-4">
             <div class="flex flex-col items-center -mt-14 lg:-mt-20">
@@ -107,7 +107,7 @@
         </div>
 
 
-        <div class="my-4 flex flex-col 2xl:flex-row space-y-4 2xl:space-y-0 2xl:space-x-4 lg:mx-12">
+        <div class="py-4 pb-8 flex flex-col 2xl:flex-row space-y-4 2xl:space-y-0 2xl:space-x-4 lg:mx-12">
             <div class="w-full flex flex-col 2xl:w-1/3">
 
                 <div class="flex-1 bg-white rounded-lg shadow-xl lg:p-12 p-6">
@@ -170,24 +170,6 @@
                             </div>
                         @endforeach
                     @endif
-                </div>
-                <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 lg:p-12 p-6">
-                    <h4 class="text-xl text-gray-900 font-bold">Ulasan</h4>
-                    <div class="px-4">
-                        {{-- <div class="absolute h-full border border-dashed border-opacity-20 border-secondary"></div> --}}
-
-                        <!-- start::Timeline item -->
-                        <div class="flex items-center w-full my-6 -ml-1.5">
-                            <div class="w-1/12 ">
-                                <div class="w-3.5 h-3.5 bg-blue-600 rounded-full"></div>
-                            </div>
-                            <div class="w-11/12">
-                                <p class="text-sm">Profile informations changed.</p>
-                                <p class="text-xs text-gray-500">3 min ago</p>
-                            </div>
-                        </div>
-                        <!-- end::Timeline item -->
-                    </div>
                 </div>
             </div>
         </div>
