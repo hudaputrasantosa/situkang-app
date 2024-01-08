@@ -287,8 +287,8 @@ class TukangController extends Controller
 
     public function konfirmasi()
     {
-        $sewas = Sewa::where('tukangs_id', Auth::user()->id)->join('pelanggans', 'sewas.pelanggans_id', '=', 'pelanggans.id')->select('sewas.*', 'pelanggans.nama')->latest()->paginate(5);
-        // $pembayaran = Pembayaran::
+        $sewas = Sewa::where('tukangs_id', Auth::user()->id)->join('pelanggans', 'sewas.pelanggans_id', '=', 'pelanggans.id')->select('sewas.*', 'pelanggans.nama', 'pelanggans.kecamatan', 'pelanggans.desa', 'pelanggans.alamat', 'pelanggans.no_telepon')->latest()->paginate(5);
+        // @dd($sewas);
         return view('tukang.penyewaan.konfirmasi', compact('sewas'));
     }
 
