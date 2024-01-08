@@ -27,6 +27,11 @@
                                             data-bs-toggle="modal" data-bs-target="#detail-{{ $sewa->id }}">Lihat detail
                                             pengajuan</button>
 
+                                            @php
+                                                $kecamatan = Laravolt\Indonesia\Models\District::where('id', $sewa->kecamatan)->first();
+                                                $desa = Laravolt\Indonesia\Models\Village::where('id', $sewa->desa)->first();
+                                            @endphp
+
                                         <!-- Modal -->
                                         <div class="modal fade" id="detail-{{ $sewa->id }}" data-bs-backdrop="static"
                                             data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
@@ -46,7 +51,7 @@
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="disabledTextInput" class="form-label">Tanggal
-                                                                Pelanggan</label>
+                                                                Sewa</label>
                                                             <input type="text" class="form-control"
                                                                 value="{{ $sewa->tanggal_sewa }}" readonly>
                                                         </div>
@@ -81,10 +86,38 @@
                                                         <div class="mb-3">
                                                             <label for="disabledTextInput" class="form-label">Deskripsi
                                                                 Kebutuhan</label>
-                                                            <input type="text" class="form-control"
+                                                                <input type="text" class="form-control"
                                                                 value="{{ $sewa->deskripsi }}" readonly>
+                                                            </div>
+                                                            <div class="row g-3 align-items-center mb-3">
+                                                                <div class="col-auto">
+                                                                    <label for="disabledTextInput" class="form-label">Kecamatan
+                                                                        </label>
+                                                                    <input type="text" class="form-control"
+                                                                        value="{{ ucwords(strtolower($kecamatan->name)) }}" readonly>
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <label for="disabledTextInput" class="form-label">
+                                                                        Desa</label>
+                                                                    <input type="text" class="form-control"
+                                                                        value="{{ ucwords(strtolower($desa->name)) }}" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row g-3 align-items-center mb-3">
+                                                            <div class="col-auto">
+                                                                <label for="disabledTextInput" class="form-label">
+                                                                    Alamat Lengkap</label>
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ $sewa->alamat }}" readonly>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <label for="disabledTextInput" class="form-label">
+                                                                    No Telepon</label>
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ $sewa->no_telepon }}" readonly>
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                        </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -92,17 +125,17 @@
                                             class="btn @if ($sewa->status == 'diterima') btn-success @elseif($sewa->status == 'ditolak') btn-danger @else btn-warning @endif btn-sm text-wrap mb-1 text-capitalize">
                                             {{ $sewa->status }}
                                         </div>
-                                        {{-- @if ($sewa->status = 'diterima' && ($sewa->tipe_pembayaran = 'bank'))
+                                        @if ($sewa->tipe_pembayaran = 'bank')
                                             @php
                                                 $pembayaran = \App\Models\Pembayaran::where('sewas_id', $sewa->id)->first();
                                             @endphp
                                             @if ($pembayaran)
                                                 <div
                                                     class="btn @if ($pembayaran->status == 'paid') btn-success @else btn-warning @endif btn-sm text-wrap mb-1 text-capitalize">
-                                                    {{ $pembayaran->status }}
+                                                    {{ $pembayaran->status == 'paid' ? 'Telah Dibayar' : 'Belum Dibayar' }}
                                                 </div>
                                             @endif
-                                        @endif --}}
+                                        @endif
                                     </div>
                                     @if ($sewa->status == 'diproses')
                                         <div class="col-auto mr-3">
