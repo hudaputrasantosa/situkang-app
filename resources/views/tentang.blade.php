@@ -17,11 +17,7 @@
 
                             <div class="mt-2 lg:mt-6 space-y-5">
                                 <p class="items-center text-gray-70">
-                                    Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s
-                                    most popular front-end open source toolkit, featuring Sass variables and mixins,
-                                    responsive
-                                    grid
-                                    system, extensive prebuilt components.
+                                    Aplikasi inovatif yang kami tawarkan bertujuan untuk mengatasi kesulitan yang sering dihadapi masyarakat dalam mendapatkan dan mencari informasi terkait keahlian, pengalaman, serta rentang harga dari tukang bangunan, baik secara individu maupun kelompok. Aplikasi ini dirancang sebagai solusi yang efektif untuk memenuhi kebutuhan masyarakat dalam menemukan tukang bangunan yang sesuai dengan kebutuhan mereka.
                                 </p>
                             </div>
                     </div>

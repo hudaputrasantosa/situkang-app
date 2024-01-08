@@ -35,6 +35,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::get('/', [PelangganController::class, 'homepage'])->name('homepage');
 Route::get('/jenis-tukang', [PelangganController::class, 'jenisTukang'])->name('jenis-tukang');
 Route::get('/jenis-tukang/{idKeahlian}', [PelangganController::class, 'hasilPencarian'])->name('jenis-tukang.keahlian');
+
 Route::get('/tentang', [PelangganController::class, 'tentang'])->name('tentang');
 // Route::post('/payments', [PaymentController::class, 'store'])->name('payments');
 
@@ -66,6 +67,7 @@ Route::prefix('tukang')->controller(TukangController::class)->group(function () 
     Route::get('/pengalaman/delete/{id}', 'hapusPengalaman')->name('tukang.pengalaman.hapus')->middleware('auth:tukang');
     Route::get('/penyewaan/konfirmasi', 'konfirmasi')->name('tukang.penyewaan')->middleware('auth:tukang');
     Route::post('/penyewaan/update-status/{id}', 'updateStatus')->name('tukang.updateStatus')->middleware('auth:tukang');
+    Route::get('/tukangs/kecamatans', 'tukangsByKecamatan')->name('tukangs.byKecamatan');
     // Route::get('/penyewaan/riwayat', 'riwayat')->name('tukang.riwayat')->middleware('tukang');
     Route::get('/logout', 'logout')->name('tukang.logout')->middleware('tukang');
     // Route::get('/dashboard', 'dashboard')->name('pelanggan.dashboard')->middleware('auth');

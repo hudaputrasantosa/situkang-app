@@ -50,9 +50,10 @@ class PelangganController extends Controller
     public function hasilPencarian($idKeahlian): View
     {
         $tukangs = Tukang::join('keahlians', 'tukangs.keahlians_id', '=', 'keahlians.id')->where('keahlians_id', $idKeahlian)->select('tukangs.*', 'keahlians.nama_keahlian')->get();
-        $nama_keahlian = Keahlian::find($idKeahlian)['nama_keahlian'];
+        $keahlian = Keahlian::find($idKeahlian);
+        // @dd($keahlian);
         $kecamatans = \Indonesia::findCity('189', ['districts'])->districts;
-        return view('hasil-jenis', compact('tukangs', 'kecamatans', 'nama_keahlian'));
+        return view('hasil-jenis', compact('tukangs', 'kecamatans', 'keahlian'));
     }
 
     public function profile()

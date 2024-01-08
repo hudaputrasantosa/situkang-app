@@ -348,9 +348,13 @@ class TukangController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function tukangsByKecamatan(Request $request)
     {
-        //
+        if ($request->id !== 'semua') {
+            return Tukang::where('kecamatan', $request->id)->get();
+        } else {
+            return Tukang::where('keahlians_id', $request->idk)->get();
+        }
     }
 
     /**

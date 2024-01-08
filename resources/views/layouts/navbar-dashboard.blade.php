@@ -137,7 +137,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-3 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->nama }}</span>
                                 <img class="img-profile rounded-circle"
-                                    src="{{ url('storage/tukang/foto-profil/'.Auth::user()->foto) }}">
+                                    src="@if(Auth::user()->foto){{ url('storage/tukang/foto-profil/'.Auth::user()->foto) }} @else https://t3.ftcdn.net/jpg/05/00/54/28/360_F_500542898_LpYSy4RGAi95aDim3TLtSgCNUxNlOlcM.jpg @endif">
                             </a>
                         </li>
 
