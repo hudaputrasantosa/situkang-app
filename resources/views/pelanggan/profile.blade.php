@@ -1,22 +1,11 @@
 @extends('pelanggan.layouts')
 @section('title', 'Profile')
 @section('content')
-<div class="container-fluid px-4">
-                        <h1 class="mt-4">Atur Profile</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Static Navigation</li>
-                        </ol>
+<div class="container-fluid lg:px-8">
+                        <h3 class="my-4 text-xl font-bold">Atur Profile</h3>
                      <div class="card mb-4">
                             <div class="card-body">
-                                <p class="mb-3">
-                                    This page is an example of using static navigation. By removing the
-                                    <code>.sb-nav-fixed</code>
-                                    class from the
-                                    <code>body</code>
-                                    , the top navigation and side navigation will become static on scroll. Scroll down this page to see an example.
-                                </p>
-                                <form action="{{ route('pelanggan.profil.update') }}" method="post" enctype="multipart/form-data">
+                                <form action="{{ route('pelanggan.profil.update') }}" method="post" enctype="multipart/form-data" class="mt-4 lg:px-20 ">
                                 @csrf
 
                                 <div class="mx-auto align-items-center text-center ">
@@ -53,7 +42,7 @@
                                                 <select class="form-select" name="kecamatan" id="kecamatan" required>
                                             <option value="{{ $kecamatan->id }}" selected>{{  ucwords(strtolower($kecamatan->name)) }}</option>
                                             @foreach ($kecamatans as $kecamatan )
-                                             <option value="{{ $kecamatan->id }}">{{ ucwords(strtolower($kecamatan->name)) ?? ''  }}</option>   
+                                             <option value="{{ $kecamatan->id }}">{{ ucwords(strtolower($kecamatan->name)) ?? ''  }}</option>
                                             @endforeach
                                             </select>
                                                                 @error('kecamatan')
@@ -87,7 +76,7 @@
                                 <input type="text" class="form-control" name="no_telepon" aria-describedby="basic-addon1" value="{{ $pelanggan->no_telepon }}">
                                 </div>
                                 <div class="py-4">
-                                    <button type="submit" class="btn btn-danger w-100">Perbarui Data</button>
+                                    <button type="submit" class="btn btn-primary bg-blue-500 w-100">Perbarui Data</button>
                                 </div>
                             </form>
                             </div>
@@ -132,12 +121,12 @@ $(function() {
         if (/^image/.test( files[0].type)){
             var reader = new FileReader();
             reader.readAsDataURL(files[0]);
-            reader.onloadend = function(){ 
+            reader.onloadend = function(){
             uploadFile.closest(".imgUp").find('.imagePreview').attr("src", reader.result);
             }
         }
-      
+
     });
-}); 
+});
 </script>
 @endsection

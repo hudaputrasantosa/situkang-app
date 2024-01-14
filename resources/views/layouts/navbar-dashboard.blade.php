@@ -8,30 +8,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-       {{-- activated when tunneling with ngrok on --}}
+    {{-- activated when tunneling with ngrok on --}}
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     {{-- end active --}}
 
     <title>SB Admin 2 - Dashboard</title>
 
     <!-- Custom fonts for this template-->
+    @vite(['resources/js/app.js'])
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/datepicker.min.js"></script>
     <link href="{{ asset('assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-        <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-         <link href="{{ asset('assets/css/avatar.css') }}" rel="stylesheet" type="text/css">
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous"> --}}
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script> --}}
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"> --}}
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <link href="{{ asset('assets/css/avatar.css') }}" rel="stylesheet" type="text/css">
     <!-- Custom styles for this template-->
     <link href="{{ asset('assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
-    <style>
+    {{-- <style>
         label{margin-left: 20px;}
         #datepicker{width:45%;}
         #datepicker > span:hover{cursor: pointer;}
         #datepicker2{width:45%;}
         #datepicker2 > span:hover{cursor: pointer;}
-    </style>
+    </style> --}}
 
 </head>
 
@@ -41,7 +48,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <span class="sidebar-brand d-flex align-items-center justify-content-center">
@@ -52,17 +59,18 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item @if(Request::is('tukang/profile')) active  @endif">
+            <li class="nav-item @if (Request::is('tukang/profile')) active @endif">
                 <a class="nav-link" href="{{ route('tukang.profile') }}">
                     <i class="fas fa-fw fa-user-alt"></i>
                     <span>Atur Profil</span></a>
             </li>
-            <li class="nav-item @if(Request::is('tukang/pengalaman')) active @elseif(Request::is('tukang/pengalaman/tambah')) active @endif">
+            <li
+                class="nav-item @if (Request::is('tukang/pengalaman')) active @elseif(Request::is('tukang/pengalaman/tambah')) active @endif">
                 <a class="nav-link" href="{{ route('tukang.pengalaman') }}">
                     <i class="fas fa-fw fa-briefcase"></i>
                     <span>Pengalaman</span></a>
             </li>
-             <li class="nav-item @if(Request::is('tukang/penyewaan/konfirmasi')) active @endif">
+            <li class="nav-item @if (Request::is('tukang/penyewaan/konfirmasi')) active @endif">
                 <a class="nav-link" href="{{ route('tukang.penyewaan') }}">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Penyewaan</span></a>
@@ -109,22 +117,29 @@
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
                                 @php
-                                    $notification = App\Models\Notification::where('tukangs_id', Auth::user()->id)->join('pelanggans', 'notification.pelanggans_id', '=', 'pelanggans.id')->select('pelanggans.nama', 'notification.created_at')->get();
+                                    $notification = App\Models\Notification::where('tukangs_id', Auth::user()->id)
+                                        ->join('pelanggans', 'notification.pelanggans_id', '=', 'pelanggans.id')
+                                        ->select('pelanggans.nama', 'notification.created_at')
+                                        ->get();
                                 @endphp
-                                <span class="@if($notification->count()!=0)badge badge-danger badge-counter @endif" id="notif">{{ $notification->count() }}</span>
+                                <span class="@if ($notification->count() != 0) badge badge-danger badge-counter @endif"
+                                    id="notif">{{ $notification->count() }}</span>
                             </a>
                             <!-- Dropdown - Alerts -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown" style="max-height: 350px; overflow-y: auto;">
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="alertsDropdown" style="max-height: 350px; overflow-y: auto;">
                                 <h6 class="dropdown-header">
                                     Pemberitahuan
                                 </h6>
-                                @foreach ($notification as $itemNotif )
-                                <a class="dropdown-item d-flex align-items-center" href="{{ route('tukang.penyewaan') }}">
-                                    <div>
-                                        <div class="small text-gray-500">{{ $itemNotif->created_at }}</div>
-                                        <span><strong>{{ $itemNotif->nama }}</strong> mengajukan sewa kepada anda, tanggapi pengajuan sewa tersebut!</span>
-                                    </div>
-                                </a>
+                                @foreach ($notification as $itemNotif)
+                                    <a class="dropdown-item d-flex align-items-center"
+                                        href="{{ route('tukang.penyewaan') }}">
+                                        <div>
+                                            <div class="small text-gray-500">{{ $itemNotif->created_at }}</div>
+                                            <span><strong>{{ $itemNotif->nama }}</strong> mengajukan sewa kepada anda,
+                                                tanggapi pengajuan sewa tersebut!</span>
+                                        </div>
+                                    </a>
                                 @endforeach
                             </div>
                         </li>
@@ -135,9 +150,9 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-3 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->nama }}</span>
-                                <img class="img-profile rounded-circle"
-                                    src="@if(Auth::user()->foto){{ url('storage/tukang/foto-profil/'.Auth::user()->foto) }} @else https://t3.ftcdn.net/jpg/05/00/54/28/360_F_500542898_LpYSy4RGAi95aDim3TLtSgCNUxNlOlcM.jpg @endif">
+                                <img class="img-profile rounded-circle mr-3"
+                                    src="@if (Auth::user()->foto) {{ url('storage/tukang/foto-profil/' . Auth::user()->foto) }} @else https://t3.ftcdn.net/jpg/05/00/54/28/360_F_500542898_LpYSy4RGAi95aDim3TLtSgCNUxNlOlcM.jpg @endif">
+                                <span class="d-none d-lg-inline text-gray-600 small">{{ Auth::user()->nama }}</span>
                             </a>
                         </li>
 
@@ -148,14 +163,14 @@
                 @yield('content')
 
 
-                 </div>
+            </div>
             <!-- End of Main Content -->
 
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>SiTukang. 2023</span>
+                        <span>SiTukang. 2024</span>
                     </div>
                 </div>
             </footer>
@@ -183,44 +198,46 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Pilih "Keluar" untuk menghapus sesi masuk pada saat ini, dan keluar sistem</div>
+                <div class="modal-body">Pilih "Keluar" untuk menghapus sesi masuk pada saat ini, dan keluar sistem
+                </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+                    <button class="btn btn-secondary bg-gray-600" type="button" data-dismiss="modal">Batal</button>
                     <a class="btn btn-danger" href="{{ route('tukang.logout') }}">Keluar</a>
                 </div>
             </div>
         </div>
     </div>
 
-     @include('sweetalert::alert')
+    @include('sweetalert::alert')
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('assets/jquery-3.7.1.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/jquery.mask.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('assets/js/sb-admin-2.min.js') }}"></script>
     <script type="text/javascript">
-    $(document).ready(function(){
-       Pusher.logToConsole = true;
+        $(document).ready(function() {
+            //    Pusher.logToConsole = true;
 
-    const pusher = new Pusher('3176919d7b7f92b439a3', {
-      cluster: 'ap1'
-    });
-    const channel = pusher.subscribe('my-channel');
-    channel.bind('my-event', function(data) {
-    JSON.stringify(data);
-    if(data.tukangs_id === "{{ Auth::user()->id }}"){
-             const notifElement = document.getElementById('notif');
-             let notifCount = parseInt(notifElement.innerHTML);
-            if(notifCount){
-                notifCount++;
-                notifElement.innerHTML = notifCount;
-            } else{
-                notifElement.innerHTML = notifCount;
-            }
-    }
-    });
+            const pusher = new Pusher('3176919d7b7f92b439a3', {
+                cluster: 'ap1'
+            });
+            const channel = pusher.subscribe('my-channel');
+            channel.bind('my-event', function(data) {
+                JSON.stringify(data);
+                if (data.tukangs_id === "{{ Auth::user()->id }}") {
+                    const notifElement = document.getElementById('notif');
+                    let notifCount = parseInt(notifElement.innerHTML);
+                    if (notifCount) {
+                        notifCount++;
+                        notifElement.innerHTML = notifCount;
+                    } else {
+                        notifElement.innerHTML = notifCount;
+                    }
+                }
+            });
 
-    });
+        });
     </script>
     @yield('js')
 
@@ -232,4 +249,5 @@
     <script src="js/demo/chart-pie-demo.js"></script> --}}
 
 </body>
+
 </html>

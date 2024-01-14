@@ -1,23 +1,15 @@
 @extends('pelanggan.layouts')
 @section('title', 'Sewa')
 @section('content')
-    <div class="container-fluid px-4">
-        <h1 class="mt-4">Riwayat Sewa</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-            <li class="breadcrumb-item active">Static Navigation</li>
-        </ol>
-        <div class="card mb-4">
-            <div class="card-body">
+    <div class="container-fluid lg:px-8">
+        <h3 class="my-4 text-xl font-bold">Riwayat Pengajuan Sewa</h3>
+
 
                 <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-table me-1"></i>
-                        DataTable Example
-                    </div>
-                    <div class="card-body">
+
+                    <div class="card-body items-center">
                         <table id="datatablesSimple">
-                            <thead>
+                            <thead class="text-gray-900 lg:text-base font-semibold">
                                 <tr>
                                     <th>Nama Tukang</th>
                                     <th>Tanggal</th>
@@ -41,7 +33,7 @@
                             </tfoot>
                             <tbody>
                                 @foreach ($sewas as $sewa)
-                                    <tr>
+                                    <tr class="text-sm">
                                         <td>{{ $sewa->nama_tukang }}</td>
                                         <td>{{ $sewa->tanggal_sewa }}</td>
                                         <td>{{ $sewa->tipe_sewa }}</td>
@@ -54,7 +46,7 @@
                                         </td>
                                         </span>
                                         <td>
-                                            <button type="button" class="btn btn-primary btn-sm" id="lihatDetail"
+                                            <button type="button" class="btn btn-primary bg-blue-500 text-sm " id="lihatDetail"
                                                 data-bs-toggle="modal" data-bs-target="#detail-{{ $sewa->id }}">Lihat
                                                 Detail</button>
                                         </td>
@@ -68,11 +60,16 @@
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="staticBackdropLabel">Detail Pengajuan Sewa
                                                     </h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
+                                                    <button type="button" class=" items-center justify-center text-gray-900" data-bs-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+</svg>
+
+                                                    </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <div class="row g-3 align-items-center mb-3">
+                                                    <div class="flex lg:flex-row flex-col w-full gap-x-6 gap-y-2 mb-2">
                                                         <div class="col-auto">
                                                             <label for="disabledTextInput" class="form-label">Nama
                                                                 Tukang</label>
@@ -86,7 +83,7 @@
                                                                 value="{{ $sewa->tanggal_sewa }}" readonly>
                                                         </div>
                                                     </div>
-                                                    <div class="row g-3 align-items-center mb-3">
+                                                    <div class="flex lg:flex-row flex-col w-full gap-x-6 gap-y-2 mb-2">
                                                         <div class="col-auto">
                                                             <label for="disabledTextInput" class="form-label">Tipe
                                                                 Sewa</label>
@@ -100,7 +97,7 @@
                                                                 value="{{ $sewa->tipe_bangunan }}" readonly>
                                                         </div>
                                                     </div>
-                                                    <div class="row g-3 align-items-center mb-3">
+                                                    <div class="flex lg:flex-row flex-col w-full gap-x-6 gap-y-2 mb-2">
                                                         <div class="col-auto">
                                                             <label for="disabledTextInput" class="form-label">Tipe
                                                                 Pengerjaan</label>
@@ -120,7 +117,7 @@
                                                         <input type="text" class="form-control"
                                                             value="{{ $sewa->deskripsi }}" readonly>
                                                     </div>
-                                                    <div class="row g-3 align-items-center mb-3">
+                                                    <div class="flex lg:flex-row flex-col w-full gap-x-4 gap-y-2 mb-2">
                                                         <div class="col-auto">
                                                             <label for="disabledTextInput" class="form-label">Status
                                                                 Sewa
@@ -155,16 +152,10 @@
                                                     <div class="mb-3">
                                                         <label for="disabledTextInput" class="form-label">Harga
                                                         </label>
-                                                        <h5><span class="">Rp. {{ $sewa->harga }}</span>
+                                                        <h5><span class="font-semibold text-xl">Rp. {{ $sewa->harga }}</span>
                                                         </h5>
                                                     </div>
-                                                    {{-- <div class="mb-3">
-                                                        <label for="disabledTextInput" class="form-label">Status
-                                                            Pengajuan</label>
-                                                        <h5><span
-                                                                class="badge @if ($sewa->status == 'diproses') bg-warning @else bg-success @endif">{{ $sewa->status }}</span>
-                                                        </h5>
-                                                    </div> --}}
+
                                                     <div class="mb-3 w-100">
                                                         <a href="{{ route('pembayaran.checkout', $sewa->id) }}"
                                                             class="btn btn-primary w-100 @if ($sewa->status == 'diproses' || $sewa->tipe_pembayaran == 'bayar di tempat') disabled @endif">Lanjut
@@ -181,8 +172,7 @@
                         </table>
                     </div>
                 </div>
-            </div>
-        </div>
+
     </div>
 @endsection
 

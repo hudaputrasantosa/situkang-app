@@ -1,156 +1,5 @@
 @extends('layouts.apps')
 @section('title', 'Situkang | Daftar Tukang')
-{{-- @section('content')
-    <div class="container col-xl-10 col-xxl-8 px-4 py-3">
-        <div class="row align-items-center g-lg-5 py-5">
-
-            <div class="col-lg-5 text-center text-lg-start mb-2">
-                <h1 class="display-5 fw-bold lh-1 mb-3">Registrasi Akun</h1>
-                <img class="d-block img-fluid rounded mb-2" width="450"
-                    src="https://img.freepik.com/free-vector/construction-hat-concept-illustration_114360-8914.jpg?w=740&t=st=1695802909~exp=1695803509~hmac=4717c9b1ba393d65e3c6443c0af47fe4e441305795d0fbd0d698bf3076c20a0d"
-                    alt="">
-                <a href="{{ route('homepage') }}" class="w-50 btn btn-md border border-primary border-2"><i
-                        class="bi bi-arrow-left"></i> Kembali ke beranda</a>
-            </div>
-            <div class="col-md-12 mx-auto col-lg-7">
-                <form method="POST" action="{{ route('tukang.store') }}" class="p-4 p-md-5 border rounded-3 bg-light">
-                    @csrf
-
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama"
-                            value="{{ old('nama') }}" required autocomplete="nama" autofocus id="nama" name="nama"
-                            placeholder="Nama Lengkap">
-                        @error('nama')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                        <label for="nama">Nama Lengkap</label>
-                    </div>
-
-                    <div class="row g-3 gap-2 mb-2">
-
-                        <div class="form-floating col-md-6">
-                            <input type="text" class="form-control @error('tempat_lahir') is-invalid @enderror"
-                                name="tempat_lahir" value="{{ old('tempat_lahir') }}" required autocomplete="tempat_lahir"
-                                autofocus id="tempat_lahir" placeholder="tempat_lahir">
-                            @error('tempat_lahir')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                            <label for="nama">Tempat Lahir</label>
-                        </div>
-
-                        <div id="datepicker" class="input-group date" data-date-format="mm-dd-yyyy">
-                            <input class="form-control" name="tanggal_lahir" autofocus required type="text" readonly />
-                            <span class="input-group-addon input-group-text">
-                                <i class="bi bi-calendar-date"></i>
-                            </span>
-                        </div>
-
-                    </div>
-
-                    <div class="row g-2 mx-auto gap-2 mb-3">
-
-                        <div class="col-md-6">
-                            <select class="form-select" name="kecamatan" id="kecamatan" required>
-                                <option>Pilih Kecamatan ...</option>
-                                @foreach ($kecamatans as $kecamatan)
-                                    <option value="{{ $kecamatan->id ?? '' }}">
-                                        {{ ucwords(strtolower($kecamatan->name)) ?? '' }}</option>
-                                @endforeach
-                            </select>
-                            @error('kecamatan')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-
-                        <div class="col-md-5">
-                            <select class="form-select" name="desa" id="desa" required>
-                                <option>Pilih Desa ...</option>
-                            </select>
-                            @error('desa')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="row g-2 mx-auto gap-2 mb-3">
-
-                        <div class="col-md-12">
-                            <select class="form-select" name="keahlians_id" id="keahlians_id" required>
-                                <option>Pilih Bidang Keahlian ...</option>
-                                @foreach ($keahlians as $keahlian)
-                                    <option value="{{ $keahlian->id }}">{{ $keahlian->nama_keahlian }}</option>
-                                @endforeach
-                            </select>
-                            @error('id_keahlian')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-
-                        <div class="input-group col-md-2">
-                            <span class="input-group-text">Rp.</span>
-                            <input id="harga" type="text" class="form-control @error('harga') is-invalid @enderror"
-                                name="harga" placeholder="Pasang harga sewa" value="{{ old('harga') }}" required
-                                autocomplete="harga" autofocus>
-                            <span class="input-group-text">/Hari</span>
-                            @error('harga')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
-                            value="{{ old('email') }}" required autocomplete="email" autofocus id="email"
-                            name="email" placeholder="name@example.com">
-                        @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                        <label for="email">Alamat email</label>
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
-                            name="password" required autocomplete="current-password" placeholder="Password">
-
-                        @error('password')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                        <label for="password">Kata sandi</label>
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation"
-                            required autocomplete="new-password" placeholder="Ulangi kata sandi">
-
-                        <label for="password">Ulangi kata sandi</label>
-                    </div>
-
-                    <button class="w-100 btn btn-lg btn-primary" type="submit">Daftar sebagai tukang</button>
-                    <div class="my-2">
-                        <small class="text-muted">Jika sudah punya akun, <a href="{{ route('tukang.login') }}"
-                                class="text-decoration-none fw-semibold"> Masuk disini</a></small>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-@endsection --}}
 
 @section('content')
     <div class="bg-white flex flex-row justify-center h-full">
@@ -161,7 +10,7 @@
             </div>
         </div>
         <!-- Right: Register Form -->
-        <div class="lg:px-32 p-10 lg:my-6 w-full lg:w-1/2 overflow-y-scroll">
+        <div class="lg:px-32 p-10 lg:my-6 w-full lg:w-1/2">
             <h1 class="text-2xl font-semibold mb-4 text-center">Daftar Tukang</h1>
             <form method="POST" action="{{ route('tukang.store') }}">
                 @csrf
@@ -350,7 +199,7 @@
             </form>
             <!-- Sign up  Link -->
             <div class="w-full my-5">
-                <a href="{{ route('auth.login') }}">
+                <a href="{{ route('tukang.login') }}">
                     <button
                         class=" w-full rounded-md bg-none py-2 px-4 w-full border-[1px] hover:cursor-pointer border-blue-500 text-blue-500 text-center lg:text-base text-sm font-medium">
                         Jika sudah punya akun, Masuk disini</a>
@@ -390,7 +239,7 @@
                 });
             });
 
-            $('#harga').mask('000.000.000', {
+            $('#harga').mask('000,000,000', {
                 reverse: true
             });
 

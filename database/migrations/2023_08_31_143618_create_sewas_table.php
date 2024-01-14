@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string("tipe_pembayaran");
             $table->string("deskripsi");
             $table->string("status");
+            $table->string("catatan");
             $table->timestamps();
         });
     }

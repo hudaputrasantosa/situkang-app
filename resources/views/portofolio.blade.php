@@ -74,7 +74,7 @@
                 <img src="@if ($tukang->foto) {{ url('storage/tukang/foto-profil/' . $tukang->foto) }} @else {{ asset('assets/img/user.jpg') }} @endif"
                     loading="lazy" class="object-cover w-40 h-40 object-center border-4 border-white rounded-full">
                 <div class="flex items-center space-x-2 mt-2">
-                    <p class="text-2xl">{{ $tukang->nama }}</p>
+                    <p class="text-2xl font-semibold">{{ $tukang->nama }}</p>
                     <span class="bg-blue-500 rounded-full p-1" title="Verified">
                         <svg xmlns="http://www.w3.org/2000/svg" class="text-gray-100 h-2.5 w-2.5" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
@@ -82,7 +82,7 @@
                         </svg>
                     </span>
                 </div>
-                <p class="text-gray-700">{{ $tukang->nama_keahlian }}</p>
+                <p class="text-gray-700 font-medium">{{ $tukang->nama_keahlian }}</p>
                 <div class="flex">
                     <i class="bi bi-geo-alt-fill text-gray-600 mr-1"></i>
                     <p class="text-sm text-gray-500"> {{ ucwords(strtolower($kecamatan->name)) }},
@@ -93,13 +93,12 @@
             <div class="flex-1 flex flex-col items-center lg:items-center justify-center px-8 mt-2">
                 <div class="flex items-center space-x-4 mt-2">
 
-                    <a class="flex items-center bg-blue-600 hover:bg-blue-700 text-gray-100 font-semibold px-6 py-2 hover:cursor-pointer rounded text-sm space-x-2 transition duration-100"
+                    <a class="flex items-center bg-blue-600 hover:bg-blue-700 text-gray-100 font-semibold px-6 py-2 hover:cursor-pointer rounded-md text-sm space-x-2 transition duration-100"
                         @if (Auth::check()) data-modal-target="sewa" data-modal-toggle="sewa" @else href="{{ route('auth.login') }}" @endif>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z"
-                                clip-rule="evenodd"></path>
-                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 0 1 9 9v.375M10.125 2.25A3.375 3.375 0 0 1 13.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 0 1 3.375 3.375M9 15l2.25 2.25L15 12" />
+</svg>
+
                         <span>Ajukan Sewa</span>
                     </a>
                 </div>

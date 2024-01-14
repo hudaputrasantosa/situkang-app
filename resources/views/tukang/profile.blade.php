@@ -1,6 +1,6 @@
 @extends('layouts.navbar-dashboard')
 @section('content')
-  <div class="container-fluid">
+  <div class="lg:px-8 px-2">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Profil</h1>
                         {{-- {{ Auth::user()->nama }} --}}
@@ -8,7 +8,7 @@
 
                          <div class="card shadow mb-4">
                              <div class="card-body mx-auto col-md-8">
-                              
+
                                <form action="{{ route('tukang.profile.update', $tukangs->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
 
@@ -23,7 +23,7 @@
 </div>
 </div>
                                        <div class="py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Atur Data Pribadi</h6>
+                            <h6 class="m-0 text-xl font-weight-bold text-primary">Atur Data Pribadi</h6>
                         </div>
 
                                         <div class="form-group">
@@ -43,14 +43,14 @@
                                               <input type="text" class="form-control"
                                               id="tempat_lahir" name="tanggal_lahir" value="{{ $tukangs->tanggal_lahir }}" required autofocus>
                                           </div>
-                
+
                                         </div>
                                           <div class="row g-2 mb-4">
                                             <div class="col-md-6">
-                                                <select class="form-select" name="kecamatan" id="kecamatan" required>
+                                                <select class="border border-gray-300 text-gray-700 text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2" name="kecamatan" id="kecamatan" required>
                                             <option value="{{ $kecamatan->id }}" selected>{{  ucwords(strtolower($kecamatan->name)) }}</option>
                                             @foreach ($kecamatans as $kecamatan )
-                                             <option value="{{ $kecamatan->id }}">{{ ucwords(strtolower($kecamatan->name)) ?? ''  }}</option>   
+                                             <option value="{{ $kecamatan->id }}">{{ ucwords(strtolower($kecamatan->name)) ?? ''  }}</option>
                                             @endforeach
                                             </select>
                                                                 @error('kecamatan')
@@ -61,7 +61,7 @@
                                         </div>
 
                                             <div class="col-md-6">
-                                            <select class="form-select" name="desa" id="desa" required>
+                                            <select class="border border-gray-300 text-gray-700 text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2" name="desa" id="desa" required>
                                             <option value="{{ $desa->id }}" selected>{{  ucwords(strtolower($desa->name)) }}</option>
                                             </select>
                                                                 @error('desa')
@@ -76,18 +76,16 @@
                                             <textarea rows="2" class="form-control" id="alamat" name="alamat" required autofocus
                                                  placeholder="Alamat harus di isi..">{{ $tukangs->alamat }}</textarea>
                                         </div>
-                                        
-                                        <hr>
 
                                                     <div class="py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Atur Data Pekerjaan</h6>
-                        </div>      
+                            <h6 class="m-0  text-xl font-weight-bold text-primary">Atur Data Pekerjaan</h6>
+                        </div>
                                      <label for="keahlians_id" class="form-label">Nama Keahlian</label>
-                                    <select class="form-select form-select-md mb-4" name="keahlians_id" aria-label="Default select example">
-                                    <option value="{{ $tukangs->keahlians_id }}" selected>{{ $tukangs->nama_keahlian }}</option>  
+                                    <select class="border border-gray-300 text-gray-700 text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2" name="keahlians_id">
+                                    <option value="{{ $tukangs->keahlians_id }}" selected>{{ $tukangs->nama_keahlian }}</option>
                                     @foreach ( $keahlians as $keahlian )
-                                    <option value="{{ $keahlian->id }}">{{ $keahlian->nama_keahlian }}</option>  
-                                                                  
+                                    <option value="{{ $keahlian->id }}">{{ $keahlian->nama_keahlian }}</option>
+
                                     @endforeach
                                     </select>
 
@@ -119,11 +117,11 @@
                                             <textarea class="form-control" id="editor" name="deskripsi"
                                                  placeholder="Deskripsi portofolio harus di isi..">{{ $tukangs->deskripsi }}</textarea>
                                         </div>
-     
-                                        <button type="submit" class="btn btn-primary btn-user btn-block my-5" style="font-size: 11pt;">
+
+                                        <button type="submit" class="btn btn-primary bg-blue-500 btn-user btn-block p-2 my-5" style="font-size: 11pt;">
                                             <strong>Simpan Perubahan</strong>
                                         </button>
-                                
+
                                     </form>
                         </div>
                     </div>
@@ -135,6 +133,10 @@
 <script src="{{ asset('/ckeditor/ckeditor.js') }}"></script>
 <script type="text/javascript">
 $(document).ready(function (){
+            $('#harga').mask('000,000,000', {
+                reverse: true
+            });
+
     $('#kecamatan').on('change', function () {
         let id = $(this).val();
 
@@ -189,11 +191,11 @@ $(function() {
         if (/^image/.test( files[0].type)){
             var reader = new FileReader();
             reader.readAsDataURL(files[0]);
-            reader.onloadend = function(){ 
+            reader.onloadend = function(){
             uploadFile.closest(".imgUp").find('.imagePreview').attr("src", reader.result);
             }
         }
-      
+
     });
 });
 </script>

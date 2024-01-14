@@ -50,7 +50,7 @@ class AuthController extends Controller
             'alamat' => 'required|string|max:250',
             'no_telepon' => 'required|string|max:250',
             'email' => 'required|email|max:250|unique:pelanggans',
-            'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()],
+            'password' => ['required', Password::min(8)->letters()->numbers()],
         ]);
         $pelanggan = new Pelanggan();
         $pelanggan->fill($validated);

@@ -11,30 +11,34 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Pelanggan | @yield('title')</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous"> --}}
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
 
+        @vite(['resources/js/app.js'])
+      <script src="https://cdn.tailwindcss.com"></script>
     <link href="{{ asset('assets/css/styles.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/avatar.css') }}" rel="stylesheet" type="text/css">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> --}}
 </head>
 
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="index.html">SiTukang | Pelanggan</a>
+        <a class="navbar-brand ps-3" href="{{ route('homepage') }}">SiTukang | Pelanggan</a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
                 class="fas fa-bars"></i></button>
-        <div class="navbar-nav d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-            <a class="nav-link"> <img class="img-profile rounded-circle px-2" width="50px"
+        <div class="navbar-nav lg:block hidden ms-auto me-0 me-md-3 my-2 my-md-0">
+            <a class="nav-link flex items-center">
+                <img class="img-profile rounded-circle px-2" width="50px"
                     src="@if (Auth::user()->foto) {{ url('storage/pelanggan/foto-profil/', Auth::user()->foto) }}
-               @else https://t3.ftcdn.net/jpg/05/00/54/28/360_F_500542898_LpYSy4RGAi95aDim3TLtSgCNUxNlOlcM.jpg @endif">{{ Auth::user()->nama }}</a>
+               @else https://t3.ftcdn.net/jpg/05/00/54/28/360_F_500542898_LpYSy4RGAi95aDim3TLtSgCNUxNlOlcM.jpg @endif">
+               {{ Auth::user()->nama }}</a>
         </div>
     </nav>
     <div id="layoutSidenav">
@@ -43,10 +47,10 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading"></div>
-                        <a class="nav-link @if (Request::is('/user/dashboard')) active @endif" href="#">
+                        {{-- <a class="nav-link @if (Request::is('/user/dashboard')) active @endif" href="#">
                             <div class="sb-nav-link-icon active"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
-                        </a>
+                        </a> --}}
 
                         <a class="nav-link @if (Request::is('user/profile', Auth::user()->id)) active @endif"
                             href="{{ route('pelanggan.profil') }}">
@@ -65,7 +69,7 @@
                             <span>Keluar</span></button>
                         <div class="px-3 py-3">
 
-                            <a href="{{ route('homepage') }}" class="nav btn btn-danger">Ke Homepage</a>
+                            <a href="{{ route('homepage') }}" class="nav btn btn-primary">Ke Beranda</a>
                         </div>
 
                     </div>
@@ -83,12 +87,8 @@
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                        <div>
-                            <a href="#">Privacy Policy</a>
-                            &middot;
-                            <a href="#">Terms &amp; Conditions</a>
-                        </div>
+                        <div class="text-muted">Copyright &copy; SITUKANG.ID 2024</div>
+
                     </div>
                 </div>
             </footer>
@@ -106,7 +106,7 @@
                 </div>
                 <div class="modal-body">Pilih "Keluar" untuk menghapus sesi masuk pada saat ini, dan keluar sistem</div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+                    <button class="btn btn-secondary bg-gray-500" type="button" data-dismiss="modal">Batal</button>
                     <a class="btn btn-danger" href="{{ route('auth.logout') }}">Keluar</a>
                 </div>
             </div>

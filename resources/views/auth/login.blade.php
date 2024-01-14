@@ -17,10 +17,10 @@
                 @csrf
 
                 <div class="mb-4">
-                    <label for="email" class="block text-gray-600">email</label>
+                    <label for="email" class="block text-gray-600">Email</label>
                     <input type="email" id="email" name="email"
                         class="w-full border border-gray-300 bg-gray-50 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
-                        autocomplete="off" placeholder="Masukkan no telepon.." required>
+                        autocomplete="off" placeholder="Masukkan email.." required>
                 </div>
 
                 <div class="mb-4">

@@ -16,6 +16,8 @@ class VerifyCsrfToken extends Middleware
         "/user/payment/webhook",
         "/authenticate",
         "tukang/authentication",
-        "/user/sewa/pengajuan"
+        "/user/sewa/pengajuan",
+        "/tukang/getDesa",
+
     ];
 }

@@ -10,7 +10,7 @@
             </div>
         </div>
         <!-- Right: Register Form -->
-        <div class="lg:px-32 p-10 lg:my-6 w-full lg:w-1/2 overflow-y-scroll">
+        <div class="lg:px-32 p-10 lg:my-6 w-full lg:w-1/2">
             <h1 class="text-2xl font-semibold mb-4 text-center">Daftar Pelanggan</h1>
             <form method="POST" action="{{ route('auth.register.store') }}">
                 @csrf
@@ -189,23 +189,24 @@
                 let id = $(this).val();
 
                 $.ajax({
-                    url: '{{ route('tukang.getDesa') }}',
+                    url: '{{ route("tukang.getDesa") }}',
                     type: 'GET',
                     data: {
                         id: id
                     },
-                    success: function(data) {
+                    success: function(result) {
                         $('#desa').empty();
                         $('#desa').append('<option>Pilih Desa ...</option>');
-                        $.each(data, function(name, id) {
+                        $.each(result, function(name, id) {
                             $('#desa').append(
                                 `<option value="${id}">${name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()}</option>`
                             );
                         });
                     },
                     error: function(request, status, error) {
-                        alert(request.statusText + "[" + request.status + "]");
-                        alert(request.responseText);
+                        // alert(request.statusText + "[" + request.status + "]");
+                        // alert(request.responseText);
+
                         $('#desa').empty().append('<option value="">Pilih Desa ...</option>');
                     }
                 });

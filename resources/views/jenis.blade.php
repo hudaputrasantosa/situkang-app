@@ -5,11 +5,8 @@
     <section class="py-8 lg:py-24 px-2 flex items-center justify-center bg-gradient-to-r from-cyan-400 to-blue-500">
         <div class="mx-auto max-w-[43rem]">
             <div class="text-center">
-                <h1 class="mt-3 text-2xl lg:text-5xl font-bold  text-white">Tentukan Spesialis Tukang sesuai dengan
+                <h1 class="mt-3 text-2xl lg:text-4xl font-bold  text-white">Tentukan Bidang Keahlian Tukang sesuai dengan
                     kebutuhan.</h1>
-                <p class="mt-3 ext-sm lg:text-lg leading-relaxed text-slate-100">Specify helps you unify your brand identity
-                    by
-                    collecting, storing and distributing design tokens and assets — automatically.</p>
             </div>
         </div>
 

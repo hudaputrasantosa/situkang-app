@@ -55,13 +55,13 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
                         <!-- User Profile-->
-                        <li class="sidebar-item pt-2">
+                        {{-- <li class="sidebar-item pt-2">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link @if(Request::is('/user/dashboard')) active @endif" href="dashboard.html"
                                 aria-expanded="false">
                                 <i class="far fa-clock" aria-hidden="true"></i>
                                 <span class="hide-menu">Dashboard</span>
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link @if(Request::is('user/profile', Auth::user()->id)) active @endif" href="{{ route('pelanggan.profil') }}"
                                 aria-expanded="false">
@@ -87,10 +87,10 @@
                            <br>
                             <a href="{{ route('homepage') }}" class="btn btn-danger pt-20 text-white">
                                  <i class="fa fa-home" aria-hidden="true"></i>
-                               <span class="hide-menu">Kembali ke Homepage</span> 
+                               <span class="hide-menu">Kembali ke Homepage</span>
                             </a>
                         </li>
-                        
+
                     </ul>
 
                 </nav>
