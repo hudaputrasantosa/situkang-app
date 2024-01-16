@@ -41,7 +41,8 @@
 
             </div> --}}
             @if ($tukangs->count() > 0)
-                <div class="grid grid-cols-2 gap-x-[6px] gap-y-2 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-4 my-3 lg:my-6" id="layout">
+                <div class="grid grid-cols-2 gap-x-[6px] gap-y-2 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-4 my-3 lg:my-6"
+                    id="layout">
                     @foreach ($tukangs as $tukang)
                         <div class="max-w-xs cursor-pointer rounded-lg bg-white p-1 lg:p-2 shadow border">
                             <img class="w-full rounded-lg object-cover object-center lg:h-64 h-40" loading="lazy"
@@ -97,9 +98,9 @@
 @endsection
 
 @section('js')
-<script type="text/javascript">
-    $(document).ready(function(){
-         $('#kecamatan').on('change', function() {
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#kecamatan').on('change', function() {
                 let kecamatanId = $(this).val();
                 const element = document.getElementById("card")
                 $.ajax({
@@ -110,17 +111,15 @@
                         idk: '{{ $keahlian->id }}'
                     },
                     success: function(result) {
-                        if(result.length > 0){
-                        $.each(result, function(i, data) {
-                            const id = data.id;
-                            $('#layout').replaceWith(
-                                `<div class="max-w-xs cursor-pointer rounded-lg bg-white p-1 lg:p-2 shadow border" id="layout">
+                        if (result.length > 0) {
+                            $.each(result, function(i, data) {
+                                const id = data.id;
+                                $('#layout').replaceWith(
+                                    `<div class="max-w-xs cursor-pointer rounded-lg bg-white p-1 lg:p-2 shadow border" id="layout">
                                 <img class="w-full rounded-lg object-cover object-center lg:h-64 h-40" loading="lazy"
-                                src="@if('${data.foto}')
-                                    {{ url('storage/tukang/foto-profil/' . '${data.foto}') }}
+                                src="@if ('${data.foto}') {{ url('storage/tukang/foto-profil/' . '${data.foto}') }}
                                   @else
-                                     {{ asset('./assets/img/user.jpg') }}
-                                @endif"
+                                     {{ asset('./assets/img/user.jpg') }} @endif"
                                 alt="tukang" />
                                 <div class="w-full mx-auto text-center gap-2">
                                 <div class="my-3 items-center justify-between">
@@ -146,7 +145,7 @@
                                     </div>
                                 </div>
                                 <div class="w-full mb-2 px-2 bottom-0">
-                                    <a href="{{ url('/tukang/portofolio/'.'${id}') }}">
+                                    <a href="{{ url('/tukang/portofolio/' . '${id}') }}">
                                         <button
                                             class="w-full mx-auto px-3 py-2 bg-blue-500 rounded-md text-sm font-semibold text-white">Lihat
                                             Detail</button>
@@ -155,15 +154,15 @@
                                 </div>
                             </div>
                                 `
-                            );
-                        });
-                     } else{
-                         $('#layout').replaceWith(
-                        `<div class="max-w-xs cursor-pointer rounded-lg bg-white p-1 lg:p-2 shadow border" id="layout">
+                                );
+                            });
+                        } else {
+                            $('#layout').replaceWith(
+                                `<div class="max-w-xs cursor-pointer rounded-lg bg-white p-1 lg:p-2 shadow border" id="layout">
                         <h1>Data tidak ditemukan</h1>
                         </div>`
-                         )
-                     }
+                            )
+                        }
                     },
                     error: function(request, status, error) {
                         console.log("error")
@@ -173,6 +172,6 @@
                     }
                 });
             });
-    })
-</script>
+        })
+    </script>
 @endsection

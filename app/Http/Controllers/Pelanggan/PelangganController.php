@@ -93,8 +93,8 @@ class PelangganController extends Controller
 
     public function riwayatSewa()
     {
-        $sewas = Sewa::join('tukangs', 'sewas.tukangs_id', '=', 'tukangs.id')->select('sewas.*', 'tukangs.nama AS nama_tukang', 'tukangs.harga')->orderBy('created_at', 'DESC')->get();
-        // @dd($sewa);
+        $sewas = Sewa::join('tukangs', 'sewas.tukangs_id', '=', 'tukangs.id')->where('pelanggans_id', Auth::user()->id)->select('sewas.*', 'tukangs.nama AS nama_tukang', 'tukangs.harga')->orderBy('created_at', 'DESC')->get();
+        // @dd(Auth::user()->id);
         return view('pelanggan.sewa', compact('sewas'));
     }
 
