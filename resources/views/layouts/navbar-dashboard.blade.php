@@ -117,16 +117,18 @@
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
                                 @php
-                                    $notification = App\Models\Notification::where('tukangs_id', Auth::user()->id)
+                                    $notification = App\Models\Notification::where([['tukangs_id', Auth::user()->id], ['tipe', 'pengajuan']])
                                         ->join('pelanggans', 'notification.pelanggans_id', '=', 'pelanggans.id')
                                         ->select('pelanggans.nama', 'notification.created_at')
+                                        ->orderBy('created_at', 'desc')
                                         ->get();
                                 @endphp
                                 <span class="@if ($notification->count() != 0) badge badge-danger badge-counter @endif"
                                     id="notif">{{ $notification->count() }}</span>
                             </a>
                             <!-- Dropdown - Alerts -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                            <div id="dataNotif"
+                                class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="alertsDropdown" style="max-height: 350px; overflow-y: auto;">
                                 <h6 class="dropdown-header">
                                     Pemberitahuan
@@ -227,8 +229,11 @@
                 JSON.stringify(data);
                 if (data.tukangs_id === "{{ Auth::user()->id }}") {
                     const notifElement = document.getElementById('notif');
+                    const dataElement = document.getElementById('dataNotif');
                     let notifCount = parseInt(notifElement.innerHTML);
                     if (notifCount) {
+                        // dataElement.append(`<span><strong>${data.pelanggans_id}</strong> mengajukan sewa kepada anda,
+                    //                         tanggapi pengajuan sewa tersebut!</span>`);
                         notifCount++;
                         notifElement.innerHTML = notifCount;
                     } else {

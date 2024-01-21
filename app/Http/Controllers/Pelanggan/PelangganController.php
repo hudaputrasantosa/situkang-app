@@ -131,6 +131,8 @@ class PelangganController extends Controller
         $pelanggans_id = $notif->pelanggans_id;
         $notif->tukangs_id = $request->tukangs_id;
         $tukangs_id = $notif->tukangs_id;
+        $notif->tipe = 'pengajuan';
+        $tipe = $notif->tipe;
         $notif->save();
 
         $options = array(
@@ -147,6 +149,7 @@ class PelangganController extends Controller
         $data = [
             'pelanggans_id' => $pelanggans_id,
             'tukangs_id' => $tukangs_id,
+            'tipe' => $tipe,
         ];
         $pusher->trigger('my-channel', 'my-event', $data);
 

@@ -1,4 +1,3 @@
-<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 <div class="relative">
     <div
         class="hidden lg:block fixed top-0 backdrop-filter backdrop-blur-md bg-opacity-75 w-full py-1 text-gray-700 bg-white border-b border-slate-100 dark-mode:text-gray-200 dark-mode:bg-gray-800">
@@ -27,7 +26,58 @@
                 <a class="px-2 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
                     href="{{ route('tentang') }}">Tentang</a>
                 @if (Auth::check())
-                    <div x-init="{ open: false }" @click.away="open = false" class="relative" x-data="{ open: false }">
+                    <div x-init="{ open: false }" @click.away="open = false" class="relative flex"
+                        x-data="{ open: false }">
+                        <div class="pl-4 pt-6" x-data="{ notif: false }">
+                            <button class="inline-block relative -top-2" @click="notif = !notif">
+                                <span class="relative inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                    </svg>
+                                    @php
+                                        $notification = App\Models\Notification::where([['pelanggans_id', Auth::user()->id], ['tipe', 'konfirmasi']])
+                                            ->join('tukangs', 'notification.tukangs_id', '=', 'tukangs.id')
+                                            ->select('tukangs.nama', 'notification.created_at', 'notification.tipe')
+                                            ->orderBy('created_at', 'desc')
+                                            ->get();
+                                    @endphp
+                                    <span id="notif"
+                                        class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">{{ $notification->count() }}</span>
+                                </span>
+
+                            </button>
+                            <div class="absolute right-0 w-72 mt-2 origin-top-right" x-show="notif">
+                                <!-- A basic modal dialog with title, body and one button to close -->
+                                <div class="px-4 py-6 bg-white border rounded-md overflow-y-auto h-64"
+                                    @click.away="notif = false">
+                                    <div class="text-left">
+                                        <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">
+                                            Notifikasi
+                                        </h3>
+                                        <div class="flex flex-col">
+                                            @foreach ($notification as $itemNotif)
+                                                <div>
+                                                    <span
+                                                        class="text-xs text-gray-400">{{ $itemNotif->created_at }}</span>
+                                                    <p class="text-sm leading-5 text-gray-500 mb-4">
+                                                        <strong> {{ $itemNotif->nama }}</strong> telah mengupdate status
+                                                        pengajuan sewa
+                                                        Anda, <a href="{{ route('pelanggan.riwayat') }}"
+                                                            class="text-blue-500"> Lihat
+                                                            sekarang</a>
+                                                    </p>
+                                                </div>
+                                            @endforeach
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
 
                         <button @click="open = !open"
                             class="flex flex-row text-gray-900 bg-gray-200 items-center w-full px-2 py-2 mt-2 text-sm font-semibold text-left bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:focus:bg-gray-600 dark-mode:hover:bg-gray-600 md:w-auto md:inline md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
@@ -52,7 +102,7 @@
                             x-transition:leave="transition ease-in duration-75"
                             x-transition:leave-start="transform opacity-100 scale-100"
                             x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute right-0 w-48 mt-2 origin-top-right">
+                            class="absolute right-0 w-48 mt-16 origin-top-right">
                             <div class="px-3 py-2 bg-white rounded-md shadow-lg dark-mode:bg-gray-700">
                                 <div class="grid grid-cols-1">
                                     <a class="flex flex row items-center rounded-lg bg-transparent p-2 dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
@@ -88,22 +138,8 @@
                                 </div>
                             </div>
                         </div>
-                                                <button class="inline-block relative -top-2">
-                            <span class="relative inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                                </svg>
-                                <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">99</span>
-                            </span>
-</button>
-
-
-
-
-</div>
 
                     </div>
-
                 @else
                     <a href="{{ route('auth.login') }}"
                         class="text-center mx-3 px-2 py-2 text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400">
@@ -120,24 +156,33 @@
             <div id="tabs" class="flex justify-between items-center">
                 <a href="{{ route('homepage') }}"
                     class="w-full focus:text-teal-500 hover:text-teal-500 justify-center inline-block text-center pt-2 pb-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"  width="25" height="25" viewBox="0 0 42 42" class="inline-block w-8 h-8">
-  <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
+                        stroke="currentColor" width="25" height="25" viewBox="0 0 42 42"
+                        class="inline-block w-8 h-8">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
 
                     </svg>
                     <span class="tab tab-home block text-xs">Beranda</span>
                 </a>
                 <a href="{{ route('jenis-tukang') }}"
                     class="w-full focus:text-teal-500 hover:text-teal-500 justify-center inline-block text-center pt-2 pb-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"  width="25" height="25" viewBox="0 0 42 42" class="inline-block w-8 h-8">
-  <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 15.75-2.489-2.489m0 0a3.375 3.375 0 1 0-4.773-4.773 3.375 3.375 0 0 0 4.774 4.774ZM21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
+                        stroke="currentColor" width="25" height="25" viewBox="0 0 42 42"
+                        class="inline-block w-8 h-8">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="m15.75 15.75-2.489-2.489m0 0a3.375 3.375 0 1 0-4.773-4.773 3.375 3.375 0 0 0 4.774 4.774ZM21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
 
                     </svg>
                     <span class="tab tab-kategori block text-xs">Jenis Tukang</span>
                 </a>
                 <a href="{{ route('tentang') }}"
                     class="w-full focus:text-teal-500 hover:text-teal-500 justify-center inline-block text-center pt-2 pb-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" width="25" height="25" viewBox="0 0 42 42" class="inline-block w-8 h-8">
-  <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
+                        stroke="currentColor" width="25" height="25" viewBox="0 0 42 42"
+                        class="inline-block w-8 h-8">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
 
                     </svg>
                     <span class="tab tab-whishlist block text-xs">Tentang</span>
@@ -147,22 +192,25 @@
 
                     <span class="tab tab-account block text-xs">
                         @if (Auth::check())
-                        <div class="inline-block">
-                            <img class="rounded-full w-8 h-8" width="20"
-                            src="@if (Auth::user()->foto) {{ url('storage/pelanggan/foto-profil/', Auth::user()->foto) }}
+                            <div class="inline-block">
+                                <img class="rounded-full w-8 h-8" width="20"
+                                    src="@if (Auth::user()->foto) {{ url('storage/pelanggan/foto-profil/', Auth::user()->foto) }}
                             @else https://t3.ftcdn.net/jpg/05/00/54/28/360_F_500542898_LpYSy4RGAi95aDim3TLtSgCNUxNlOlcM.jpg @endif">
-                            <span>
-                                {{ Auth::user()->nama }}
-                            </span>
-                        </div>
+                                <span>
+                                    {{ Auth::user()->nama }}
+                                </span>
+                            </div>
                         @else
-                        <div class="inline-block justify-center">
+                            <div class="inline-block justify-center">
 
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" width="25" height="25" viewBox="0 0 42 42" class="w-8 h-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1" stroke="currentColor" width="25" height="25"
+                                    viewBox="0 0 42 42" class="w-8 h-8">
 
-  <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    </svg>
-                            Masuk
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                </svg>
+                                Masuk
                             </div>
                         @endif
                     </span>

@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-   {{-- activated when tunneling with ngrok on --}}
+    {{-- activated when tunneling with ngrok on --}}
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     {{-- end active --}}
     <meta name="description" content="" />
@@ -18,10 +18,11 @@
         rel="stylesheet">
 
 
-        @vite(['resources/js/app.js'])
-      <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/js/app.js'])
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="{{ asset('assets/css/styles.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/avatar.css') }}" rel="stylesheet" type="text/css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> --}}
 </head>
@@ -33,12 +34,59 @@
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
                 class="fas fa-bars"></i></button>
+
+        <div class="pt-6 absolute lg:right-28 right-8" x-data="{ notif: false }">
+            <button class="inline-block relative -top-2" @click="notif = !notif">
+                <span class="relative inline-block">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                    </svg>
+                    @php
+                        $notification = App\Models\Notification::where([['pelanggans_id', Auth::user()->id], ['tipe', 'konfirmasi']])
+                            ->join('tukangs', 'notification.tukangs_id', '=', 'tukangs.id')
+                            ->select('tukangs.nama', 'notification.created_at', 'notification.tipe')
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+                    @endphp
+                    <span id="notif"
+                        class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">{{ $notification->count() }}</span>
+                </span>
+
+            </button>
+            <div class="absolute right-0 w-72 mt-2 origin-top-right" x-show="notif">
+                <!-- A basic modal dialog with title, body and one button to close -->
+                <div class="px-4 py-6 bg-white border rounded-md overflow-y-auto h-64" @click.away="notif = false">
+                    <div class="text-left">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">
+                            Notifikasi
+                        </h3>
+                        <div class="flex flex-col">
+                            @foreach ($notification as $itemNotif)
+                                <div>
+                                    <span class="text-xs text-gray-400">{{ $itemNotif->created_at }}</span>
+                                    <p class="text-sm leading-5 text-gray-500 mb-4">
+                                        <strong> {{ $itemNotif->nama }}</strong> telah mengupdate status
+                                        pengajuan sewa
+                                        Anda, <a href="{{ route('pelanggan.riwayat') }}" class="text-blue-500"> Lihat
+                                            sekarang</a>
+                                    </p>
+                                </div>
+                            @endforeach
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
         <div class="navbar-nav lg:block hidden ms-auto me-0 me-md-3 my-2 my-md-0">
             <a class="nav-link flex items-center">
                 <img class="img-profile rounded-circle px-2" width="50px"
                     src="@if (Auth::user()->foto) {{ url('storage/pelanggan/foto-profil/', Auth::user()->foto) }}
                @else https://t3.ftcdn.net/jpg/05/00/54/28/360_F_500542898_LpYSy4RGAi95aDim3TLtSgCNUxNlOlcM.jpg @endif">
-               {{ Auth::user()->nama }}</a>
+                {{ Auth::user()->nama }}</a>
         </div>
     </nav>
     <div id="layoutSidenav">
@@ -104,7 +152,8 @@
                     <h5 class="modal-title" id="exampleModalLabel">Yakin untuk keluar sistem?</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">Pilih "Keluar" untuk menghapus sesi masuk pada saat ini, dan keluar sistem</div>
+                <div class="modal-body">Pilih "Keluar" untuk menghapus sesi masuk pada saat ini, dan keluar sistem
+                </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary bg-gray-500" type="button" data-dismiss="modal">Batal</button>
                     <a class="btn btn-danger" href="{{ route('auth.logout') }}">Keluar</a>

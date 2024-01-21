@@ -14,6 +14,7 @@ class Notification extends Model
     protected $fillable = [
         'pelanggans_id',
         'tukangs_id',
+        'tipe',
     ];
 
     protected static function boot()

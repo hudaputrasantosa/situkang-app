@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Tukang;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\Keahlian;
+use App\Models\Notification;
 use App\Models\Pengalaman;
 use App\Models\Sewa;
 use App\Models\Tukang;
@@ -23,7 +24,7 @@ use App\Models\Pembayaran;
 use Xendit\Configuration;
 use Xendit\Invoice\InvoiceApi;
 use Illuminate\Support\Str;
-
+use Pusher\Pusher;
 
 class TukangController extends Controller
 {
@@ -80,6 +81,7 @@ class TukangController extends Controller
             'email' => 'required|email|max:250|unique:tukangs',
             'password' => ['required', Password::min(8)->letters()->numbers()],
         ]);
+        $validated['harga'] = preg_replace("/[.,]/", "", $validated['harga']);
         $tukang = new Tukang();
         $tukang->fill($validated);
         $tukang->save();
@@ -175,7 +177,7 @@ class TukangController extends Controller
         $tukangs->alamat = $request->alamat;
         $tukangs->keahlians_id = $request->keahlians_id;
         $tukangs->no_telepon = $request->no_telepon;
-        $tukangs->harga = $request->harga;
+        $tukangs->harga = preg_replace("/[.,]/", "", $request->harga);
         $tukangs->deskripsi = $request->deskripsi;
         $fotoName = $tukangs->foto;
 
@@ -299,46 +301,63 @@ class TukangController extends Controller
     {
         $diterima = $request->terima;
         $ditolak = $request->tolak;
+        $sewa = Sewa::find($id);
 
         if ($diterima === null) {
-            Sewa::find($id)->update(['status' => $ditolak]);
+            $sewa->update(['status' => $ditolak]);
             Alert::error('Sukses Ditolak', 'Status penyewaan sukses ditolak');
             return redirect()->back();
         } else {
-            $sewa = Sewa::find($id)->join('tukangs', 'sewas.tukangs_id', '=', 'tukangs.id')->select('sewas.*', 'tukangs.nama', 'tukangs.harga')->orderBy('created_at', 'DESC')->first();
-            // @dd([$id, $sewa]);
-
-
-            if ($sewa->tipe_pembayaran == 'bank') {
-                // $create_invoice_request = new \Xendit\Invoice\CreateInvoiceRequest([
-                //     'external_id' => (string) Str::uuid(),
-                //     'amount' => (int) $sewa->harga,
-                // ]);
-                // $result = $this->apiInstance->createInvoice($create_invoice_request);
-
+            $dataSewa = $sewa->join('tukangs', 'sewas.tukangs_id', '=', 'tukangs.id')->select('sewas.*', 'tukangs.nama', 'tukangs.harga')->orderBy('created_at', 'DESC')->first();
+            if ($dataSewa->tipe_pembayaran == 'bank') {
                 $secret_key = 'Basic ' . config('xendit.key_auth');
+                // @dd($secret_key);
+
                 $external_id = (string) Str::uuid();
                 $data_request = Http::withHeaders([
                     'Authorization' => $secret_key
                 ])->post('https://api.xendit.co/v2/invoices', [
                     'external_id' => $external_id,
-                    'amount' => (int) $sewa->harga
+                    'amount' => (int) $dataSewa->harga
                 ]);
                 $response = $data_request->object();
-
-                // @dd($response);
-
-
                 $payment = new Pembayaran();
-                $payment->sewas_id = $sewa->id;
+                $payment->sewas_id = $dataSewa->id;
                 $payment->status = "pending";
                 $payment->checkout_link = $response->invoice_url;
                 $payment->external_id = $external_id;
-                $payment->total_harga = $sewa->harga;
+                $payment->total_harga = $dataSewa->harga;
                 $payment->save();
             }
 
-            $sewa->update(['status' => $diterima]);
+            $notif = new Notification();
+            $notif->pelanggans_id = $sewa->pelanggans_id;
+            $pelanggans_id = $notif->pelanggans_id;
+            $notif->tukangs_id = Auth::user()->id;
+            $tukangs_id = $notif->tukangs_id;
+            $notif->tipe = 'konfirmasi';
+            $tipe = $notif->tipe;
+            $notif->save();
+
+            $options = array(
+                'cluster' => 'ap1',
+                'useTLS' => true,
+            );
+
+            $pusher = new Pusher(
+                env('PUSHER_APP_KEY_2'),
+                env('PUSHER_APP_SECRET_2'),
+                env('PUSHER_APP_ID_2'),
+                $options,
+            );
+            $data = [
+                'pelanggans_id' => $pelanggans_id,
+                'tukangs_id' => $tukangs_id,
+                'tipe' => $tipe,
+            ];
+            $pusher->trigger('update-sewa', 'update-event', $data);
+
+            $dataSewa->update(['status' => $diterima]);
 
             Alert::Success('Sukses Menerima', 'Status penyewaan sukses diterima');
             return redirect()->back()->with('success', 'berhasil melakukan konfirmasi');
