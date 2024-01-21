@@ -2,67 +2,6 @@
 @section('title', 'Situkang | ' . $tukang->nama)
 
 @section('content')
-    {{-- <div class="px-4 py-2 my-4 text-center">
-        <img class="aspect-ratio-object-cover rounded mb-3 border"
-            src="@if ($tukang->foto) {{ url('storage/tukang/foto-profil/' . $tukang->foto) }} @else https://t3.ftcdn.net/jpg/05/00/54/28/360_F_500542898_LpYSy4RGAi95aDim3TLtSgCNUxNlOlcM.jpg @endif"
-            alt="" width="200">
-        <h2 class="display-6 fw-bold">{{ $tukang->nama }}</h2>
-        <p class="mb-1 fs-5 fw-bolder">{{ $tukang->nama_keahlian }}</p>
-        <p class="mb-3 mt-0 fs-6" style="font-size: 10pt;">
-            <i class="bi bi-geo-alt-fill">
-            </i>
-            {{ ucwords(strtolower($kecamatan->name)) }}, {{ ucwords(strtolower($desa->name)) }}
-        </p>
-        <div class="col-lg-8 card border-left-primary shadow h-100 py-5 mx-auto">
-            <div class="text-start px-5">
-                <h5>Deskripsi</h5>
-                @if ($tukang->deskripsi == null)
-                    <p>Deskripsi tukang belum tersedia</p>
-                @else
-                    <p class="mb-4">{!! $tukang->deskripsi !!}</p>
-                @endif
-            </div>
-            <div class="col-md-12 text-start mb-5 px-5">
-                <h5>Pengalaman</h5>
-                @if (count($pengalaman) === 0)
-                    <p>Belum mempunyai pengalaman</p>
-                @else
-                    <div class="py-1">
-                        <div class="card-body">
-                            <div class="row text-start no-gutters align-items-center">
-                                <div class="col-auto">
-                                    <img src="{{ url('storage/tukang/pengalaman/' . $pengalaman->foto) }}" class="rounded"
-                                        width="120px" alt="">
-                                </div>
-                                <div class="col mx-1">
-                                    <div class="h6 mb-0 fw-bold text-gray-800">{{ $pengalaman->nama_proyek }}</div>
-                                    <div class="text-xs font-weight-bold text-gray-500 mb-1">
-                                        {{ $pengalaman->alamat }}
-                                    </div>
-                                    <div class="text-xs fw-semibold text-gray mb-1" style="font-size: 10.5pt;">
-                                        <i class="bi bi-calendar-date" style="margin-right: 2px;"></i>
-                                        {{ $pengalaman->tanggal_mulai }} Sampai {{ $pengalaman->tanggal_selesai }} <i
-                                            class="bi bi-briefcase-fill" style="margin: 0px 2px 0px 10px;"></i>
-                                        {{ $pengalaman->nama_keahlian }}
-                                    </div>
-                                    <div class="text-gray mb-1" style="font-size: 10pt;">
-                                        {{ $pengalaman->deskripsi }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-            </div>
-            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                <a type="button" class="btn btn-primary col-4 btn-lg text-md mx-auto"
-                    @if (Auth::check()) data-bs-toggle="modal" data-bs-target="#sewa" @else href="{{ route('auth.login') }}" @endif>Ajukan
-                    Sewa Rp. {{ $tukang->harga }}</a>
-            </div>
-
-        </div>
-    </div> --}}
-
     <div class="w-full h-full ">
         <img src="{{ asset('assets/img/profile-background.jpg') }}" loading="lazy"
             class="lg:object-none object-cover w-full h-24 lg:object-cover lg:h-60">
@@ -88,7 +27,7 @@
                     <p class="text-sm text-gray-500"> {{ ucwords(strtolower($kecamatan->name)) }},
                         {{ ucwords(strtolower($desa->name)) }}</p>
                 </div>
-                <p class="text-lg font-semibold mt-1">Harga Sewa Rp. {{ $tukang->harga }}</p>
+                <p class="text-lg font-semibold mt-1">Harga Sewa @currency($tukang->harga)</p>
             </div>
             <div class="flex-1 flex flex-col items-center lg:items-center justify-center px-8 mt-2">
                 <div class="flex items-center space-x-4 mt-2">

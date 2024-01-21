@@ -254,13 +254,13 @@
                 });
             });
 
-            $('#harga').mask('000,000,000', {
-                reverse: true
+            $('#harga').on('keydown', function(event) {
+                if (event.key === "," || event.key === "." || event.key === "-") {
+                    event.preventDefault();
+                }
             });
 
-            $('#harga_borongan').mask('000.000.000', {
-                reverse: true
-            });
+            $('#harga').mask('000.000.000');
 
         })
     </script>

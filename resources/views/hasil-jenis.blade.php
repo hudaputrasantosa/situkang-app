@@ -65,8 +65,7 @@
                                     <div class="gap-6">
                                         <p class="text-sm lg:text-base font-medium text-gray-600 my-1">
                                             {{ $tukang->nama_keahlian }}</p>
-                                        <p class="text-base lg:text-xl font-bold text-gray-600">Rp.
-                                            {{ $tukang->harga }}
+                                        <p class="text-base lg:text-xl font-bold text-gray-600">@currency($tukang->harga)
                                             <span class="text-sm">/ Hari</span>
                                         </p>
                                     </div>
