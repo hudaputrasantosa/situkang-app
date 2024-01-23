@@ -303,6 +303,33 @@ class TukangController extends Controller
         $ditolak = $request->tolak;
         $sewa = Sewa::find($id);
 
+        $notif = new Notification();
+        $notif->pelanggans_id = $sewa->pelanggans_id;
+        $pelanggans_id = $notif->pelanggans_id;
+        $notif->tukangs_id = Auth::user()->id;
+        $tukangs_id = $notif->tukangs_id;
+        $notif->tipe = 'konfirmasi';
+        $tipe = $notif->tipe;
+        $notif->save();
+
+        $options = array(
+            'cluster' => 'ap1',
+            'useTLS' => true,
+        );
+
+        $pusher = new Pusher(
+            env('PUSHER_APP_KEY_2'),
+            env('PUSHER_APP_SECRET_2'),
+            env('PUSHER_APP_ID_2'),
+            $options,
+        );
+        $data = [
+            'pelanggans_id' => $pelanggans_id,
+            'tukangs_id' => $tukangs_id,
+            'tipe' => $tipe,
+        ];
+        $pusher->trigger('update-sewa', 'update-event', $data);
+
         if ($diterima === null) {
             $sewa->update(['status' => $ditolak]);
             Alert::error('Sukses Ditolak', 'Status penyewaan sukses ditolak');
@@ -311,8 +338,6 @@ class TukangController extends Controller
             $dataSewa = $sewa->join('tukangs', 'sewas.tukangs_id', '=', 'tukangs.id')->select('sewas.*', 'tukangs.nama', 'tukangs.harga')->orderBy('created_at', 'DESC')->first();
             if ($dataSewa->tipe_pembayaran == 'bank') {
                 $secret_key = 'Basic ' . config('xendit.key_auth');
-                // @dd($secret_key);
-
                 $external_id = (string) Str::uuid();
                 $data_request = Http::withHeaders([
                     'Authorization' => $secret_key
@@ -329,33 +354,6 @@ class TukangController extends Controller
                 $payment->total_harga = $dataSewa->harga;
                 $payment->save();
             }
-
-            $notif = new Notification();
-            $notif->pelanggans_id = $sewa->pelanggans_id;
-            $pelanggans_id = $notif->pelanggans_id;
-            $notif->tukangs_id = Auth::user()->id;
-            $tukangs_id = $notif->tukangs_id;
-            $notif->tipe = 'konfirmasi';
-            $tipe = $notif->tipe;
-            $notif->save();
-
-            $options = array(
-                'cluster' => 'ap1',
-                'useTLS' => true,
-            );
-
-            $pusher = new Pusher(
-                env('PUSHER_APP_KEY_2'),
-                env('PUSHER_APP_SECRET_2'),
-                env('PUSHER_APP_ID_2'),
-                $options,
-            );
-            $data = [
-                'pelanggans_id' => $pelanggans_id,
-                'tukangs_id' => $tukangs_id,
-                'tipe' => $tipe,
-            ];
-            $pusher->trigger('update-sewa', 'update-event', $data);
 
             $dataSewa->update(['status' => $diterima]);
 
