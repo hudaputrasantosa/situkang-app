@@ -34,30 +34,32 @@
 
     @include('sweetalert::alert')
     <script src="{{ asset('assets/jquery-3.7.1.js') }}"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            // Pusher.logToConsole = true;
+    @if (Auth::check())
+        <script type="text/javascript">
+            $(document).ready(function() {
+                // Pusher.logToConsole = true;
 
-            const pusher = new Pusher('3efa55baed4ff74ddd16', {
-                cluster: 'ap1'
-            });
-            const channel = pusher.subscribe('update-sewa');
-            channel.bind('update-event', function(data) {
-                JSON.stringify(data);
-                if (data.pelanggans_id === "{{ Auth::user()->id }}") {
-                    const notifElement = document.getElementById('notif');
-                    let notifCount = parseInt(notifElement.innerHTML);
-                    if (notifCount) {
-                        notifCount++;
-                        notifElement.innerHTML = notifCount;
-                    } else {
-                        notifElement.innerHTML = notifCount;
+                const pusher = new Pusher('3efa55baed4ff74ddd16', {
+                    cluster: 'ap1'
+                });
+                const channel = pusher.subscribe('update-sewa');
+                channel.bind('update-event', function(data) {
+                    JSON.stringify(data);
+                    if (data.pelanggans_id === '{{ Auth::user()->id }}') {
+                        const notifElement = document.getElementById('notif');
+                        let notifCount = parseInt(notifElement.innerHTML);
+                        if (notifCount) {
+                            notifCount++;
+                            notifElement.innerHTML = notifCount;
+                        } else {
+                            notifElement.innerHTML = notifCount;
+                        }
                     }
-                }
-            });
+                });
 
-        });
-    </script>
+            });
+        </script>
+    @endif
     @yield('js')
 </body>
 

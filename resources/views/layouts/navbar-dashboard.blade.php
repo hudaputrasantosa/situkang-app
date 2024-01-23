@@ -219,7 +219,7 @@
     <script src="{{ asset('assets/js/sb-admin-2.min.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            //    Pusher.logToConsole = true;
+            // Pusher.logToConsole = true;
 
             const pusher = new Pusher('3176919d7b7f92b439a3', {
                 cluster: 'ap1'
