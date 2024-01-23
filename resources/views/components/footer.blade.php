@@ -5,7 +5,8 @@
                 <img class="w-auto h-7" src="https://merakiui.com/images/full-logo.svg" alt="">
             </a> --}}
             <h3 class="text-lg font-bold">SiTukang.id</h3>
-            <p class="max-w-md mx-auto text-sm lg:text-base mt-2 text-gray-300 dark:text-gray-400">Solusi mendapatkan portofolio tukang dengan cepat</p>
+            <p class="max-w-md mx-auto text-sm lg:text-base mt-2 text-gray-300 dark:text-gray-400">Solusi mendapatkan
+                portofolio tukang bangunan dengan cepat</p>
         </div>
 
         <hr class="my-5 border-gray-400 dark:border-gray-700" />
