@@ -40,7 +40,7 @@ class TukangController extends Controller
         $this->apiInstance = new InvoiceApi();
     }
 
-    public function index(Request $request)
+    public function tampilMasuk(Request $request)
     {
         if (Auth::check()) {
             Auth::logout();
@@ -53,7 +53,7 @@ class TukangController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function register(Request $request)
+    public function tampilDaftar(Request $request)
     {
         $kecamatans = \Indonesia::findCity('189', ['districts'])->districts;
         $keahlians = Keahlian::all();
@@ -67,7 +67,7 @@ class TukangController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function daftar(Request $request)
     {
         $validated = $request->validate([
             'nama' => 'required|string|max:250',
@@ -98,7 +98,7 @@ class TukangController extends Controller
      * Display the specified resource.
      */
 
-    public function authenticate(Request $request)
+    public function masuk(Request $request)
     {
         $credentials = $request->validate([
             'email' => 'required|email',
@@ -124,16 +124,8 @@ class TukangController extends Controller
         ])->onlyInput('email');
     }
 
-    // public function dashboard()
-    // {
-    //     $tukang = Tukang::where('id', session('idLogin'))->first();
-    //     // $tukang = Tukang::where('id', Auth::user()->id);
-    //     dd($tukang);
-    //     return view('tukang.dashboard', ['tukang' => $tukang]);
-    // }
 
-
-    public function logout(Request $request)
+    public function keluar(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
@@ -153,7 +145,7 @@ class TukangController extends Controller
         return abort(404);
     }
 
-    public function profile()
+    public function tampilProfile()
     {
         $tukangs = Tukang::join('keahlians', 'tukangs.keahlians_id', '=', 'keahlians.id')
             ->where('tukangs.id', Auth::user()->id)
@@ -166,7 +158,7 @@ class TukangController extends Controller
         return view('tukang.profile', compact('tukangs', 'keahlians', 'kecamatans', 'kecamatan', 'desa'));
     }
 
-    public function profileUpdate($id, Request $request)
+    public function updateProfile($id, Request $request)
     {
         $tukangs = Tukang::find($id);
         $tukangs->nama = $request->nama;
@@ -194,19 +186,19 @@ class TukangController extends Controller
     }
 
 
-    public function pengalaman()
+    public function tampilPengalaman()
     {
         $pengalamans = Pengalaman::where('tukangs_id', Auth::user()->id)->join('keahlians', 'pengalamans.keahlians_id', '=', 'keahlians.id')->select('pengalamans.*', 'keahlians.nama_keahlian')->get();
         return view('tukang.pengalaman.pengalaman', compact('pengalamans'));
     }
 
-    public function tambahPengalaman()
+    public function tampilTambahPengalaman()
     {
         $keahlians = Keahlian::all();
         return view('tukang.pengalaman.tambah-pengalaman', compact('keahlians'));
     }
 
-    public function storePengalaman(Request $request)
+    public function tambahPengalaman(Request $request)
     {
         $request->validate([
             'nama_proyek' => 'required|string|max:250',
@@ -237,14 +229,14 @@ class TukangController extends Controller
         return redirect()->route('tukang.pengalaman');
     }
 
-    public function tampilPengalaman($id): View
+    public function lihatPengalaman($id): View
     {
         $keahlians = Keahlian::all();
         $pengalaman = Pengalaman::findOrFail($id);
         return view('tukang.pengalaman.tampil-pengalaman', compact('pengalaman', 'keahlians'));
     }
 
-    public function updatePengalaman($id, Request $request)
+    public function perbaruiPengalaman($id, Request $request)
     {
         $request->validate([
             'nama_proyek' => 'required|string|max:250',

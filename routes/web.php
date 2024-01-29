@@ -51,24 +51,24 @@ Route::prefix('user')->controller(PelangganController::class)->group(function ()
 
 Route::prefix('tukang')->controller(TukangController::class)->group(function () {
     Route::get('/portofolio/{id}', 'portofolio')->name('tukang.portofolio');
-    Route::get('/login', 'index')->name('tukang.login');
-    Route::post('/authentication', 'authenticate')->name('tukang.authenticate');
-    Route::get('/register', 'register')->name('tukang.register');
+    Route::get('/login', 'tampilMasuk')->name('tukang.login');
+    Route::post('/authentication', 'masuk')->name('tukang.authenticate');
+    Route::get('/register', 'tampilDaftar')->name('tukang.register');
     Route::get('/getDesa', 'getDesa')->name('tukang.getDesa');
-    Route::post('/registration-store', 'store')->name('tukang.store');
+    Route::post('/registration-store', 'daftar')->name('tukang.store');
     Route::get('/dashboard', 'dashboard')->name('tukang.dashboard')->middleware('tukang');
-    Route::get('/profile', 'profile')->name('tukang.profile')->middleware('auth:tukang');
-    Route::post('/profile/update/{id}', 'profileUpdate')->name('tukang.profile.update')->middleware('auth:tukang');
-    Route::get('/pengalaman', 'pengalaman')->name('tukang.pengalaman')->middleware('auth:tukang');
-    Route::get('/pengalaman/tambah', 'tambahPengalaman')->name('tukang.pengalaman.tambah')->middleware('auth:tukang');
-    Route::post('/pengalaman/store', 'storePengalaman')->name('tukang.pengalaman.store')->middleware('auth:tukang');
-    Route::get('/pengalaman/{id}', 'tampilPengalaman')->name('tukang.pengalaman.tampil')->middleware('auth:tukang');
-    Route::post('/pengalaman/update/{id}', 'updatePengalaman')->name('tukang.pengalaman.update')->middleware('auth:tukang');
+    Route::get('/profile', 'tampilProfile')->name('tukang.profile')->middleware('auth:tukang');
+    Route::post('/profile/update/{id}', 'updateProfile')->name('tukang.profile.update')->middleware('auth:tukang');
+    Route::get('/pengalaman', 'tampilPengalaman')->name('tukang.pengalaman')->middleware('auth:tukang');
+    Route::get('/pengalaman/tambah', 'tampilTambahPengalaman')->name('tukang.pengalaman.tambah')->middleware('auth:tukang');
+    Route::post('/pengalaman/store', 'tambahPengalaman')->name('tukang.pengalaman.store')->middleware('auth:tukang');
+    Route::get('/pengalaman/{id}', 'lihatPengalaman')->name('tukang.pengalaman.tampil')->middleware('auth:tukang');
+    Route::post('/pengalaman/update/{id}', 'perbaruiPengalaman')->name('tukang.pengalaman.update')->middleware('auth:tukang');
     Route::get('/pengalaman/delete/{id}', 'hapusPengalaman')->name('tukang.pengalaman.hapus')->middleware('auth:tukang');
     Route::get('/penyewaan/konfirmasi', 'konfirmasi')->name('tukang.penyewaan')->middleware('auth:tukang');
     Route::post('/penyewaan/update-status/{id}', 'updateStatus')->name('tukang.updateStatus')->middleware('auth:tukang');
     Route::get('/tukangs/kecamatans', 'tukangsByKecamatan')->name('tukangs.byKecamatan');
     // Route::get('/penyewaan/riwayat', 'riwayat')->name('tukang.riwayat')->middleware('tukang');
-    Route::get('/logout', 'logout')->name('tukang.logout')->middleware('tukang');
+    Route::get('/logout', 'keluar')->name('tukang.logout')->middleware('tukang');
     // Route::get('/dashboard', 'dashboard')->name('pelanggan.dashboard')->middleware('auth');
 });
