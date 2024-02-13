@@ -1,10 +1,61 @@
-### KEKURANGAN SISTEM 
-3. FILTER SEARCHING JENIS TUKANG [progress]
-2. LOGIN DENGAN NO HP 🔴
-4. BUG NAVBAR [belum solve]
-5. HARGA BORONGAN PENUH TUGAS 
-7. MENAMBAHKAN CATATAN STATUS SEWA
+# SiTukang.id - Sistem Penyedia Portofolio Tukang Bangunan
+![Logo](https://raw.githubusercontent.com/hudaputrasantosa/hudaputrasantosa.github.io/main/assets/img/projects/project-4.png)
 
-### CATATAN UNTUK TESTING
-1. RUNNING LOCAL SERVER AND TUNNELING WITH NGROK TO CONNECT XENDIT
-2. UPDATE LINK FORWARDING IN XENDIT TO SUCCESS CONNECT WEBHOOK
+
+## ⚡ Deskripsi
+Situkang.id merupakan aplikasi inovatif yang kami tawarkan bertujuan untuk mengatasi kesulitan yang sering dihadapi masyarakat dalam mendapatkan dan mencari informasi terkait keahlian, pengalaman, serta rentang harga dari tukang bangunan, baik secara individu maupun kelompok. Aplikasi ini dirancang sebagai solusi yang efektif untuk memenuhi kebutuhan masyarakat dalam menemukan tukang bangunan yang sesuai dengan kebutuhan mereka.
+
+## ✨ Fitur
+
+- Autentikasi dan authorisasi pengguna (pelanggan dan tukang bangunan)
+- Landing page pelanggan
+- dashbor pelanggan (profil dan riwayat sewa)
+- dashbor tukang bangunan (profil, pengalaman dan penyewaan)
+
+## ✅ Requirement
+ - PHP min 8.1
+ - MariaDB/MySQL
+ - Laravel 10
+ - NodeJS v16+
+ - NPM v8+
+
+## 🔥 Install & running local dev
+Clone Repository
+
+```bash
+git clone https://github.com/hudaputrasantosa/situkang-app.git
+cd situkang-app
+```
+Copy .env from .env.example
+```bash
+cp .env.example .env
+```
+Installation from Composer & Npm
+```bash
+composer Install && npm install
+```
+Generate Key
+```bash
+php artisan key:generate
+```
+Create Symlink storage
+```bash
+php artisan storage:link
+```
+Create migration table and data
+```bash
+php artisan migrate --seed
+```
+Running Frontend
+```bash
+npm run dev
+```
+Running Laravel
+```bash
+php artisan serve
+```
+
+## Authors
+
+- [@hudaputrasantosa](https://www.github.com/hudaputrasantosa)
+
