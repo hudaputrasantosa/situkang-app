@@ -9,15 +9,22 @@ Situkang.id merupakan aplikasi inovatif yang kami tawarkan bertujuan untuk menga
 
 - Autentikasi dan authorisasi pengguna (pelanggan dan tukang bangunan)
 - Landing page pelanggan
+- Halaman jenis tukang bangunan
+- Halaman tentang
 - dashbor pelanggan (profil dan riwayat sewa)
 - dashbor tukang bangunan (profil, pengalaman dan penyewaan)
 
-## ✅ Requirement
+## ✅ Requirement and tools
  - PHP min 8.1
  - MariaDB/MySQL
  - Laravel 10
  - NodeJS v16+
  - NPM v8+
+ - AlpineJS
+ - Jquery v3.7
+ - TailwindCSS v3.4
+ - Pusher
+ - Xendit Payment Gateway
 
 ## 🔥 Install & running local dev
 Clone Repository
