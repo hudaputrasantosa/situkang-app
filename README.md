@@ -20,6 +20,7 @@ Situkang.id merupakan aplikasi inovatif yang kami tawarkan bertujuan untuk menga
  - Laravel 10
  - NodeJS v16+
  - NPM v8+
+ - Vite
  - AlpineJS
  - Jquery v3.7
  - TailwindCSS v3.4
